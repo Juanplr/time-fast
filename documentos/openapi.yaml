@@ -1,0 +1,1638 @@
+openapi: 3.0.3
+info:
+  title: Time-Fast API
+  description: >-
+    Esta API está diseñada para la gestión de paquetería de Time-Fast,
+    permitiendo la administración de colaboradores, clientes, paquetes, envíos y
+    unidades de la empresa.
+  version: 1.0.0
+servers:
+  - url: https://time-fast/api
+tags:
+  - name: /login
+    description: inicio de sesiones
+  - name: /colaborador
+    description: consultar datos de los colaboradores
+  - name: /rol
+    description: consultar los roles de los colaboradores
+  - name: /cliente
+    description: consultar datos de los clientes
+  - name: /unidad
+    description: consultar datos de las unidades de la empresa (vehículos)
+  - name: /paquete
+    description: gestionar los paquetes asociados a envíos
+  - name: /envio
+    description: gestionar los envíos
+    
+    
+components:
+  schemas:
+    Colaborador:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellidoPaterno:
+          type: string
+        apellidoMaterno:
+          type: string
+        curp:
+          type: string
+        correo:
+          type: string
+        noPersonal:
+          type: string
+        contrasena:
+          type: string
+        idRol:
+          type: integer
+        numeroDeLicencia:
+          type: string
+        fotografia:
+          type: object
+    ColaboradorResponse:
+      type: object
+      properties:
+        idColaborador:
+          type: integer
+        nombre:
+          type: string
+        apellidoPaterno:
+          type: string
+        apellidoMaterno:
+          type: string
+        curp:
+          type: string
+        correo:
+          type: string
+        noPersonal:
+          type: string
+        idRol:
+          type: integer
+        rol:
+          type: string
+        numeroDeLicencia:
+          type: string
+        fotografia:
+          type: object
+    Unidad:
+      type: object
+      properties:
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: string
+        vin:
+          type: string
+        idTipoUnidad:
+          type: integer
+        nii:
+          type: string
+        idEstadoUnidad:
+          type: integer
+    UnidadResponse:
+      type: object
+      properties:
+        idUnidad:
+          type: integer
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: string
+        vin:
+          type: string
+        idTipoUnidad:
+          type: integer
+        tipoUnidad:
+          type: string
+        nii:
+          type: string
+        idEstadoUnidad:
+          type: integer
+        estadoUnidad:
+          type: string
+    Cliente:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellidoPaterno:
+          type: string
+        apellidoMaterno:
+          type: string
+        calle:
+          type: string
+        numeroDeCasa:
+          type: string
+        colonia:
+          type: string
+        codigoPostal:
+          type: string
+        ciudad:
+          type: string
+        estado:
+          type: string
+        telefono:
+          type: string
+        correo:
+          type: string
+    ClienteResponse:
+      type: object
+      properties:
+        idCliente:
+          type: integer
+        nombre:
+          type: string
+        apellidoPaterno:
+          type: string
+        apellidoMaterno:
+          type: string
+        calle:
+          type: string
+        numeroDeCasa:
+          type: string
+        colonia:
+          type: string
+        codigoPostal:
+          type: string
+        ciudad:
+          type: string
+        estado:
+          type: string
+        telefono:
+          type: string
+        correo:
+          type: string
+    Envio:
+      type: object
+      properties:
+        idCliente:
+          type: integer
+        origenCalle:
+          type: string
+        origenNumero:
+          type: string
+        origenColonia:
+          type: string
+        origenCodigoPostal:
+          type: string
+        origenCiudad:
+          type: string
+        origenEstado:
+          type: string
+        noGuia:
+          type: string
+        costoDeEnvio:
+          type: number
+        idEstadoDeEnvio:
+          type: integer
+        idColaborador:
+          type: integer
+    EnvioResponse:
+      type: object
+      properties:
+        idEnvio:
+          type: integer
+        idCliente:
+          type: integer
+        cliente:
+          type: string
+        destino:
+          type: string
+        origen:
+          type: string
+        noGuia:
+          type: string
+        costoDeEnvio:
+          type: number
+        idEstadoDeEnvio:
+          type: integer
+        estadoDeEnvio:
+          type: string
+        idColaborador:
+          type: integer
+        colaborador:
+          type: string
+    Paquete:
+      type: object
+      properties:
+        idEnvio:
+          type: integer
+        descripcion:
+          type: string
+        peso:
+          type: number
+        alto:
+          type: number
+        ancho:
+          type: number
+        profundidad:
+          type: number
+    PaqueteResponse:
+      type: object
+      properties:
+        idPaquete:
+          type: integer
+        idEnvio:
+          type: integer
+        idCliente:
+          type: integer
+        cliente:
+          type: string
+        descripcion:
+          type: string
+        peso:
+          type: number
+        alto:
+          type: number
+        ancho:
+          type: number
+        profundidad:
+          type: number
+    HistorialDeEnvio:
+      type: object
+      properties:
+        idPaquete:
+          type: integer
+        idEnvio:
+          type: integer
+        idColaborador:
+          type: integer
+        motivo:
+          type: string
+        tiempoDeCambio:
+          type: string
+    HistorialDeEnvioResponse:
+      type: object
+      properties:
+        idHistorialDeEnvio:
+          type: integer
+        idPaquete:
+          type: integer
+        idEnvio:
+          type: integer
+        idColaborador:
+          type: integer
+        colaborador:
+          type: string
+        motivo:
+          type: string
+        tiempoDeCambio:
+          type: string
+    Mensaje:
+      type: object
+      properties:
+        error:
+          type: boolean
+        mensaje:
+          type: string
+    Rol:
+      type: object
+      properties:
+        idRol:
+          type: integer
+        nombre:
+          type: string
+    TipoUnidad:
+      type: object
+      properties:
+        idTipoUnidad:
+          type: integer
+        nombre:
+          type: string
+    EstadoUnidad:
+      type: object
+      properties:
+        idEstadoUnidad:
+          type: integer
+        nombre:
+          type: string
+    ConductoresAsignados:
+      type: object
+      properties:
+        idColaborador:
+          type: integer
+        idUnidad:
+          type: integer
+    ConductoresAsignadosResponse:
+      type: object
+      properties:
+        idConductoresAsignados:
+          type: integer
+        idColaborador:
+          type: integer
+        nombreColaborador:
+          type: string
+        marcaUnidad:
+          type: string
+    EstadoEnvio:
+      type: object
+      properties:
+        idEstadoEnvio:
+          type: integer
+        nombre:
+          type: string
+    HistorialDeBaja:
+      type: object
+      properties:
+        idUnidad:
+          type: integer
+        motivo:
+          type: string
+    HistorialDeBajaResponse:
+      type: object
+      properties:
+        idHistorialDeBaja:
+          type: integer
+        idUnidad:
+          type: integer
+        motivo:
+          type: string
+        nombreUnidad:
+          type: string
+paths:
+  /iniciar-sesion:
+    post:
+      tags:
+        - /login
+      summary: verificar credenciales
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                noPersonal:
+                  type: string
+                contrasena:
+                  type: string
+      responses:
+        '200':
+          description: credenciales del colaborador encontradas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+          
+  #COLABORADORES
+  /obtener-colaboradores:
+    get:
+      tags:
+        - /colaborador
+      responses:
+        '200':
+          description: lista de colaboradores en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-colaboradores-sin-asignar:
+    get:
+      tags:
+        - /colaborador
+      responses:
+        '200':
+          description: lista de colaboradores que no tienen una unidad asignada
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-colaboradores-nombre/{nombre}:
+    get:
+      tags:
+        - /colaborador
+      parameters:
+        - name: nombre
+          in: path
+          required: true
+          schema:
+            type: string
+          description: nombre de/los colaboraodres
+      responses:
+        '200':
+          description: lista de colaboradores con el mismos nombre
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-colaboradores-rol/{idRol}:
+    get:
+      tags:
+        - /colaborador
+      parameters:
+        - name: idRol
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del rol del colaborador
+      responses:
+        '200':
+          description: lista de colaboradore con el mismo rol
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-colaborador-noPersonal/{noPersonal}:
+    get:
+      tags:
+        - /colaborador
+      parameters:
+        - name: noPersonal
+          in: path
+          required: true
+          schema:
+            type: string
+          description: numeor personal del colaborador
+      responses:
+        '200':
+          description: colaborador que tiene ese numero personal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColaboradorResponse'
+        '404':
+          description: Colaborador no encontrado
+        '500':
+          description: Error en el servidor
+  /agregar-colaborador:
+    post:
+      tags:
+        - /colaborador
+      summary: agrega un nuevo colaborador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Colaborador'
+      responses:
+        '200':
+          description: colaborador agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-colaborador:
+    put:
+      tags:
+        - /colaborador
+      summary: edita un colaborador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ColaboradorResponse'
+              - type: object
+                properties:
+                  password:
+                    type: string
+                    description: La contraseña del colaborador
+      responses:
+        '200':
+          description: colaborador editado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-colaborador/{idColaborador}:
+    delete:
+      tags:
+        - /colaborador
+      parameters:
+        - name: idColaborador
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del colaborador
+      responses:
+        '200':
+          description: colaborador eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: Colaborador no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #ROLES
+  /obtener-roles:
+    get:
+      tags:
+        - /rol
+      responses:
+        '200':
+          description: lista de roles en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/Rol'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  #UNIDADES
+  /obtener-unidades:
+    get:
+      tags:
+        - /unidad
+      responses:
+        '200':
+          description: lista de unidades en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidades no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-unidades-disponibles:
+    get:
+      tags:
+        - /unidad
+      responses:
+        '200':
+          description: lista de unidades en el sistema que estan disponibles que no estan de baja
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidades no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-unidades-sin-asignar:
+    get:
+      tags:
+        - /unidad
+      responses:
+        '200':
+          description: lista de unidades en el sistema que no tienen un conductor
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidades no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-unidad-vin/{vin}:
+    get:
+      tags:
+        - /unidad
+      parameters:
+        - name: vin
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Número de Identificación Vehicular de la unidad
+      responses:
+        '200':
+          description: unidad en el sistema con el mismo vin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidad no encontrada
+        '500':
+          description: Error en el servidor
+  /obtener-unidades-marca/{marca}:
+    get:
+      tags:
+        - /unidad
+      parameters:
+        - name: marca
+          in: path
+          required: true
+          schema:
+            type: string
+          description: marca de la unidad
+      responses:
+        '200':
+          description: lista de unidades en el sistema con la misma marca
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidades no encontraddas
+        '500':
+          description: Error en el servidor
+  /obtener-unidad-nii/{nii}:
+    get:
+      tags:
+        - /unidad
+      parameters:
+        - name: nii
+          in: path
+          required: true
+          schema:
+            type: string
+          description: número de identificación interno de la unidad
+      responses:
+        '200':
+          description: unidad en el sistema con el mismo nii
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadResponse'
+        '404':
+          description: Unidades no encontraddas
+        '500':
+          description: Error en el servidor
+  /agregar-unidad:
+    post:
+      tags:
+        - /unidad
+      summary: agrega una nueva Unidad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unidad'
+      responses:
+        '200':
+          description: Unidad agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-unidad:
+    put:
+      tags:
+        - /unidad
+      summary: agrega una nueva Unidad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnidadResponse'
+      responses:
+        '200':
+          description: Unidad editada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-unidad/{idUnidad}:
+    delete:
+      tags:
+        - /unidad
+      parameters:
+        - name: idUnidad
+          in: path
+          required: true
+          schema:
+            type: integer
+          description:  id de la unidad
+      responses:
+        '200':
+          description: Unidad eliminada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: Colaborador no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+                
+  #TIPO DE UNIDAD
+  /obtener-tipos-unidad:
+    get:
+      tags:
+        - /tipo-unidad
+      responses:
+        '200':
+          description: lista de los tipos de unidad en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/TipoUnidad'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  #ESTADO DE UNIDAD
+  /obtener-estados-unidades:
+    get:
+      tags:
+        - /estado-unidad
+      responses:
+        '200':
+          description: lista del estado de unidad en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/EstadoUnidad'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  #CLIENTE
+  /obtener-clientes:
+    get:
+      tags:
+        - /cliente
+      responses:
+        '200':
+          description: lista de los clientes en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ClienteResponse'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-clientes-nombre/{nombre}:
+    get:
+      tags:
+        - /cliente
+      parameters:
+        - name: nombre
+          in: path
+          required: true
+          schema:
+            type: string
+          description: nombre de/los clientes
+      responses:
+        '200':
+          description: lista de los clientes por el nombre en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ClienteResponse'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-cliente-numero-telefono/{telefono}:
+    get:
+      tags:
+        - /cliente
+      parameters:
+        - name: telefono
+          in: path
+          required: true
+          schema:
+            type: string
+          description: telefono del cliente
+      responses:
+        '200':
+          description: lista de los clientes por el telefono en el sistema
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ClienteResponse'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  /obtener-cliente-correo/{correo}:
+    get:
+      tags:
+        - /cliente
+      parameters:
+        - name: correo
+          in: path
+          required: true
+          schema:
+            type: string
+          description: telefono del cliente
+      responses:
+        '200':
+          description: clente con el mismo correo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponse'
+        '404':
+          description: Roles no encontrados
+        '500':
+          description: Error en el servidor
+  /agregar-cliente:
+    post:
+      tags:
+        - /cliente
+      summary: agrega un nuevo cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+      responses:
+        '200':
+          description: Cliente agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-cliente:
+    put:
+      tags:
+        - /cliente
+      summary: editar un nuevo cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteResponse'
+      responses:
+        '200':
+          description: Cliente Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-cliente/{idCliente}:
+    delete:
+      tags:
+        - /cliente
+      parameters:
+        - name: idCliente
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del cliente
+      responses:
+        '200':
+          description: cliente eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: Colaborador no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #CONDUCTORES ASIGNADOS
+  /obtener-asignaciones:
+    get:
+      tags:
+        - /conductores-asignados
+      responses:
+        '200':
+          description: lista de los conductores que tienen una unidad
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/ConductoresAsignadosResponse'
+        '404':
+          description: asignaciones no encontrados
+        '500':
+          description: Error en el servidor
+  /agregar-asignacion:
+    post:
+      tags:
+        - /conductores-asignados
+      summary: agrega una nueva asignación 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConductoresAsignados'
+      responses:
+        '200':
+          description: Asignación agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-asignacion:
+    put:
+      tags:
+        - /conductores-asignados
+      summary: editar una asignación 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConductoresAsignadosResponse'
+      responses:
+        '200':
+          description: Cliente Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar- asignacion/{idConductoresAsignados}:
+    delete:
+      tags:
+        - /conductores-asignados
+      parameters:
+        - name: idConductoresAsignados
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id de la asignacion
+      responses:
+        '200':
+          description: cliente eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: Colaborador no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #ENVIO
+  /obtener-envios:
+    get:
+      tags:
+        - /envio
+      responses:
+        '200':
+          description: lista de los envios que tienen una unidad
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/EnvioResponse'
+        '404':
+          description: envios no encontrados
+        '500':
+          description: Error en el servidor
+  /agregar-envio:
+    post:
+      tags:
+        - /envio
+      summary: agrega una nuevo envio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Envio'
+      responses:
+        '200':
+          description: Envio agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-envio:
+    put:
+      tags:
+        - /envio
+      summary: editar un envio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvioResponse'
+      responses:
+        '200':
+          description: envio Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-envio/{idEnvio}:
+    delete:
+      tags:
+        - /envio
+      parameters:
+        - name: idEnvio
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del envio
+      responses:
+        '200':
+          description: envio eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: envio no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #ESTADOS DEL ENVIO
+  /obtener-estados-envios:
+    get:
+      tags:
+        - /estado-envio
+      responses:
+        '200':
+          description: lista de los estados de un envio 
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                $ref: '#/components/schemas/EstadoEnvio'
+        '404':
+          description: estados no encontrados
+        '500':
+          description: Error en el servidor
+  #PAQUETE
+  /obtener-paquete-numero-envio/{idEnvio}:
+    get:
+      tags:
+        - /paquete
+      parameters:
+        - name: idEnvio
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del envio del paquete
+      responses:
+        '200':
+          description: paquete con el mismo id de envio
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaqueteResponse'
+        '404':
+          description: paquete no encontrado
+        '500':
+          description: Error en el servidor
+  /agregar-paquete:
+    post:
+      tags:
+        - /paquete
+      summary: agrega una nuevo paquete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paquete'
+      responses:
+        '200':
+          description: Paquete agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-paquete:
+    put:
+      tags:
+        - /paquete
+      summary: editar un paquete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaqueteResponse'
+      responses:
+        '200':
+          description: paquete Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-paquete/{idPaquete}:
+    delete:
+      tags:
+        - /paquete
+      parameters:
+        - name: idPaquete
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del paquete
+      responses:
+        '200':
+          description: paquete eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: paquete no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #HISTORIAL DE ENVIO
+  /obtener-historiales:
+    get:
+      tags:
+        - /historial-envio
+      responses:
+        '200':
+          description: historial de envio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistorialDeEnvioResponse'
+        '404':
+          description: historial no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-historial/{noGuia}:
+    get:
+      tags:
+        - /historial-envio
+      parameters:
+        - name: noGuia
+          in: path
+          required: true
+          schema:
+            type: string
+          description: numero guia del envio
+      responses:
+        '200':
+          description: historial de envio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistorialDeEnvioResponse'
+        '404':
+          description: historial no encontrado
+        '500':
+          description: Error en el servidor
+  /agregar-historial:
+    post:
+      tags:
+        - /historial-envio
+      summary: agrega una nuevo historial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistorialDeEnvio'
+      responses:
+        '200':
+          description: historial agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-historial:
+    put:
+      tags:
+        - /historial-envio
+      summary: editar un historial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistorialDeEnvioResponse'
+      responses:
+        '200':
+          description: hsitorial Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-historial/{idHistorialDeEnvio}:
+    delete:
+      tags:
+        - /historial-envio
+      parameters:
+        - name: idHistorialDeEnvio
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del historial de envio
+      responses:
+        '200':
+          description: paquete eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: paquete no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  #HISTORIAL DE BAJAS
+  /obtener-historiales-baja/:
+    get:
+      tags:
+        - /historial-bajas
+      responses:
+        '200':
+          description: historial de bajas de una unidad
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistorialDeBajaResponse'
+        '404':
+          description: historial no encontrado
+        '500':
+          description: Error en el servidor
+  /obtener-historial-baja/{idUnidad}:
+    get:
+      tags:
+        - /historial-bajas
+      parameters:
+        - name: idUnidad
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: numero guia del envio
+      responses:
+        '200':
+          description: historial de bajas de una unudad por el id de la unidad
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistorialDeBajaResponse'
+        '404':
+          description: historial no encontrado
+        '500':
+          description: Error en el servidor
+  /agregar-historial-baja:
+    post:
+      tags:
+        - /historial-bajas
+      summary: agrega una nuevo historial de bajas de una unidad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistorialDeBaja'
+      responses:
+        '200':
+          description: historial agregado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /editar-historial-baja:
+    put:
+      tags:
+        - /historial-bajas
+      summary: editar un historial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistorialDeBajaResponse'
+      responses:
+        '200':
+          description: hsitorial Editado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: badRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+  /eliminar-historial-baja/{idHistorialDeBaja}:
+    delete:
+      tags:
+        - /historial-bajas
+      parameters:
+        - name: idHistorialDeBaja
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: id del historial de bajas
+      responses:
+        '200':
+          description: paquete eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '404':
+          description: historial no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensaje'
