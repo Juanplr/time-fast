@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="API_time-fast" default="default" basedir=".">
-    <description>Builds, tests, and runs the project API_time-fast.</description>
+<project name="APITimeFast" default="default" basedir=".">
+    <description>Builds, tests, and runs the project APITimeFast.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 
