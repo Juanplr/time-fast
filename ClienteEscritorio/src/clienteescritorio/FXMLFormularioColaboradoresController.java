@@ -70,5 +70,9 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     @FXML
     private void onClickGuardar(ActionEvent event) {
     }
+
+    @FXML
+    private void irCerrarSesion(MouseEvent event) {
+    }
     
 }

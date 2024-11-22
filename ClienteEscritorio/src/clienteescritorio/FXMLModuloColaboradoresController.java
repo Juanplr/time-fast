@@ -57,5 +57,25 @@ public class FXMLModuloColaboradoresController implements Initializable {
     private void regresarPrincipal(MouseEvent event) {
         irPantallaPrincipal();
     }
+
+    @FXML
+    private void irCerrarSesion(MouseEvent event) {
+    }
+
+    @FXML
+    private void irBuscar(MouseEvent event) {
+    }
+
+    @FXML
+    private void irRegistrarColaboradors(MouseEvent event) {
+    }
+
+    @FXML
+    private void irEliminarColaborador(MouseEvent event) {
+    }
+
+    @FXML
+    private void irEditarColaborador(MouseEvent event) {
+    }
     
 }

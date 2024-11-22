@@ -22,17 +22,17 @@
                   </Label>
                   <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="175.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/caja.png" />
+                        <Image url="@recursos/caja.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="imgCerrarSesion" fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/cerrarUsuario.png" />
+                        <Image url="@recursos/cerrarUsuario.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="imgRegresar" fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/atrasEscritorio.png" />
+                        <Image url="@recursos/atrasEscritorio.png" />
                      </image>
                   </ImageView>
                </children>

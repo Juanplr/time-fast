@@ -21,7 +21,7 @@
             </Label>
             <ImageView fitHeight="71.0" fitWidth="69.0" layoutX="137.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/caja.png" />
+                  <Image url="@recursos/caja.png" />
                </image>
             </ImageView>
             <Label layoutX="108.0" layoutY="127.0" text="Numero Personal:" />

@@ -59,5 +59,9 @@ public class FXMLFormularioPaquetesController implements Initializable {
     @FXML
     private void onClickGuardar(MouseEvent event) {
     }
+
+    @FXML
+    private void irCerrarSesion(MouseEvent event) {
+    }
     
 }

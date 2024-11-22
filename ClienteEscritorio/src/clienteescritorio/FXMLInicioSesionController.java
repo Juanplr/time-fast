@@ -85,7 +85,7 @@ public class FXMLInicioSesionController implements Initializable {
     @FXML
     private void iniciarSesion(ActionEvent event) {
          String correo = tfNumeroPersonal.getText();
-        String contrasena = pfContrasenia.getText();
+         String contrasena = pfContrasenia.getText();
         
         if(validarCampos(correo, contrasena)){
             irPantallaPrincipal();

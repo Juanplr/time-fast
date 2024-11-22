@@ -25,8 +25,19 @@ import javafx.stage.Stage;
  */
 public class FXMLPrincipalController implements Initializable {
 
-    @FXML
     private ImageView irModuloColaboradores;
+    @FXML
+    private ImageView imgCerrarSesion;
+    @FXML
+    private ImageView moduloPaquetes;
+    @FXML
+    private ImageView moduloUnidades;
+    @FXML
+    private ImageView moduloClientes;
+    @FXML
+    private ImageView moduloColaboradores;
+    @FXML
+    private ImageView moduloEnvios;
 
 
     /**

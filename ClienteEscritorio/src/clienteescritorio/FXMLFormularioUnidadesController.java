@@ -20,7 +20,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author reyes
  */
-public class FXMLFormularioEnviosController implements Initializable {
+public class FXMLFormularioUnidadesController implements Initializable {
 
     @FXML
     private ImageView imgCerrarSesion;
@@ -29,27 +29,17 @@ public class FXMLFormularioEnviosController implements Initializable {
     @FXML
     private Button btnGuardar;
     @FXML
-    private TextField tfCalle;
+    private TextField tfMarca;
     @FXML
-    private TextField tfNumero;
+    private TextField tfModelo;
     @FXML
-    private TextField tfColonia;
+    private TextField tfNumeroIdentificacion;
     @FXML
-    private TextField tfCodigoPostal;
+    private TextField tfAño;
     @FXML
-    private TextField tfCliente;
+    private TextField tfTipoUnidad;
     @FXML
-    private TextField tfNumeroGuia;
-    @FXML
-    private TextField tfCiudad;
-    @FXML
-    private TextField tfEstado;
-    @FXML
-    private TextField tfCobductor;
-    @FXML
-    private TextField tfCostoEnvio;
-    @FXML
-    private TextField tfEstadoEnvio;
+    private TextField tfVin;
 
     /**
      * Initializes the controller class.
@@ -59,6 +49,9 @@ public class FXMLFormularioEnviosController implements Initializable {
         // TODO
     }    
 
+    @FXML
+    private void regresarPrincipal(MouseEvent event) {
+    }
 
 
     @FXML
@@ -66,11 +59,7 @@ public class FXMLFormularioEnviosController implements Initializable {
     }
 
     @FXML
-    private void irCerrarSesion(MouseEvent event) {
+    private void onClickGuardar(MouseEvent event) {
     }
 
-    @FXML
-    private void irPantallaPrincipal(MouseEvent event) {
-    }
-    
 }

@@ -45,5 +45,13 @@ public class FXMLModuloClientesController {
     @FXML
     private void irEditarCliente(MouseEvent event) {
     }
+
+    @FXML
+    private void irCerrarSesion(MouseEvent event) {
+    }
+
+    @FXML
+    private void irBuscar(MouseEvent event) {
+    }
     
 }

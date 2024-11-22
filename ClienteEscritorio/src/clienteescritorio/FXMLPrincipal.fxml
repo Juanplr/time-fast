@@ -20,39 +20,39 @@
                   </Label>
                   <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="176.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/caja.png" />
+                        <Image url="@recursos/caja.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgCerrarSesion" fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/cerrarUsuario.png" />
+                        <Image url="@recursos/cerrarUsuario.png" />
                      </image>
                   </ImageView>
                </children>
             </Pane>
-            <ImageView fitHeight="86.0" fitWidth="71.0" layoutX="363.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloPaquetes" fitHeight="86.0" fitWidth="71.0" layoutX="363.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/paqueteEscritorio.png" />
+                  <Image url="@recursos/paqueteEscritorio.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="94.0" fitWidth="86.0" layoutX="243.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloUnidades" fitHeight="94.0" fitWidth="86.0" layoutX="243.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/paqueteCamino.png" />
+                  <Image url="@recursos/paqueteCamino.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="71.0" fitWidth="86.0" layoutX="442.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloClientes" fitHeight="71.0" fitWidth="86.0" layoutX="442.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/clienteEscritorio.png" />
+                  <Image url="@recursos/clienteEscritorio.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="irModuloColaboradores" fitHeight="71.0" fitWidth="80.0" layoutX="68.0" layoutY="110.0" onMouseClicked="#irModuloColaboradores" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloColaboradores" fitHeight="71.0" fitWidth="80.0" layoutX="68.0" layoutY="110.0" onMouseClicked="#irModuloColaboradores" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/colaboradorEscritorio.png" />
+                  <Image url="@recursos/colaboradorEscritorio.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="86.0" fitWidth="86.0" layoutX="155.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloEnvios" fitHeight="86.0" fitWidth="86.0" layoutX="155.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/enviosEscritorio.png" />
+                  <Image url="@recursos/enviosEscritorio.png" />
                </image>
             </ImageView>
             <Label layoutX="81.0" layoutY="186.0" text="Modulo">

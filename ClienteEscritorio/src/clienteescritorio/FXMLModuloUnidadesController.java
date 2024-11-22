@@ -29,8 +29,6 @@ public class FXMLModuloUnidadesController implements Initializable {
     private ImageView imgEditarUnidad;
     @FXML
     private ImageView img;
-    @FXML
-    private ImageView img1;
 
     /**
      * Initializes the controller class.
@@ -42,6 +40,22 @@ public class FXMLModuloUnidadesController implements Initializable {
 
     @FXML
     private void regresarPrincipal(MouseEvent event) {
+    }
+
+    @FXML
+    private void irCerrarSesion(MouseEvent event) {
+    }
+
+    @FXML
+    private void irRegistrarUnidad(MouseEvent event) {
+    }
+
+    @FXML
+    private void irEditarUnidad(MouseEvent event) {
+    }
+
+    @FXML
+    private void irEliminarUnidad(MouseEvent event) {
     }
     
 }
