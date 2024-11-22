@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -25,7 +26,6 @@ import javafx.stage.Stage;
  */
 public class FXMLPrincipalController implements Initializable {
 
-    private ImageView irModuloColaboradores;
     @FXML
     private ImageView imgCerrarSesion;
     @FXML
@@ -51,7 +51,7 @@ public class FXMLPrincipalController implements Initializable {
     
     private void moduloColaboradores(){
         try {
-            Stage escenarioBase = (Stage) irModuloColaboradores.getScene().getWindow();
+            Stage escenarioBase = (Stage) moduloColaboradores.getScene().getWindow();
                     
             Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloColaboradores.fxml"));
             Scene escenaPrincipal = new Scene(principal);
@@ -60,13 +60,92 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.show();
         } catch (IOException ex) {
             // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
-            Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Colaboradores :(", Alert.AlertType.ERROR);
         }
     }
+    
+    private void moduloUnidades(){
+        try{
+            Stage escenarioBase = (Stage) moduloUnidades.getScene().getWindow();
+            
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloUnidades.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Unidades");
+            escenarioBase.show();
+        }catch(Exception e){
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Unidades", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void moduloClientes(){
+        try{
+            Stage escenarioBase = (Stage) moduloClientes.getScene().getWindow();
+            
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloClientes.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Clientes");
+            escenarioBase.show();
+        }catch(Exception e){
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Clientes", Alert.AlertType.ERROR);
+        }
+    }
+    
+    
+    private void moduloEnvios(){
+        try{
+            Stage escenarioBase = (Stage) moduloUnidades.getScene().getWindow();
+            
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloEnvios.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Envios");
+            escenarioBase.show();
+        }catch(Exception e){
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Envios", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void moduloPaquetes(){
+        try{
+            Stage escenarioBase = (Stage) moduloUnidades.getScene().getWindow();
+            
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloPaquetes.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Paquetes");
+            escenarioBase.show();
+        }catch(Exception e){
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Paquetes", Alert.AlertType.ERROR);
+        }
+    }
+    
+    
     
     @FXML
     private void irModuloColaboradores() {
         moduloColaboradores();
+    }
+
+    @FXML
+    private void irModuloPaquetes(MouseEvent event) {
+        moduloPaquetes();
+    }
+
+    @FXML
+    private void irModuloUnidades(MouseEvent event) {
+        moduloUnidades();
+    }
+
+    @FXML
+    private void irModuloClientes(MouseEvent event) {
+        moduloClientes();
+    }
+
+    @FXML
+    private void irModuloEnvios(MouseEvent event) {
+        moduloEnvios();
     }
 
 }

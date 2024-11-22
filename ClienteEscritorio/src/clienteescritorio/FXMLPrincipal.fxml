@@ -30,17 +30,17 @@
                   </ImageView>
                </children>
             </Pane>
-            <ImageView fx:id="moduloPaquetes" fitHeight="86.0" fitWidth="71.0" layoutX="363.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloPaquetes" fitHeight="86.0" fitWidth="71.0" layoutX="363.0" layoutY="240.0" onMouseClicked="#irModuloPaquetes" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@recursos/paqueteEscritorio.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="moduloUnidades" fitHeight="94.0" fitWidth="86.0" layoutX="243.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloUnidades" fitHeight="94.0" fitWidth="86.0" layoutX="243.0" layoutY="95.0" onMouseClicked="#irModuloUnidades" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@recursos/paqueteCamino.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="moduloClientes" fitHeight="71.0" fitWidth="86.0" layoutX="442.0" layoutY="103.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloClientes" fitHeight="71.0" fitWidth="86.0" layoutX="442.0" layoutY="103.0" onMouseClicked="#irModuloClientes" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@recursos/clienteEscritorio.png" />
                </image>
@@ -50,7 +50,7 @@
                   <Image url="@recursos/colaboradorEscritorio.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="moduloEnvios" fitHeight="86.0" fitWidth="86.0" layoutX="155.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="moduloEnvios" fitHeight="86.0" fitWidth="86.0" layoutX="155.0" layoutY="232.0" onMouseClicked="#irModuloEnvios" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@recursos/enviosEscritorio.png" />
                </image>
