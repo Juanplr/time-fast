@@ -29,7 +29,7 @@ public class ImpLogin {
                 
             }catch(Exception e){
                 respuesta.setError(true);
-                respuesta.setMensaje(e.getMessage());
+                respuesta.setMensaje("Problemas con el servidor.");
             }
         }else{
             respuesta.setError(true);
