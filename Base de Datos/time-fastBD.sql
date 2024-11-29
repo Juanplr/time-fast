@@ -33,6 +33,11 @@ CREATE TABLE tipoUnidad(
     nombre VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE estadoUnidad(
+	idEstadoUnidad INTEGER AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE unidad(
     idUnidad INTEGER AUTO_INCREMENT PRIMARY KEY,
     marca VARCHAR(50) NOT NULL,
@@ -41,7 +46,9 @@ CREATE TABLE unidad(
     vin CHAR(17) UNIQUE NOT NULL,
     idTipoUnidad INTEGER NOT NULL,
     nii VARCHAR(8) NOT NULL,
-    FOREIGN KEY (idTipoUnidad) REFERENCES tipoUnidad(idTipoUnidad)
+    idEstadoUnidad INTEGER,
+    FOREIGN KEY (idTipoUnidad) REFERENCES tipoUnidad(idTipoUnidad),
+	FOREIGN KEY (idEstadoUnidad) REFERENCES estadoUnidad(idEstadoUnidad)
 );
 
 CREATE TABLE cliente(
@@ -121,6 +128,70 @@ CREATE TABLE conductoresAsignados(
     FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad),
     UNIQUE (idColaborador, idUnidad)
 );
+
+-- Datos para la tabla rol
+INSERT INTO rol (nombre) VALUES 
+('Administrador'), 
+('Ejecutivo de tienda'), 
+('Conductor');
+
+-- Datos para la tabla colaborador
+INSERT INTO colaborador (nombre, apellidoPaterno, apellidoMaterno, curp, correo, noPersonal, contrasena, idRol, fotografia, numeroDeLicencia) VALUES 
+('Juan', 'Perez', 'Lopez', 'JUAP900101HDFRRN01', 'juan.perez@example.com', 'EMP123', 'password123', 1, NULL, 'LIC12345'),
+('Maria', 'Gomez', 'Hernandez', 'MARG800202HDFRRN02', 'maria.gomez@example.com', 'EMP124', 'password124', 2, NULL, 'LIC54321');
+
+-- Datos para la tabla tipoUnidad
+INSERT INTO tipoUnidad (nombre) VALUES 
+('Gasolina'),
+('Diesel'),
+('Eléctrica'),
+('Hibrida');
+
+-- Datos para la tabla estadoUnidad
+INSERT INTO estadoUnidad (nombre) VALUES 
+('Disponible'),
+('En mantenimiento');
+
+-- Datos para la tabla unidad
+INSERT INTO unidad (marca, modelo, anio, vin, idTipoUnidad, nii, idEstadoUnidad) VALUES 
+('Ford', 'F150', 2022, '1FTFW1E50LFA12345', 1, 'NII12345', 1),
+('Chevrolet', 'Silverado', 2023, '3GCUYDED3MG123456', 1, 'NII54321', 2);
+
+-- Datos para la tabla cliente
+INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo) VALUES 
+('Carlos', 'Ramirez', 'Torres', 'Calle 1', '123', 'Colonia Centro', '12345', 'Ciudad 1', 'Estado 1', '5551234567', 'carlos.ramirez@example.com'),
+('Ana', 'Lopez', 'Martinez', 'Calle 2', '456', 'Colonia Norte', '67890', 'Ciudad 2', 'Estado 2', '5559876543', 'ana.lopez@example.com');
+
+-- Datos para la tabla estadoDeEnvio
+INSERT INTO estadoDeEnvio (nombre) VALUES 
+('Pendiente'),
+('En tránsito'),
+('Entregado');
+
+-- Datos para la tabla envio
+INSERT INTO envio (idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, origenCiudad, origenEstado, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador) VALUES 
+(1, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1),
+(2, 'Calle B', '202', 'Colonia B', '12345', 'Ciudad B', 'Estado B', 'GUIA002', 200.00, 2, 2);
+
+-- Datos para la tabla paquete
+INSERT INTO paquete (idEnvio, descripcion, peso, alto, ancho, profundidad) VALUES 
+(1, 'Paquete pequeño', 2.5, 30, 20, 15),
+(2, 'Paquete mediano', 5.0, 50, 40, 30);
+
+-- Datos para la tabla historialDeEnvio
+INSERT INTO historialDeEnvio (idPaquete, idEnvio, idColaborador, motivo, tiempoDeCambio) VALUES 
+(1, 1, 1, 'Asignación inicial', '2024-11-01'),
+(2, 2, 2, 'En tránsito', '2024-11-02');
+
+-- Datos para la tabla historialDeBaja
+INSERT INTO historialDeBaja (idUnidad, motivo) VALUES 
+(2, 'Falla mecánica');
+
+-- Datos para la tabla conductoresAsignados
+INSERT INTO conductoresAsignados (idColaborador, idUnidad) VALUES 
+(1, 1),
+(2, 2);
+
 
 
 
