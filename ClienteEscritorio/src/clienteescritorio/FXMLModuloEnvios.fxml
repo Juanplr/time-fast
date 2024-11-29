@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLModuloEnviosController">
+    <children>
+      <Pane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Pane prefHeight="59.0" prefWidth="600.0" style="-fx-background-color: #c6c5c5;">
+               <children>
+                  <Label layoutX="232.0" layoutY="-6.0" prefHeight="71.0" prefWidth="228.0" text="Time-Fast">
+                     <font>
+                        <Font name="Tw Cen MT Condensed Extra Bold" size="45.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="175.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@recursos/caja.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgCerrarSesion" fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" onMouseClicked="#imgCerrarSesion" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@recursos/cerrarUsuario.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgRegresar" fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@recursos/atrasEscritorio.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <TextField fx:id="ftBuscar" layoutX="24.0" layoutY="101.0" opacity="0.72" prefHeight="25.0" prefWidth="172.0" style="-fx-background-color: #c6c5c5;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TextField>
+            <ImageView fx:id="imgBuscar" fitHeight="24.0" fitWidth="17.0" layoutX="203.0" layoutY="105.0" onMouseClicked="#irBuscar" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/buscarEscritorio.png" />
+               </image>
+            </ImageView>
+            <TableView layoutX="23.0" layoutY="162.0" prefHeight="214.0" prefWidth="554.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+            <ImageView fx:id="imgRegistrarEnvio" fitHeight="71.0" fitWidth="83.0" layoutX="255.0" layoutY="78.0" onMouseClicked="#irRegistrarEnvio" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/enviosEscritorio.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgEliminarEnvio" fitHeight="71.0" fitWidth="83.0" layoutX="491.0" layoutY="78.0" onMouseClicked="#irEliminarEnvio" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/enviosEscritorio.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgEditarEnvio" fitHeight="71.0" fitWidth="83.0" layoutX="376.0" layoutY="78.0" onMouseClicked="#irEditarEnvio" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/enviosEscritorio.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="25.0" fitWidth="24.0" layoutX="302.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/sumaaEscritorio.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="25.0" fitWidth="24.0" layoutX="544.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/restaEscritorio.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="25.0" fitWidth="24.0" layoutX="423.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/lapizEscritorio.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
