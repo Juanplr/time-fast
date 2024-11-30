@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="colaborador">
+
+    <select id="getColaboradores" resultType="pojo.Colaborador">
+    SELECT colaborador.idColaborador, colaborador.nombre, colaborador.apellidoPaterno, colaborador.apellidoMaterno, 
+           colaborador.curp, colaborador.correo, colaborador.noPersonal, colaborador.idRol, 
+           rol.nombre AS rol, colaborador.numeroDeLicencia, colaborador.fotografia
+    FROM colaborador
+    INNER JOIN rol ON rol.idRol = colaborador.idRol;
+    </select>
+    
+    <select id="getColaboradoresPorNombre" resultType="pojo.Colaborador">
+    SELECT idColaborador, colaborador.nombre, apellidoPaterno, apellidoMaterno, curp, correo, 
+           noPersonal, contrasena, colaborador.idRol, rol.nombre AS rol, numeroDeLicencia
+    FROM colaborador
+    INNER JOIN rol ON rol.idRol = colaborador.idRol
+    WHERE colaborador.nombre LIKE CONCAT('%', #{nombre}, '%');
+    </select>
+    
+    <select id="getColaboradoresPorRol" resultType="pojo.Colaborador">
+    SELECT idColaborador, colaborador.nombre, apellidoPaterno, apellidoMaterno, curp, correo, 
+           noPersonal, contrasena, colaborador.idRol, rol.nombre AS rol, numeroDeLicencia
+    FROM colaborador
+    INNER JOIN rol ON rol.idRol = colaborador.idRol
+    WHERE colaborador.idRol = #{idRol};
+    </select>
+ 
+   <select id="getColaboradorPorNoPersonal" resultType="pojo.Colaborador">
+    SELECT 
+        colaborador.idColaborador,
+        colaborador.nombre,
+        colaborador.apellidoPaterno,
+        colaborador.apellidoMaterno,
+        colaborador.curp,
+        colaborador.correo,
+        colaborador.noPersonal,
+        colaborador.idRol,
+        rol.nombre AS rol,
+        colaborador.numeroDeLicencia,
+        colaborador.fotografia
+    FROM colaborador
+    INNER JOIN rol ON rol.idRol = colaborador.idRol
+    WHERE colaborador.noPersonal = #{noPersonal};
+</select>
+
+
+
+   
+    <insert id="registrar" parameterType="pojo.Colaborador">
+    INSERT INTO colaborador (
+        nombre, 
+        apellidoPaterno, 
+        apellidoMaterno, 
+        curp, 
+        correo, 
+        noPersonal, 
+        contrasena,  <!-- Asegúrate de que esté usando 'contrasena' -->
+        idRol,
+        numeroDeLicencia,
+        fotografia
+    ) VALUES (
+        #{nombre},
+        #{apellidoPaterno},
+        #{apellidoMaterno},
+        #{curp},
+        #{correo},
+        #{noPersonal},
+        #{contrasena},  <!-- Asegúrate de que esté usando 'contrasena' -->
+        #{idRol},
+        #{numeroDeLicencia},
+        #{fotografia}
+    );
+</insert>
+
+
+    <update id="editar" parameterType="pojo.Colaborador">
+    UPDATE colaborador
+    SET 
+        nombre = #{nombre},
+        apellidoPaterno = #{apellidoPaterno},
+        apellidoMaterno = #{apellidoMaterno},
+        curp = #{curp},
+        correo = #{correo},
+        idRol = #{idRol},
+        numeroDeLicencia = #{numeroDeLicencia},
+        contrasena = #{contrasena}  
+    WHERE noPersonal = #{noPersonal};
+    </update>
+
+
+    <delete id="eliminar" parameterType="java.lang.Integer">
+    DELETE FROM colaborador
+    WHERE idColaborador = #{idColaborador};
+</delete>
+
+
+</mapper>
