@@ -5,6 +5,7 @@
  */
 package ws;
 
+import Utilidades.Utilidades;
 import com.google.gson.Gson;
 import dominio.ImpCliente;
 import dominio.ImpRol;
@@ -59,7 +60,10 @@ public class WSUnidad {
      @GET
      @Produces(MediaType.APPLICATION_JSON)
      public List<Unidad> getUnidadPorVin(@PathParam("vin") String vin){
-         return ImpUnidad.obtenerUnidadPorVin(vin);
+         if(!vin.isEmpty()&& Utilidades.validarInyecciónSQL(vin)){
+                      return ImpUnidad.obtenerUnidadPorVin(vin);
+         }
+         throw new BadRequestException();
      }
      
     // Obtener unidades por marca
@@ -67,7 +71,10 @@ public class WSUnidad {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Unidad getUnidadesPorMarca(@PathParam("marca") String marca) {
-        return ImpUnidad.obtenerUnidadesPorMarca(marca);
+        if(marca.isEmpty() && Utilidades.validarInyecciónSQL(marca)){
+            return ImpUnidad.obtenerUnidadesPorMarca(marca);
+        }
+        throw new BadRequestException();
     }
 
     
@@ -76,7 +83,10 @@ public class WSUnidad {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Unidad> getUnidadesPorNii(@PathParam("nii") String nii) {
-       return ImpUnidad.obtenerUnidadesPorNii(nii);
+        if(!nii.isEmpty()&&Utilidades.validarInyecciónSQL(nii)){
+            return ImpUnidad.obtenerUnidadesPorNii(nii);
+        }
+        throw new BadRequestException();
     }
 
     
@@ -116,8 +126,11 @@ public class WSUnidad {
     @Path("eliminar-unidad/{idUnidad}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminarUnidad(@PathParam("idUnidad") int idUnidad) {
-        return ImpUnidad.eliminarUnidad(idUnidad);
+    public Mensaje eliminarUnidad(@PathParam("idUnidad") Integer idUnidad) {
+        if(idUnidad != null&& idUnidad > 0){
+            return ImpUnidad.eliminarUnidad(idUnidad);
+        }
+        throw new BadRequestException();
     }
      
     

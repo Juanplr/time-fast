@@ -1,6 +1,5 @@
 package pojo;
 
-
 public class Mensaje {
     private boolean error;
     private String mensaje;
@@ -12,11 +11,11 @@ public class Mensaje {
         this.body = body;
     }
 
-    public Mensaje() {
+    public void setError(boolean error) {
+        this.error = error;
     }
-
-    public boolean isError() {
-        return error;
+    
+    public Mensaje() {
     }
 
     public String getMensaje() {
@@ -27,10 +26,6 @@ public class Mensaje {
         return body;
     }
 
-    public void setError(boolean error) {
-        this.error = error;
-    }
-
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
@@ -38,5 +33,8 @@ public class Mensaje {
     public void setBody(Object body) {
         this.body = body;
     }
-    
+
+    public boolean isError() {
+        return error;
+    }
 }
