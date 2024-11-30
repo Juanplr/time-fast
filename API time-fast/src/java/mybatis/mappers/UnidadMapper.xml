@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="unidad">
+    
+    <!-- Obtener unidades -->
+    <select id="obtenerUnidades" resultType="pojo.Unidad">        
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad;
+    </select>
+        
+    <!-- Obtener unidades disponibles -->
+    <select id="obtenerUnidadesDisponibles" resultType="pojo.Unidad">
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        WHERE e.nombre = 'Disponible';  
+    </select>
+    
+    <select id="obtenerUnidadesSinAsignar" resultType="pojo.Unidad">
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        LEFT JOIN conductoresAsignados ca ON u.idUnidad = ca.idUnidad
+        WHERE ca.idUnidad IS NULL; 
+    </select>
+    
+    <select id="obtenerUnidadesPorVin" resultType="pojo.Unidad">
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        WHERE u.vin = #{vin};
+    </select>
+        
+    <select id="obtenerUnidadesPorMarca" resultType="pojo.Unidad" parameterType="string">
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        WHERE u.marca = #{marca};
+    </select>
+    
+    <select id="obtenerUnidadesPorNii" resultType="pojo.Unidad">
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        WHERE u.nii = #{nii};
+    </select>
+    
+    <insert id="agregarUnidad" parameterType="pojo.Unidad">
+        INSERT INTO unidad (marca, modelo, anio, vin, idTipoUnidad, nii, idEstadoUnidad)
+        VALUES (#{marca}, #{modelo}, #{anio}, #{vin}, #{idTipoUnidad}, #{nii}, #{idEstadoUnidad});
+    </insert>
+    
+    
+    <update id="editarUnidad" parameterType="pojo.Unidad">
+        UPDATE unidad
+        SET marca=#{marca},
+            modelo = #{modelo},
+            anio = #{anio},
+            vin = #{vin},
+            idTipoUnidad = #{idTipoUnidad},
+            nii = #{nii},
+            idEstadoUnidad = #{idEstadoUnidad}
+        WHERE idUnidad = #{idUnidad};
+    </update>
+    
+    
+    <delete id="eliminarUnidad" parameterType="int">
+        DELETE FROM unidad
+        WHERE idUnidad = #{idUnidad};
+    </delete>
+
+</mapper>

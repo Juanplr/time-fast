@@ -5,7 +5,7 @@ public class Unidad {
     
     private Integer idUnidad;
     private String marca;
-    private String modleo;
+    private String modelo;
     private String anio;
     private String vin;
     private String nii;
@@ -17,10 +17,10 @@ public class Unidad {
     public Unidad() {
     }
 
-    public Unidad(Integer idUnidad, String marca, String modleo, String anio, String vin, String nii, Integer idTipoUnidad, Integer idEstadoUnidad, String tipoUnidad, String estadoUnidad) {
+    public Unidad(Integer idUnidad, String marca, String modelo, String anio, String vin, String nii, Integer idTipoUnidad, Integer idEstadoUnidad, String tipoUnidad, String estadoUnidad) {
         this.idUnidad = idUnidad;
         this.marca = marca;
-        this.modleo = modleo;
+        this.modelo = modelo;
         this.anio = anio;
         this.vin = vin;
         this.nii = nii;
@@ -38,8 +38,8 @@ public class Unidad {
         return marca;
     }
 
-    public String getModleo() {
-        return modleo;
+    public String getModelo() {
+        return modelo;
     }
 
     public String getAnio() {
@@ -78,8 +78,8 @@ public class Unidad {
         this.marca = marca;
     }
 
-    public void setModleo(String modleo) {
-        this.modleo = modleo;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     public void setAnio(String anio) {
