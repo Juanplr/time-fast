@@ -82,12 +82,12 @@ public class WSColaborador {
     @Path("obtener-colaboradores-noPersonal/{noPersonal}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Colaborador obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
+    public List<Colaborador> obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
         if (noPersonal == null || noPersonal.trim().isEmpty()) {
             throw new BadRequestException("El número personal proporcionado es inválido.");
         }
         try {
-            Colaborador colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
+            List<Colaborador> colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
             if (colaborador != null) {
                 return colaborador;
             } else {
