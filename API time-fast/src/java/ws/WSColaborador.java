@@ -27,22 +27,13 @@ import pojo.Mensaje;
 @Path("colaboradores")
 public class WSColaborador {
 
-    @Context
-    private UriInfo context;
-
-    public WSColaborador() {
-    }
-
     @Path("obtener-colaboradores")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradores() {
+    public List<Colaborador> obtenerColaboradores() {
         List<Colaborador> listaColaboradores = ImpColaborador.obtenerColaboradores();
-        Gson gson = new Gson();
         if (listaColaboradores != null && !listaColaboradores.isEmpty()) {
-            // Convertir la lista a JSON antes de enviarla en la respuesta
-            String jsonResponse = gson.toJson(listaColaboradores);
-            return Response.ok(jsonResponse).build();
+            return listaColaboradores;
         } else {
             throw new NotFoundException("No se encontraron colaboradores.");
         }
@@ -51,14 +42,14 @@ public class WSColaborador {
     @Path("obtener-colaboradores-nombre/{nombre}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradoresPorNombre(@PathParam("nombre") String nombre) {
+    public List<Colaborador> obtenerColaboradoresPorNombre(@PathParam("nombre") String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new BadRequestException("El nombre proporcionado es inválido.");
+        }
         try {
             List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorNombre(nombre);
-            Gson gson = new Gson();
             if (colaboradores != null && !colaboradores.isEmpty()) {
-                // Convertir la lista de colaboradores a JSON
-                String jsonResponse = gson.toJson(colaboradores);
-                return Response.ok(jsonResponse).build();
+                return colaboradores;
             } else {
                 throw new NotFoundException("No se encontraron colaboradores con el nombre: " + nombre);
             }
@@ -71,14 +62,14 @@ public class WSColaborador {
     @Path("obtener-colaboradores-rol/{idRol}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradoresPorRol(@PathParam("idRol") int idRol) {
+    public List<Colaborador> obtenerColaboradoresPorRol(@PathParam("idRol") int idRol) {
+        if (idRol <= 0) {
+            throw new BadRequestException("El idRol debe ser mayor que 0.");
+        }
         try {
             List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorRol(idRol);
-            Gson gson = new Gson();
             if (colaboradores != null && !colaboradores.isEmpty()) {
-                // Convertir la lista de colaboradores a JSON
-                String jsonResponse = gson.toJson(colaboradores);
-                return Response.ok(jsonResponse).build();
+                return colaboradores;
             } else {
                 throw new NotFoundException("No se encontraron colaboradores con el rol ID: " + idRol);
             }
@@ -88,50 +79,37 @@ public class WSColaborador {
         }
     }
 
-@Path("obtener-colaboradores-noPersonal/{noPersonal}")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
-    if (noPersonal != null && !noPersonal.isEmpty()) {
+    @Path("obtener-colaboradores-noPersonal/{noPersonal}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Colaborador obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
+        if (noPersonal == null || noPersonal.trim().isEmpty()) {
+            throw new BadRequestException("El número personal proporcionado es inválido.");
+        }
         try {
-            System.out.println("Recibido noPersonal: " + noPersonal); 
             Colaborador colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
             if (colaborador != null) {
-                Gson gson = new Gson();
-                String jsonResponse = gson.toJson(colaborador);
-                System.out.println("Colaborador encontrado: " + jsonResponse); 
-                return Response.ok(jsonResponse).build();
+                return colaborador;
             } else {
                 throw new NotFoundException("No se encontró el colaborador con número personal: " + noPersonal);
             }
         } catch (Exception e) {
-            System.err.println("Error al procesar la solicitud: " + e.getMessage());
             e.printStackTrace();
             throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
         }
-    } else {
-        throw new BadRequestException("El número personal proporcionado es inválido.");
     }
-}
-
-
 
     @Path("agregar-colaborador")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registrarColaborador(String jsonColaborador) {
+    public Mensaje registrarColaborador(Colaborador colaborador) {
+        if (colaborador == null) {
+            throw new BadRequestException("Los datos del colaborador son inválidos o están vacíos.");
+        }
         try {
-            Gson gson = new Gson();
-            Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
             Mensaje mensaje = ImpColaborador.registrarColaborador(colaborador);
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.CREATED).entity(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
@@ -142,18 +120,13 @@ public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editarColaborador(String jsonColaborador) {
+    public Mensaje editarColaborador(Colaborador colaborador) {
+        if (colaborador == null) {
+            throw new BadRequestException("Los datos del colaborador son inválidos o están vacíos.");
+        }
         try {
-            Gson gson = new Gson();
-            Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
             Mensaje mensaje = ImpColaborador.editarColaborador(colaborador);
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.ok(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
@@ -163,17 +136,13 @@ public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String 
     @Path("eliminar-colaborador/{idColaborador}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarColaborador(@PathParam("idColaborador") int idColaborador) {
+    public Mensaje eliminarColaborador(@PathParam("idColaborador") int idColaborador) {
+        if (idColaborador <= 0) {
+            throw new BadRequestException("El idColaborador debe ser mayor que 0.");
+        }
         try {
             Mensaje mensaje = ImpColaborador.eliminarColaborador(idColaborador);
-            Gson gson = new Gson();
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.ok(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadRequestException("Error al intentar eliminar el colaborador: " + e.getMessage());
