@@ -95,7 +95,7 @@ public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String 
     if (noPersonal != null && !noPersonal.isEmpty()) {
         try {
             System.out.println("Recibido noPersonal: " + noPersonal); 
-            Colaborador colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
+            List<Colaborador> colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
             if (colaborador != null) {
                 Gson gson = new Gson();
                 String jsonResponse = gson.toJson(colaborador);
