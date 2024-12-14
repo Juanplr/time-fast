@@ -33,11 +33,6 @@
                         <Image url="@recursos/caja.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="43.0" fitWidth="34.0" layoutX="615.0" layoutY="13.0" onMouseClicked="#irCerrarSesion" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@recursos/cerrarUsuario.png" />
-                     </image>
-                  </ImageView>
                   <ImageView fx:id="imgRegresar" fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@recursos/atrasEscritorio.png" />

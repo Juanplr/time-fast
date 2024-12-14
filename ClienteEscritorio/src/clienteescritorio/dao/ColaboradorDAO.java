@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.util.Base64;
 import java.util.List;
 import pojo.Colaborador;
 import pojo.Mensaje;
@@ -148,4 +149,46 @@ public class ColaboradorDAO {
         
         return msj;
     }
+    public static Mensaje subirFoto(Integer idColaborador, byte[] foto) {
+        Mensaje msj = new Mensaje();
+        String url = Constantes.URL + "colaborador/subir-foto/" + idColaborador;
+        Gson gson = new Gson();
+        try {
+            // Realizar la petición PUT directamente con los bytes
+            RespuestaHTTP respuesta = ConexionWS.peticionPUTBINARIO(url, foto);
+
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            } else {
+                msj.setError(true);
+                msj.setMensaje(respuesta.getContenido());
+            }
+        } catch (Exception e) {
+            msj.setError(true);
+            msj.setMensaje(e.getMessage());
+        }
+
+        return msj;
+    }
+    public static byte[] obtenerFoto(Integer idColaborador) {
+        byte[] foto = null;
+        Colaborador colaborador = null;
+        String url = Constantes.URL + "colaborador/obtener-foto/" + idColaborador;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        Gson gson = new Gson();
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            try {
+                colaborador = gson.fromJson(respuesta.getContenido(), Colaborador.class);
+                String fotografia = colaborador.getFotografia();
+                if (fotografia != null) {
+                    fotografia = fotografia.replace("\n", "").replace("\r", "").trim();
+                    foto = Base64.getDecoder().decode(fotografia);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return foto;
+    }
+    
 }

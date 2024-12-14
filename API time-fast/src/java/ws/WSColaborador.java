@@ -39,60 +39,30 @@ public class WSColaborador {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Colaborador> obtenerColaboradoresPorNombre(@PathParam("nombre") String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new BadRequestException("El nombre proporcionado es inválido.");
+        if(!nombre.isEmpty()&& nombre!= null){
+            return ImpColaborador.obtenerColaboradoresPorNombre(nombre);
         }
-        try {
-            List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorNombre(nombre);
-            if (colaboradores != null && !colaboradores.isEmpty()) {
-                return colaboradores;
-            } else {
-                throw new NotFoundException("No se encontraron colaboradores con el nombre: " + nombre);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
-        }
+        throw new BadRequestException();
     }
 
     @Path("obtener-colaboradores-rol/{idRol}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Colaborador> obtenerColaboradoresPorRol(@PathParam("idRol") int idRol) {
-        if (idRol <= 0) {
-            throw new BadRequestException("El idRol debe ser mayor que 0.");
+        if(idRol>0){
+            return ImpColaborador.obtenerColaboradoresPorRol(idRol);
         }
-        try {
-            List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorRol(idRol);
-            if (colaboradores != null && !colaboradores.isEmpty()) {
-                return colaboradores;
-            } else {
-                throw new NotFoundException("No se encontraron colaboradores con el rol ID: " + idRol);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
-        }
+        throw new BadRequestException();
     }
 
     @Path("obtener-colaboradores-noPersonal/{noPersonal}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Colaborador> obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
-        if (noPersonal == null || noPersonal.trim().isEmpty()) {
-            throw new BadRequestException("El número personal proporcionado es inválido.");
-        }
-        try {
-            List<Colaborador> colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
-            if (colaborador != null) {
-                return colaborador;
-            } else {
-                throw new NotFoundException("No se encontró el colaborador con número personal: " + noPersonal);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
-        }
+       if(noPersonal!= null && !noPersonal.isEmpty()){
+           return ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
+       }
+       throw new BadRequestException();
     }
 
     @Path("agregar-colaborador")
