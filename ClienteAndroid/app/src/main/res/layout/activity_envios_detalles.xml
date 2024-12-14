@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título de la pantalla -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_logo"
+            android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detalle del envío"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Información del envío -->
+        <TextView
+            android:id="@+id/guia_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guía:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/guia_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ENV001"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/origen_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Origen:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/origen_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bodega Central, Av. Principal 100, CDMX"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/destino_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Destino:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/destino_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calle Principal 123, Ciudad de México"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/paquetes_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paquetes:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/paquetes_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Laptop Dell XPS 15\nMonitor LG 27 pulgadas"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/estatus_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estatus:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/estatus_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\uD83D\uDFE2 En camino"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:id="@+id/cliente_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cliente:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cliente_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Juan Pérez\n555-1234\njuan.perez@email.com"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Botón para actualizar estatus -->
+        <Button
+            android:id="@+id/btn_actualizar_estatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actualizar Estatus"
+            android:backgroundTint="@android:color/darker_gray"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</ScrollView>
