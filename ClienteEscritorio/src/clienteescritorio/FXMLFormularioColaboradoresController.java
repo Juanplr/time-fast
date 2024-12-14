@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -58,9 +59,13 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     private Colaborador colaboradorEditado;
     private boolean modoEdicion = false;
     ObservableList<Rol> tiposDeColaboradores;
+    @FXML
+    private Label lNoLicencia;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tfNoLicencia.setVisible(false);
+        lNoLicencia.setVisible(false);
         cargarTiposDeUsuarios();
     }    
     
@@ -71,6 +76,12 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             modoEdicion = true;
             llenarcampos();
             btnGuardar.setText("Editar");
+            cbRol.setDisable(true);
+            tfNumeroPersonal.setEditable(false);
+            if(colaboradorEditado.getIdRol()==3){
+                tfNoLicencia.setVisible(true);
+                lNoLicencia.setVisible(true);
+            }
         }
     }
 
@@ -95,6 +106,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
         colaborador.setIdRol((cbRol.getSelectionModel().getSelectedItem() != null)?
                 cbRol.getSelectionModel().getSelectedItem().getIdRol(): -1
         );
+        colaborador.setNumeroDeLicencia(tfNoLicencia.getText());
         if(validarCampos(colaborador)){
             if(!modoEdicion){
                 guardarDatosColaborador(colaborador);
@@ -109,16 +121,6 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     }
     
     private boolean validarCampos(Colaborador colaborador) {
-        if (colaborador.getNombre() == null || colaborador.getNombre().isEmpty() ||
-            colaborador.getApellidoMaterno() == null || colaborador.getApellidoMaterno().isEmpty() ||
-            colaborador.getApellidoPaterno() == null || colaborador.getApellidoPaterno().isEmpty() ||
-            colaborador.getCorreo() == null || colaborador.getCorreo().isEmpty() ||
-            colaborador.getCurp() == null || colaborador.getCurp().isEmpty() ||
-            colaborador.getNoPersonal() == null || colaborador.getNoPersonal().isEmpty() ||
-            colaborador.getContrasena()== null || colaborador.getContrasena().isEmpty() ||
-            colaborador.getIdRol() == null) {
-            return false;
-        }
         return true;
     }
 
@@ -168,7 +170,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
         tfNumeroPersonal.setEditable(false);
         int posicion = buscarIdRol(colaboradorEditado.getIdRol());
         cbRol.getSelectionModel().select(posicion);
-        cbRol.setEditable(false);
+        tfNoLicencia.setText(colaboradorEditado.getNumeroDeLicencia());
     }
     private int buscarIdRol(int idRol){
         for(int i=0; i<tiposDeColaboradores.size();i++){
@@ -180,6 +182,15 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     }
 
     @FXML
-    private void irCerrarSesion(MouseEvent event) {
+    private void oyenteDelRol(ActionEvent event) {
+        int rol = cbRol.getSelectionModel().getSelectedItem().getIdRol();
+        System.out.println(rol);
+        if(rol == 3){
+            lNoLicencia.setVisible(true);
+            tfNoLicencia.setVisible(true);
+        }else{
+            lNoLicencia.setVisible(false);
+            tfNoLicencia.setVisible(false);
+        }
     }
 }

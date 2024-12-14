@@ -140,7 +140,7 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
     private void irEliminarColaborador(MouseEvent event) {
         Colaborador colaborador = tablaColaboradores.getSelectionModel().getSelectedItem();
         if(colaborador!= null){
-            Mensaje mensaje = ColaboradorDAO.eliminarColaborador(colaborador.getNoPersonal());
+            Mensaje mensaje = ColaboradorDAO.eliminarColaborador(colaborador.getIdColaborador());
             if(!mensaje.isError()){
                 Utilidades.mostrarAlertaSimple("Correcto", "Colaborador agregado correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();

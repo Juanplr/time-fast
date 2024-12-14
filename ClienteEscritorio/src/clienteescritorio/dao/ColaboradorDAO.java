@@ -23,7 +23,7 @@ import pojo.RespuestaHTTP;
 public class ColaboradorDAO {
     public static List<Colaborador> obtenerColaboradores(){
         List<Colaborador> colaboradores = null;
-        String url = Constantes.URL+"colaboradores/obtener-colaboradores";
+        String url = Constantes.URL+"colaborador/obtener-colaboradores";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         if (respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
             Gson gson = new Gson();
@@ -40,7 +40,7 @@ public class ColaboradorDAO {
     
     public static List<Colaborador> obtenerColaboradoresNombre(String nombre){
         List<Colaborador> colaboradores = null;
-        String url = Constantes.URL+"colaboradores/obtener-colaboradores-nombre/"+nombre;
+        String url = Constantes.URL+"colaborador/obtener-colaboradores-nombre/"+nombre;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         if (respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
             Gson gson = new Gson();
@@ -57,7 +57,7 @@ public class ColaboradorDAO {
     
     public static List<Colaborador> obtenerColaboradoresNoPersonal(String noPersonal){
         List<Colaborador> colaboradores = null;
-        String url = Constantes.URL+"colaboradores/obtener-colaboradores-noPersonal/"+ noPersonal;
+        String url = Constantes.URL+"colaborador/obtener-colaboradores-noPersonal/"+ noPersonal;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         if (respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
             Gson gson = new Gson();
@@ -74,7 +74,7 @@ public class ColaboradorDAO {
     
     public static List<Colaborador> obtenerColaboradoresRol(Integer rol){
         List<Colaborador> colaboradores = null;
-        String url = Constantes.URL+"colaboradores/obtener-colaboradores-rol/"+rol;
+        String url = Constantes.URL+"colaborador/obtener-colaboradores-rol/"+rol;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         if (respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
             Gson gson = new Gson();
@@ -111,7 +111,7 @@ public class ColaboradorDAO {
     }
     public static Mensaje editarColaborador(Colaborador colaborador){
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL + "colaborador/editarColaborador";
+        String url = Constantes.URL + "colaborador/editar-colaborador";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(colaborador);
@@ -129,13 +129,12 @@ public class ColaboradorDAO {
         
         return msj;
     }
-    public static Mensaje eliminarColaborador(String noPersonal){
+    public static Mensaje eliminarColaborador(Integer idColaborador){
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL + "colaborador/eliminarColaborador";
+        String url = Constantes.URL + "colaborador/eliminar-colaborador/"+idColaborador;
         Gson gson = new Gson();
         try {
-            String parametros = String.format("noPersonal=%s", noPersonal);
-            RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url, parametros);
+            RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url,"");
             if(respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
             }else{

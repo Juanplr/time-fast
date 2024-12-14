@@ -1,6 +1,5 @@
 package ws;
 
-import com.google.gson.Gson;
 import dominio.ImpColaborador;
 import java.util.List;
 import javax.ws.rs.BadRequestException;
@@ -13,10 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import pojo.Colaborador;
 import pojo.Mensaje;
 
@@ -24,7 +20,7 @@ import pojo.Mensaje;
  * Web Service para la gestión de colaboradores
  * Autor: Daniel García Jácome
  */
-@Path("colaboradores")
+@Path("colaborador")
 public class WSColaborador {
 
     @Path("obtener-colaboradores")
@@ -105,14 +101,12 @@ public class WSColaborador {
     @Consumes(MediaType.APPLICATION_JSON)
     public Mensaje registrarColaborador(Colaborador colaborador) {
         if (colaborador == null) {
-            throw new BadRequestException("Los datos del colaborador son inválidos o están vacíos.");
+            throw new BadRequestException();
         }
         try {
-            Mensaje mensaje = ImpColaborador.registrarColaborador(colaborador);
-            return mensaje;
+            return ImpColaborador.registrarColaborador(colaborador);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+            throw new BadRequestException();
         }
     }
 
@@ -122,14 +116,14 @@ public class WSColaborador {
     @Consumes(MediaType.APPLICATION_JSON)
     public Mensaje editarColaborador(Colaborador colaborador) {
         if (colaborador == null) {
-            throw new BadRequestException("Los datos del colaborador son inválidos o están vacíos.");
+            throw new BadRequestException();
         }
         try {
             Mensaje mensaje = ImpColaborador.editarColaborador(colaborador);
             return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+            throw new BadRequestException();
         }
     }
 
@@ -138,14 +132,14 @@ public class WSColaborador {
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje eliminarColaborador(@PathParam("idColaborador") int idColaborador) {
         if (idColaborador <= 0) {
-            throw new BadRequestException("El idColaborador debe ser mayor que 0.");
+            throw new BadRequestException();
         }
         try {
             Mensaje mensaje = ImpColaborador.eliminarColaborador(idColaborador);
             return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BadRequestException("Error al intentar eliminar el colaborador: " + e.getMessage());
+            throw new BadRequestException();
         }
     }
 }
