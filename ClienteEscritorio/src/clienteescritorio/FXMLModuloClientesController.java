@@ -60,7 +60,14 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
     private TableColumn colTelefono;
     @FXML
     private TableColumn colCorreo;
-
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        configurarTabla();
+        cargarLaInformacion();
+    }
+    
+    
     public void irPantallaPrincipal(){
         try {
             Stage escenarioBase = (Stage) imgRegresar.getScene().getWindow();
@@ -122,12 +129,6 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
         }else{
             Utilidades.mostrarAlertaSimple("Error", "Campo de buscar Vacio", Alert.AlertType.ERROR);
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        configurarTabla();
-        cargarLaInformacion();
     }
     
     private void configurarTabla() {

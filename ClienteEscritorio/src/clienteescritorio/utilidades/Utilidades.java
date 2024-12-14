@@ -6,6 +6,7 @@
 package clienteescritorio.utilidades;
 
 import java.util.Optional;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -24,13 +25,13 @@ public class Utilidades {
     }
     
     public static boolean mostrarConfirmacion(String titulo, String mensaje) {
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle(titulo);
-    alert.setHeaderText(null);
-    alert.setContentText(mensaje);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
 
-    Optional<ButtonType> resultado = alert.showAndWait();
-    return resultado.isPresent() && resultado.get() == ButtonType.OK;
-}
+        Optional<ButtonType> resultado = alert.showAndWait();
+        return resultado.isPresent() && resultado.get() == ButtonType.OK;
+    }
     
 }

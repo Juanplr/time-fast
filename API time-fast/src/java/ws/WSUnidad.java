@@ -7,8 +7,6 @@ package ws;
 
 import Utilidades.Utilidades;
 import com.google.gson.Gson;
-import dominio.ImpCliente;
-import dominio.ImpRol;
 import dominio.ImpUnidad;
 import java.util.List;
 import javax.ws.rs.BadRequestException;
@@ -22,11 +20,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import pojo.Cliente;
 import pojo.Mensaje;
-import pojo.Rol;
+import pojo.TipoUnidad;
 import pojo.Unidad;
 
 /**
@@ -70,8 +66,8 @@ public class WSUnidad {
     @Path("obtener-unidades-por-marca/{marca}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Unidad getUnidadesPorMarca(@PathParam("marca") String marca) {
-        if(marca.isEmpty() && Utilidades.validarInyecciónSQL(marca)){
+    public List<Unidad> getUnidadesPorMarca(@PathParam("marca") String marca) {
+        if(!marca.isEmpty() && Utilidades.validarInyecciónSQL(marca)){
             return ImpUnidad.obtenerUnidadesPorMarca(marca);
         }
         throw new BadRequestException();
@@ -114,6 +110,7 @@ public class WSUnidad {
     public Mensaje editarUnidad(String jsonUnidad) {
         if(!jsonUnidad.isEmpty()){
             Gson gson = new Gson();
+            System.out.println(jsonUnidad);
             Unidad unidad = gson.fromJson(jsonUnidad, Unidad.class);
             return ImpUnidad.editarUnidad(unidad);
         }else{
@@ -132,6 +129,12 @@ public class WSUnidad {
         }
         throw new BadRequestException();
     }
-     
+    
+    @Path("obtener-tipos-unidades")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TipoUnidad> getTiposUnidades(){
+         return ImpUnidad.obtenerTiposDeUnidad();
+    }
     
 }
