@@ -79,14 +79,14 @@ public class ImpColaborador {
     }
    
     
-public static Colaborador obtenerColaboradorPorNoPersonal(String noPersonal) {
-    Colaborador colaborador = null;
+public static List<Colaborador> obtenerColaboradorPorNoPersonal(String noPersonal) {
+    List<Colaborador> colaborador = null;
     SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
 
     if (conexionBD != null) {
         try {
             System.out.println("Consultando colaborador con noPersonal: " + noPersonal);
-            colaborador = conexionBD.selectOne("colaborador.getColaboradorPorNoPersonal", noPersonal);
+            colaborador = conexionBD.selectList("colaborador.getColaboradorPorNoPersonal", noPersonal);
             System.out.println("Resultado obtenido: " + colaborador);
         } catch (Exception e) {
             System.err.println("Error al ejecutar la consulta: " + e.getMessage());

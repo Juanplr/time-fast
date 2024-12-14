@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,23 +17,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLModuloColaboradoresController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLModuloColaboradoresController">
    <children>
-      <Pane prefHeight="400.0" prefWidth="600.0">
+      <Pane prefHeight="400.0" prefWidth="673.0">
          <children>
-            <Pane prefHeight="59.0" prefWidth="600.0" style="-fx-background-color: #c6c5c5;">
+            <Pane prefHeight="59.0" prefWidth="673.0" style="-fx-background-color: #c6c5c5;">
                <children>
-                  <Label layoutX="232.0" layoutY="-6.0" prefHeight="71.0" prefWidth="228.0" text="Time-Fast">
+                  <Label layoutX="265.0" layoutY="-6.0" prefHeight="71.0" prefWidth="228.0" text="Time-Fast">
                      <font>
                         <Font name="Tw Cen MT Condensed Extra Bold" size="45.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="175.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="212.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@recursos/caja.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" onMouseClicked="#irCerrarSesion" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="43.0" fitWidth="34.0" layoutX="615.0" layoutY="13.0" onMouseClicked="#irCerrarSesion" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@recursos/cerrarUsuario.png" />
                      </image>
@@ -39,12 +45,12 @@
                   </ImageView>
                </children>
             </Pane>
-            <TextField layoutX="24.0" layoutY="101.0" opacity="0.72" prefHeight="25.0" prefWidth="172.0" style="-fx-background-color: #c6c5c5;">
+            <TextField fx:id="tfBuscar" layoutX="24.0" layoutY="101.0" opacity="0.72" prefHeight="25.0" prefWidth="172.0" style="-fx-background-color: #c6c5c5;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </TextField>
-            <ImageView fitHeight="24.0" fitWidth="17.0" layoutX="203.0" layoutY="105.0" onMouseDragged="#irBuscar" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="24.0" fitWidth="17.0" layoutX="203.0" layoutY="105.0" onMouseClicked="#irBuscar" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@recursos/buscarEscritorio.png" />
                </image>
@@ -79,10 +85,15 @@
                   <Image url="@recursos/lapizEscritorio.png" />
                </image>
             </ImageView>
-            <TableView layoutX="23.0" layoutY="162.0" prefHeight="214.0" prefWidth="554.0">
+            <TableView fx:id="tablaColaboradores" layoutX="11.0" layoutY="162.0" prefHeight="214.0" prefWidth="656.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="colNoPersonal" prefWidth="75.0" text="NoPersonal" />
+                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
+                  <TableColumn fx:id="colApellidoPaterno" prefWidth="117.0" text="Apellido Paterno" />
+                  <TableColumn fx:id="colApellidoMaterno" prefWidth="89.0" text="Apellido Materno" />
+                  <TableColumn fx:id="colCorreo" prefWidth="99.0" text="Correo" />
+                  <TableColumn fx:id="colRol" prefWidth="105.0" text="Rol" />
+                  <TableColumn fx:id="colCurp" prefWidth="95.0" text="CURP" />
               </columns>
             </TableView>
          </children>

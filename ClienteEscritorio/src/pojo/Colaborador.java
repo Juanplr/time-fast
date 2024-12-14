@@ -15,6 +15,7 @@ public class Colaborador {
     private String noPersonal;
     private String contrasena;
     private Integer idRol;
+    private String rol;
     private byte[] fotografia;
     private String numeroDeLicencia;
 
@@ -55,6 +56,15 @@ public class Colaborador {
     public String getApellidoPaterno() {
         return apellidoPaterno;
     }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
 
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;

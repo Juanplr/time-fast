@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import pojo.Colaborador;
 
 /**
  * FXML Controller class
@@ -38,6 +39,8 @@ public class FXMLPrincipalController implements Initializable {
     private ImageView moduloColaboradores;
     @FXML
     private ImageView moduloEnvios;
+    
+    private Colaborador colaborador;
 
 
     /**
@@ -46,6 +49,10 @@ public class FXMLPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+    
+     public void setColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
     }
     
     

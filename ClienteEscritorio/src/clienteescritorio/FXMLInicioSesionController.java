@@ -5,6 +5,7 @@
  */
 package clienteescritorio;
 
+import clienteescritorio.dao.LoginDAO;
 import clienteescritorio.utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pojo.Colaborador;
 
 /**
  * FXML Controller class
@@ -50,11 +52,14 @@ public class FXMLInicioSesionController implements Initializable {
         // TODO
     }    
 
-    private void irPantallaPrincipal(){
+    private void irPantallaPrincipal(Colaborador colaborador){
         try {
             Stage escenarioBase = (Stage) errorNumeroPersonal.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPrincipal.fxml"));
+            Parent principal = loader.load() ;
             
-            Parent principal = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
+            FXMLPrincipalController controlador = loader.getController();
+            controlador.setColaborador(colaborador);
             Scene escenaPrincipal = new Scene(principal);
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast");
@@ -66,12 +71,12 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     
-    private boolean validarCampos(String correo, String contrasena){
+    private boolean validarCampos(String noPersonal, String contrasena){
         boolean camposValidos = true;
         errorNumeroPersonal.setText("");
         errorContraseña.setText("");
 
-        if(correo.isEmpty()){
+        if(noPersonal.isEmpty()){
             camposValidos = false;
             errorNumeroPersonal.setText("Numero Personal boligatorio");
         }
@@ -84,12 +89,21 @@ public class FXMLInicioSesionController implements Initializable {
     
     @FXML
     private void iniciarSesion(ActionEvent event) {
-         String correo = tfNumeroPersonal.getText();
+         String noPersonal = tfNumeroPersonal.getText();
          String contrasena = pfContrasenia.getText();
         
-        if(validarCampos(correo, contrasena)){
-            irPantallaPrincipal();
+        if(validarCampos(noPersonal, contrasena)){
+            verificarCredenciales(noPersonal, contrasena);
         } 
+    }
+    private void verificarCredenciales(String noPersonal, String password){
+        Colaborador respuesta = LoginDAO.iniciarSesion(noPersonal, password);
+        if(respuesta != null){
+            Utilidades.mostrarAlertaSimple("Bienvenido", "Bienvenido " + respuesta.getNombre(), Alert.AlertType.INFORMATION);
+            irPantallaPrincipal(respuesta);
+        }else{
+            Utilidades.mostrarAlertaSimple("Atención", "Numero Personal y/o Contraseña incorrecta", Alert.AlertType.ERROR);
+        }
     }
     
 }

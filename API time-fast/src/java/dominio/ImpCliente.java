@@ -50,14 +50,14 @@ public class ImpCliente {
         return clientes;
     }
     
-    public static Cliente obtenerClientePorCorreo(String correo) {
-        Cliente cliente = null;
+    public static List<Cliente> obtenerClientePorCorreo(String correo) {
+        List<Cliente> cliente = null;
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         if(conexionBD != null){
             try {
                 HashMap<String, String> parametros = new LinkedHashMap<>();
                 parametros.put("correo", correo);
-                cliente = conexionBD.selectOne("cliente.obtenerClientesPorCorreo", parametros);
+                cliente = conexionBD.selectList("cliente.obtenerClientesPorCorreo", parametros);
                 if(cliente != null){
                    
                 }else{
@@ -73,14 +73,14 @@ public class ImpCliente {
         return cliente;
     }
 
-    public static Cliente obtenerClientePorNumeroTelefonico(String telefono) {
-        Cliente cliente = null;
+    public static List<Cliente> obtenerClientePorNumeroTelefonico(String telefono) {
+        List<Cliente> cliente = null;
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         if(conexionBD != null){
             try {
                 HashMap<String, String> parametros = new LinkedHashMap<>();
                 parametros.put("telefono", telefono);
-                cliente = conexionBD.selectOne("cliente.obtenerClientesPorTelefono", parametros);
+                cliente = conexionBD.selectList("cliente.obtenerClientesPorTelefono", parametros);
                 if(cliente != null){
                    
                 }else{

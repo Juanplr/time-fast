@@ -8,7 +8,7 @@
         SELECT idColaborador,colaborador.nombre,apellidoPaterno,apellidoMaterno,noPersonal,correo,curp,colaborador.idRol, rol.nombre as 'rol'
         FROM colaborador
         INNER JOIN rol ON rol.idRol = colaborador.idRol
-        WHERE noPersonal = #{noPersonal} AND password = #{password};
+        WHERE noPersonal = #{noPersonal} AND contrasena = #{contrasena};
     </select>
 
 </mapper>
