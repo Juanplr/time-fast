@@ -66,12 +66,12 @@
                </font>
             </Label>
             <TextField fx:id="tfAnio" layoutX="319.0" layoutY="174.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
-            <Label layoutX="319.0" layoutY="213.0" text="Tipo de unidad:">
+            <Label fx:id="lEstadoUnidad" layoutX="25.0" layoutY="281.0" text="Estado de la unidad:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnGuardar" layoutX="254.0" layoutY="301.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
+            <Button fx:id="btnGuardar" layoutX="242.0" layoutY="349.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
             <Label layoutX="23.0" layoutY="211.0" text="VIN:">
                <font>
                   <Font size="14.0" />
@@ -79,6 +79,18 @@
             </Label>
             <TextField fx:id="tfVin" layoutX="22.0" layoutY="231.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
             <ComboBox fx:id="cbTipoUnidad" layoutX="319.0" layoutY="231.0" prefHeight="25.0" prefWidth="208.0" />
+            <Label layoutX="319.0" layoutY="211.0" text="Tipo de unidad:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbEstadoUnidad" layoutX="22.0" layoutY="304.0" prefHeight="25.0" prefWidth="164.0" />
+            <Label fx:id="lMotivo" layoutX="305.0" layoutY="281.0" text="Motivo:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfMotivo" layoutX="298.0" layoutY="304.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
          </children>
       </Pane>
    </children>

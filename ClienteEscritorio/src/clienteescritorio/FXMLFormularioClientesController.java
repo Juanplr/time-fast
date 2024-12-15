@@ -73,6 +73,7 @@ public class FXMLFormularioClientesController implements Initializable {
 
     @FXML
     private void regresarPrincipal(MouseEvent event) {
+        cerrarVentana();
     }
 
 
@@ -99,8 +100,6 @@ public class FXMLFormularioClientesController implements Initializable {
                 cliente.setIdCliente(clienteEditado.getIdCliente());
                 editarDatosDelCliente(cliente);
             }
-        }else{
-            Utilidades.mostrarAlertaSimple("Campos Obligatorios", "Hubo un error al llenar los campos", Alert.AlertType.ERROR);
         }
     }
     
@@ -119,8 +118,64 @@ public class FXMLFormularioClientesController implements Initializable {
     }
 
     private boolean validarCampos(Cliente cliente) {
-        return true;
+        if (cliente.getNombre() == null || cliente.getNombre().trim().isEmpty() || cliente.getNombre().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Error", "El nombre es obligatorio.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getApellidoPaterno() == null || cliente.getApellidoPaterno().trim().isEmpty() || cliente.getApellidoPaterno().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Error", "El apellido paterno es obligatorio.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getApellidoMaterno() != null && cliente.getApellidoMaterno().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Error", "El apellido materno es obligatorio.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getCalle() == null || cliente.getCalle().trim().isEmpty() || cliente.getCalle().length() > 100) {
+            Utilidades.mostrarAlertaSimple("Error", "La calle es obligatoria.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getNumeroDeCasa() == null || cliente.getNumeroDeCasa().trim().isEmpty() || !cliente.getNumeroDeCasa().matches("\\d{1,10}")) {
+            Utilidades.mostrarAlertaSimple("Error", "El número de casa es obligatorio y debe contener solo números (máximo 10 dígitos).", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getColonia() == null || cliente.getColonia().trim().isEmpty() || cliente.getColonia().length() > 100) {
+            Utilidades.mostrarAlertaSimple("Error", "La colonia es obligatoria.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getCodigoPostal() == null || !cliente.getCodigoPostal().matches("\\d{5}")) {
+            Utilidades.mostrarAlertaSimple("Error", "El código postal es obligatorio y debe tener exactamente 5 dígitos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getCiudad() == null || cliente.getCiudad().trim().isEmpty() || cliente.getCiudad().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Error", "La ciudad es obligatoria.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getEstado() == null || cliente.getEstado().trim().isEmpty() || cliente.getEstado().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Error", "El estado es obligatorio.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getTelefono() == null || !cliente.getTelefono().matches("\\d{10}")) {
+            Utilidades.mostrarAlertaSimple("Error", "El teléfono es obligatorio y debe tener exactamente 10 dígitos.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (cliente.getCorreo() == null || !cliente.getCorreo().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            Utilidades.mostrarAlertaSimple("Error", "El correo es obligatorio y debe ser un formato válido (ej. ejemplo@dominio.com).", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true; 
     }
+
 
     private void guadarDatosDelCliente(Cliente cliente) {
         Mensaje msj = ClienteDAO.agregarCliente(cliente);

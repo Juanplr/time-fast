@@ -18,9 +18,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import pojo.EstadoUnidad;
 import pojo.Mensaje;
 import pojo.TipoUnidad;
 import pojo.Unidad;
@@ -54,17 +56,35 @@ public class FXMLFormularioUnidadesController implements Initializable {
     private boolean modoEdicion = false;
     
     ObservableList<TipoUnidad> tiposDeUnidades;
+    ObservableList<EstadoUnidad> tiposDeEstado;
+    
+    
     @FXML
     private TextField tfAnio;
+    @FXML
+    private Label lEstadoUnidad;
+    @FXML
+    private ComboBox<EstadoUnidad> cbEstadoUnidad;
+    @FXML
+    private Label lMotivo;
+    @FXML
+    private TextField tfMotivo;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        lEstadoUnidad.setVisible(false);
+        lMotivo.setVisible(false);
+        cbEstadoUnidad.setVisible(false);
+        tfMotivo.setVisible(false);
         cargarTiposDeUnidad();
+        cargarEstadoUnidad();
     }    
     public void initializeValores(NotificadoOperacion observador, Unidad unidadEditada){
         this.unidadEditada = unidadEditada;
         this.observador = observador;
         if(unidadEditada!= null){
             modoEdicion = true;
+            lEstadoUnidad.setVisible(true);
+            cbEstadoUnidad.setVisible(true);
             llenarcampos();
             btnGuardar.setText("Editar");
         }
@@ -107,6 +127,8 @@ public class FXMLFormularioUnidadesController implements Initializable {
         tfAnio.setText(unidadEditada.getAnio());
         int poscicion = buscarIdTipoUnidad(unidadEditada.getIdTipoUnidad());
         cbTipoUnidad.getSelectionModel().select(poscicion);
+        int pocicionUnidad = buscarIdEstadoUnidad(unidadEditada.getIdEstadoUnidad());
+        cbEstadoUnidad.getSelectionModel().select(pocicionUnidad);
     }
      private int buscarIdTipoUnidad(int idTipoUnidad){
         for(int i=0; i<tiposDeUnidades.size();i++){
@@ -152,5 +174,20 @@ public class FXMLFormularioUnidadesController implements Initializable {
         }else{
             Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void cargarEstadoUnidad() {
+        tiposDeEstado = FXCollections.observableArrayList();
+        tiposDeEstado.addAll(UnidadDAO.obtenerTiposDeEstados());  
+        cbEstadoUnidad.setItems(tiposDeEstado);
+    }
+
+    private int buscarIdEstadoUnidad(Integer idEstadoUnidad) {
+         for(int i=0; i<tiposDeEstado.size();i++){
+            if(tiposDeEstado.get(i).getIdEstadoUnidad()== idEstadoUnidad){
+                return i;
+            }
+        }
+        return -1;
     }
 }

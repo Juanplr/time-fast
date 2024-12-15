@@ -21,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import pojo.EstadoUnidad;
 import pojo.Mensaje;
 import pojo.TipoUnidad;
 import pojo.Unidad;
@@ -135,6 +136,13 @@ public class WSUnidad {
     @Produces(MediaType.APPLICATION_JSON)
     public List<TipoUnidad> getTiposUnidades(){
          return ImpUnidad.obtenerTiposDeUnidad();
+    }
+    
+    @Path("obtener-estados-unidades")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EstadoUnidad> getEstadosUnidades(){
+         return ImpUnidad.obtenerEstadosDeUnidad();
     }
     
 }

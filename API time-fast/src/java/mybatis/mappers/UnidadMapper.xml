@@ -6,7 +6,7 @@
     
     <!-- Obtener unidades -->
     <select id="obtenerUnidades" resultType="pojo.Unidad">        
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad;
@@ -14,7 +14,7 @@
         
     <!-- Obtener unidades disponibles -->
     <select id="obtenerUnidadesDisponibles" resultType="pojo.Unidad">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
@@ -22,7 +22,7 @@
     </select>
     
     <select id="obtenerUnidadesSinAsignar" resultType="pojo.Unidad">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
@@ -31,7 +31,7 @@
     </select>
     
     <select id="obtenerUnidadesPorVin" resultType="pojo.Unidad">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
@@ -39,7 +39,7 @@
     </select>
         
     <select id="obtenerUnidadesPorMarca" resultType="pojo.Unidad" parameterType="string">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
@@ -47,7 +47,7 @@
     </select>
     
     <select id="obtenerUnidadesPorNii" resultType="pojo.Unidad">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
         LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
         LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
@@ -81,6 +81,11 @@
     <select id="obtenerTiposDeUnidad" resultType="pojo.TipoUnidad">
         SELECT idTipoUnidad, nombre
         FROM tipounidad;
+    </select>
+    
+    <select id="obtenerEstadosDeUnidad" resultType="pojo.EstadoUnidad">
+        SELECT idEstadoUnidad, nombre
+        FROM estadoUnidad;
     </select>
 
 </mapper>

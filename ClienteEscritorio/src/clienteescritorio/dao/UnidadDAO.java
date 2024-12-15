@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
+import pojo.EstadoUnidad;
 import pojo.Mensaje;
 import pojo.RespuestaHTTP;
 import pojo.TipoUnidad;
@@ -169,6 +170,21 @@ public class UnidadDAO {
             }
         }
         return unidades;
+    }
+    public static List<EstadoUnidad> obtenerTiposDeEstados(){
+        List<EstadoUnidad> tiposEstado = null;
+        String url = Constantes.URL+"unidad/obtener-estados-unidades";
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        if(respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            Gson gson = new Gson();
+            try {
+                Type tipoListaColaborador = new TypeToken<List<EstadoUnidad>>(){}.getType();
+                tiposEstado = gson.fromJson(respuesta.getContenido(), tipoListaColaborador);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return tiposEstado;
     }
     
 }
