@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="historialDeBaja">
+
+   
+    <select id="getObtenerHistorialDeBaja" resultType="pojo.HistorialDeBaja">
+        SELECT 
+            idHistorialDeBaja,
+            idUnidad,
+            motivo
+        FROM historialDeBaja
+    </select>
+    
+    <select id="getHistorialDeBajaPorIdUnidad" parameterType="int" resultType="pojo.HistorialDeBaja">
+    SELECT 
+        idHistorialDeBaja,
+        idUnidad,
+        motivo
+    FROM historialDeBaja
+    WHERE idUnidad = #{idUnidad};
+    </select>
+
+
+  
+    <insert id="insert" parameterType="pojo.HistorialDeBaja">
+        INSERT INTO historialDeBaja (
+            idUnidad,
+            motivo
+        ) VALUES (
+            #{idUnidad},
+            #{motivo}
+        );
+    </insert>
+
+    
+    <update id="update" parameterType="pojo.HistorialDeBaja">
+        UPDATE historialDeBaja
+        SET
+            idUnidad = #{idUnidad},
+            motivo = #{motivo}
+        WHERE idHistorialDeBaja = #{idHistorialDeBaja};
+    </update>
+
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM historialDeBaja
+        WHERE idHistorialDeBaja = #{idHistorialDeBaja};
+    </delete>
+
+</mapper>
