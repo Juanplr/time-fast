@@ -12,6 +12,7 @@ import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Mensaje;
 import pojo.Rol;
+import pojo.TipoUnidad;
 import pojo.Unidad;
 
 /**
@@ -63,14 +64,14 @@ public class ImpUnidad {
     }
 
     // Obtener unidades por marca
-    public static Unidad obtenerUnidadesPorMarca(String marca) {
-        Unidad unidad = null;
+    public static List<Unidad> obtenerUnidadesPorMarca(String marca) {
+        List<Unidad> unidad = null;
         SqlSession conexionDB = MyBatisUtil.obtenerConexion();
         if (conexionDB != null) {
             try {
                 HashMap<String,String> parametros = new LinkedHashMap<>();
                 parametros.put("marca", marca);
-                unidad = conexionDB.selectOne("unidad.obtenerUnidadesPorMarca",parametros);
+                unidad = conexionDB.selectList("unidad.obtenerUnidadesPorMarca",parametros);
                 if(unidad!=null){
                     
                 }
@@ -131,7 +132,7 @@ public class ImpUnidad {
         
         if(conexionDB!=null){
             try{
-                int filasAfectadas = conexionDB.update("unidad.editarUnidad");
+                int filasAfectadas = conexionDB.update("unidad.editarUnidad", unidad);
                 conexionDB.commit();
                 if(filasAfectadas>0){
                     mensaje.setError(false);
@@ -181,6 +182,19 @@ public class ImpUnidad {
         }
         
         return mensaje;
+    }
+    
+    public static List<TipoUnidad> obtenerTiposDeUnidad(){
+        SqlSession conexionDB = MyBatisUtil.obtenerConexion();
+        List<TipoUnidad> respuesta = null;
+        if(conexionDB!=null){
+            try{
+                respuesta = conexionDB.selectList("unidad.obtenerTiposDeUnidad");
+            }catch(Exception e){
+                
+            }
+        }
+        return respuesta;
     }
     
     
