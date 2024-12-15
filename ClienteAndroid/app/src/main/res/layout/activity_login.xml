@@ -29,7 +29,7 @@
 
     <!-- Campo de Número Personal -->
     <EditText
-        android:id="@+id/personal_number"
+        android:id="@+id/personal_numero"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Numero Personal:"
@@ -39,7 +39,7 @@
 
     <!-- Campo de Contraseña -->
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/contrasena"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Contraseña:"
@@ -49,7 +49,7 @@
 
     <!-- Texto de "¿Olvidaste tu contraseña?" -->
     <TextView
-        android:id="@+id/forgot_password"
+        android:id="@+id/olvidaste_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¿Olvidaste tu contraseña?"
@@ -60,7 +60,7 @@
 
     <!-- Botón de Entrar -->
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_entrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ENTRAR"

@@ -27,7 +27,7 @@
                 android:layout_marginEnd="8dp" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/titulo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -37,7 +37,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/settings_icon"
+                android:id="@+id/cerrar_sesion"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_cerrar_sesion"
@@ -46,7 +46,7 @@
 
         <!-- Foto de Perfil -->
         <ImageView
-            android:id="@+id/profile_photo"
+            android:id="@+id/foto"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/ic_usuario"
@@ -54,7 +54,7 @@
         android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/change_photo"
+            android:id="@+id/cambiar_foto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cambiar Foto Perfil"
@@ -98,7 +98,7 @@
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/apellido_materno"
+            android:id="@+id/Tv_apellido_materno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Apellido Materno"
@@ -146,7 +146,7 @@
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/Tv_contraseña"
+            android:id="@+id/Tv_contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Contraseña:"
@@ -179,7 +179,7 @@
 
         <!-- Botón de Actualizar Perfil -->
         <Button
-            android:id="@+id/update_profile_button"
+            android:id="@+id/guardar_cambios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Actualizar Perfil"

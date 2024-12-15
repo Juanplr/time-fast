@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.timefast"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.timefast"
@@ -50,4 +50,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation ("com.google.code.gson:gson:2.11.0")
+    implementation ("com.koushikdutta.ion:ion:2.+")
 }
