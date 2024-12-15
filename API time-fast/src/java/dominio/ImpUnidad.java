@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
+import pojo.EstadoUnidad;
 import pojo.Mensaje;
 import pojo.Rol;
 import pojo.TipoUnidad;
@@ -190,6 +191,19 @@ public class ImpUnidad {
         if(conexionDB!=null){
             try{
                 respuesta = conexionDB.selectList("unidad.obtenerTiposDeUnidad");
+            }catch(Exception e){
+                
+            }
+        }
+        return respuesta;
+    }
+
+    public static List<EstadoUnidad> obtenerEstadosDeUnidad() {
+        SqlSession conexionDB = MyBatisUtil.obtenerConexion();
+        List<EstadoUnidad> respuesta = null;
+        if(conexionDB!=null){
+            try{
+                respuesta = conexionDB.selectList("unidad.obtenerEstadosDeUnidad");
             }catch(Exception e){
                 
             }

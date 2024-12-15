@@ -117,9 +117,6 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
         irPantallaPrincipal();
     }
 
-    @FXML
-    private void irCerrarSesion(MouseEvent event) {
-    }
 
     @FXML
     private void irBuscar(MouseEvent event) {
@@ -167,24 +164,26 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
         colaboradores.clear();
         tablaColaboradores.setItems(colaboradores);
         List<Colaborador> lista = ColaboradorDAO.obtenerColaboradoresNoPersonal(dato);
-        System.out.println(dato);
-        if (!lista.isEmpty()) {
+        System.out.println(lista);
+        if (lista!=null && !lista.isEmpty()) {
             colaboradores.addAll(lista);
             tablaColaboradores.setItems(colaboradores);
         }else{
            lista = ColaboradorDAO.obtenerColaboradoresNombre(dato);
-           if (!lista.isEmpty()) {
+           if (lista!=null && !lista.isEmpty()) {
                 colaboradores.addAll(lista);
                 tablaColaboradores.setItems(colaboradores);
            }else{
                Integer rol = obtenerRol(dato);
                if(rol>0){
-                    lista = ColaboradorDAO.obtenerColaboradoresRol(rol);
-                    colaboradores.addAll(lista);
-                    tablaColaboradores.setItems(colaboradores);
-               }else{
-                   Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el colaborador", Alert.AlertType.WARNING);
-                   cargarLaInformacion();
+                   lista = ColaboradorDAO.obtenerColaboradoresRol(rol);
+                   if(lista!=null && !lista.isEmpty()){
+                        colaboradores.addAll(lista);
+                        tablaColaboradores.setItems(colaboradores);
+                   }else{
+                        Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el colaborador", Alert.AlertType.WARNING);
+                       cargarLaInformacion();
+                   }
                }
            }
         }

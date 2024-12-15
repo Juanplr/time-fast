@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import pojo.RespuestaHTTP;
+import sun.nio.cs.StandardCharsets;
 
 public class ConexionWS {
     
@@ -197,4 +198,39 @@ public class ConexionWS {
         } 
         return respuesta;
     }
+    public static RespuestaHTTP peticionPUTBINARIO(String url, byte[] datos) {
+        RespuestaHTTP respuesta = new RespuestaHTTP();
+        try {
+
+            HttpURLConnection conexion = (HttpURLConnection) new URL(url).openConnection();
+            conexion.setDoOutput(true);
+            conexion.setRequestMethod("PUT");
+            conexion.setRequestProperty("Content-Type", "image/png");
+
+    
+            try (OutputStream os = conexion.getOutputStream()) {
+                os.write(datos);
+                os.flush();
+            }
+
+            int codigoRespuesta = conexion.getResponseCode();
+            respuesta.setCodigoRespuesta(codigoRespuesta);
+
+            if (codigoRespuesta == HttpURLConnection.HTTP_OK) {
+                respuesta.setContenido(obtenerContenidoWS(conexion.getInputStream()));
+            } else {
+                respuesta.setContenido("Código de respuesta HTTP: " + codigoRespuesta + ". " +
+                        obtenerContenidoWS(conexion.getErrorStream()));
+            }
+        } catch (MalformedURLException e) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_URL);
+            respuesta.setContenido("Error en la dirección de conexión.");
+        } catch (IOException io) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
+            respuesta.setContenido("Error: no se pudo realizar la solicitud correspondiente.");
+        }
+        return respuesta;
+    }
+
+
 }

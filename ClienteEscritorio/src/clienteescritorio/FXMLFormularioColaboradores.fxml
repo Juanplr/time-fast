@@ -89,7 +89,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="319.0" layoutY="257.0" text="Fotografia:">
+            <Label fx:id="lFoto" layoutX="319.0" layoutY="257.0" text="Fotografia:">
                <font>
                   <Font size="14.0" />
                </font>
@@ -99,20 +99,11 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ImageView fx:id="imgFotografia" fitHeight="30.0" fitWidth="34.0" layoutX="345.0" layoutY="280.0" onMouseClicked="#subirFotografia" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/fotoEscritorio.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="310.0" layoutY="322.0" text="Vehiculo:">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+            <ImageView fx:id="imgFotografia" fitHeight="71.0" fitWidth="66.0" layoutX="323.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" />
             <TextField fx:id="tfNoLicencia" layoutX="316.0" layoutY="218.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
             <Button fx:id="btnGuardar" layoutX="485.0" layoutY="345.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
             <ComboBox fx:id="cbRol" layoutX="429.0" layoutY="277.0" onAction="#oyenteDelRol" prefWidth="150.0" />
-            <ComboBox fx:id="cbVehiculo" layoutX="310.0" layoutY="345.0" prefWidth="150.0" />
+            <Button fx:id="btnSeleccionarFoto" layoutX="316.0" layoutY="358.0" mnemonicParsing="false" onAction="#selecionarFoto" prefHeight="25.0" prefWidth="117.0" text="Seleccionar Foto" />
          </children>
       </Pane>
    </children>

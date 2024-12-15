@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="envio">
+
+
+    <select id="getObtenerEnvios" parameterType="int" resultType="pojo.Envio">
+        SELECT 
+            idEnvio,
+            idCliente,
+            origenCalle,
+            origenNumero,
+            origenColonia,
+            origenCodigoPostal,
+            origenCiudad,
+            origenEstado,
+            noGuia,
+            costoDeEnvio,
+            idEstadoDeEnvio,
+            idColaborador
+        FROM envio
+    </select>
+
+    
+    <insert id="registrar" parameterType="pojo.Envio">
+        INSERT INTO envio (
+            idCliente,
+            origenCalle,
+            origenNumero,
+            origenColonia,
+            origenCodigoPostal,
+            origenCiudad,
+            origenEstado,
+            noGuia,
+            costoDeEnvio,
+            idEstadoDeEnvio,
+            idColaborador
+        ) VALUES (
+            #{idCliente},
+            #{origenCalle},
+            #{origenNumero},
+            #{origenColonia},
+            #{origenCodigoPostal},
+            #{origenCiudad},
+            #{origenEstado},
+            #{noGuia},
+            #{costoDeEnvio},
+            #{idEstadoDeEnvio},
+            #{idColaborador}
+        );
+    </insert>
+
+    <update id="editar" parameterType="pojo.Envio">
+        UPDATE envio
+        SET
+            idCliente = #{idCliente},
+            origenCalle = #{origenCalle},
+            origenNumero = #{origenNumero},
+            origenColonia = #{origenColonia},
+            origenCodigoPostal = #{origenCodigoPostal},
+            origenCiudad = #{origenCiudad},
+            origenEstado = #{origenEstado},
+            noGuia = #{noGuia},
+            costoDeEnvio = #{costoDeEnvio},
+            idEstadoDeEnvio = #{idEstadoDeEnvio},
+            idColaborador = #{idColaborador}
+        WHERE idEnvio = #{idEnvio};
+    </update>
+
+   
+    <delete id="eliminar" parameterType="int">
+        DELETE FROM envio
+        WHERE idEnvio = #{idEnvio};
+    </delete>
+
+</mapper>

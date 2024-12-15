@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="conductoresAsignados">
+
+
+    <select id="getAll" resultType="pojo.ConductoresAsignados">
+        SELECT 
+            idConductoresAsignados,
+            idColaborador,
+            idUnidad
+        FROM conductoresAsignados
+    </select>
+
+
+    <insert id="insert" parameterType="pojo.ConductoresAsignados">
+        INSERT INTO conductoresAsignados (
+            idColaborador,
+            idUnidad
+        ) VALUES (
+            #{idColaborador},
+            #{idUnidad}
+        );
+    </insert>
+
+    
+    <update id="update" parameterType="pojo.ConductoresAsignados">
+        UPDATE conductoresAsignados
+        SET
+            idColaborador = #{idColaborador},
+            idUnidad = #{idUnidad}
+        WHERE idConductoresAsignados = #{idConductoresAsignados};
+    </update>
+
+   
+    <delete id="delete" parameterType="int">
+        DELETE FROM conductoresAsignados
+        WHERE idConductoresAsignados = #{idConductoresAsignados};
+    </delete>
+
+</mapper>

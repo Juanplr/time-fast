@@ -4,8 +4,15 @@ import clienteescritorio.dao.ColaboradorDAO;
 import clienteescritorio.dao.RolDAO;
 import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +23,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pojo.Colaborador;
 import pojo.Mensaje;
@@ -52,20 +61,28 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     private Button btnGuardar;
     @FXML
     private ComboBox<Rol> cbRol;
-    @FXML
-    private ComboBox<?> cbVehiculo;
 
     private NotificadoOperacion observador; 
     private Colaborador colaboradorEditado;
     private boolean modoEdicion = false;
+    private File foto;
+    private boolean quisoAgregarUnaFoto = false;
+    
     ObservableList<Rol> tiposDeColaboradores;
     @FXML
     private Label lNoLicencia;
+    @FXML
+    private Button btnSeleccionarFoto;
+    @FXML
+    private Label lFoto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tfNoLicencia.setVisible(false);
         lNoLicencia.setVisible(false);
+        lFoto.setVisible(false);
+        imgFotografia.setVisible(false);
+        btnSeleccionarFoto.setVisible(false);
         cargarTiposDeUsuarios();
     }    
     
@@ -78,6 +95,9 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             btnGuardar.setText("Editar");
             cbRol.setDisable(true);
             tfNumeroPersonal.setEditable(false);
+            lFoto.setVisible(true);
+            imgFotografia.setVisible(true);
+            btnSeleccionarFoto.setVisible(true);
             if(colaboradorEditado.getIdRol()==3){
                 tfNoLicencia.setVisible(true);
                 lNoLicencia.setVisible(true);
@@ -87,11 +107,9 @@ public class FXMLFormularioColaboradoresController implements Initializable {
 
     @FXML
     private void regresarPrincipal(MouseEvent event) {
+        cerrarVentana();
     }
 
-    @FXML
-    private void subirFotografia(MouseEvent event) {
-    }
 
     @FXML
     private void onClickGuardar(ActionEvent event) {
@@ -111,16 +129,60 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             if(!modoEdicion){
                 guardarDatosColaborador(colaborador);
             }else{
+                if(quisoAgregarUnaFoto){
+                    try {
+                        byte[] fotoBytes = convertirImagenABytes(foto);
+                        colaborador.setFoto(fotoBytes);
+                    } catch (Exception ex) {
+                        Utilidades.mostrarAlertaSimple("Validación", "Debes seleccionar una foto", Alert.AlertType.WARNING);
+                   }
+                }else{
+                    colaborador.setFoto(colaboradorEditado.getFoto());
+                }
                 colaborador.setIdColaborador(colaboradorEditado.getIdColaborador());
                 editarDatosColaborador(colaborador);
             }
             
-        }else{
-            Utilidades.mostrarAlertaSimple("Campos Obligatorios", "Hubo un error al llenar los campos", Alert.AlertType.ERROR);
         }
     }
     
     private boolean validarCampos(Colaborador colaborador) {
+        if (colaborador.getNombre() == null || colaborador.getNombre().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Nombre' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getApellidoPaterno() == null || colaborador.getApellidoPaterno().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Apellido Paterno' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getApellidoMaterno() != null && colaborador.getApellidoMaterno().trim().length() > 50) {
+            Utilidades.mostrarAlertaSimple("Validación", "El Apellido Materno no debe exceder los 50 caracteres.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getCurp() == null || colaborador.getCurp().length() != 18) {
+            Utilidades.mostrarAlertaSimple("Validación", "La CURP debe tener exactamente 18 caracteres.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getCorreo() == null || !colaborador.getCorreo().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            Utilidades.mostrarAlertaSimple("Validación", "El correo electrónico no tiene un formato válido.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getNoPersonal() == null || colaborador.getNoPersonal().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Número Personal' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getContrasena() == null || colaborador.getContrasena().length() < 6) {
+            Utilidades.mostrarAlertaSimple("Validación", "La contraseña debe tener al menos 6 caracteres.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getIdRol() == null || colaborador.getIdRol() <= 0) {
+            Utilidades.mostrarAlertaSimple("Validación", "Debe seleccionar un rol válido.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (colaborador.getIdRol() == 3 && (colaborador.getNumeroDeLicencia() == null || colaborador.getNumeroDeLicencia().trim().isEmpty())) {
+            Utilidades.mostrarAlertaSimple("Validación", "El número de licencia es obligatorio para este rol.", Alert.AlertType.WARNING);
+            return false;
+        }
         return true;
     }
 
@@ -149,12 +211,13 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     
     private void editarDatosColaborador(Colaborador colaborador){
         Mensaje msj = ColaboradorDAO.editarColaborador(colaborador);
+        Mensaje fotoEditada = ColaboradorDAO.subirFoto(colaborador.getIdColaborador(), colaborador.getFoto());
         if(!msj.isError()){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Todo good", Alert.AlertType.INFORMATION);
-            observador.notificarOperacion("Guardar", colaborador.getNombre());
+            Utilidades.mostrarAlertaSimple("Edición", "Colaborador: " +colaborador.getNombre()+ " Editado" , Alert.AlertType.INFORMATION);
+            observador.notificarOperacion("Edición", colaborador.getNombre());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "Todo bad", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }
     
@@ -171,6 +234,10 @@ public class FXMLFormularioColaboradoresController implements Initializable {
         int posicion = buscarIdRol(colaboradorEditado.getIdRol());
         cbRol.getSelectionModel().select(posicion);
         tfNoLicencia.setText(colaboradorEditado.getNumeroDeLicencia());
+        colaboradorEditado.setFoto(ColaboradorDAO.obtenerFoto(colaboradorEditado.getIdColaborador()));
+            if(colaboradorEditado.getFoto()!=null){
+                mostrarFotografia(colaboradorEditado.getFoto());
+        }
     }
     private int buscarIdRol(int idRol){
         for(int i=0; i<tiposDeColaboradores.size();i++){
@@ -191,6 +258,57 @@ public class FXMLFormularioColaboradoresController implements Initializable {
         }else{
             lNoLicencia.setVisible(false);
             tfNoLicencia.setVisible(false);
+        }
+    }
+    public void mostrarFotografia(byte[] fotoBytes) {
+        if (fotoBytes != null) {
+            try {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(fotoBytes);
+
+                Image imagen = new Image(inputStream);
+                imgFotografia.setImage(imagen);
+            } catch (Exception e) {
+                System.err.println("Error al cargar la imagen: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No se recibió fotografía para mostrar.");
+        }
+    }
+
+    @FXML
+    private void selecionarFoto(ActionEvent event) {
+        quisoAgregarUnaFoto = true;
+        FileChooser fileChooser = new FileChooser();
+        
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        foto = fileChooser.showOpenDialog(btnSeleccionarFoto.getScene().getWindow());
+
+        if (foto != null) {
+            try {
+                Image imagen = new Image(new FileInputStream(foto));
+                imgFotografia.setImage(imagen);
+
+            } catch (IOException e) {
+                System.err.println("Error al cargar la imagen: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
+    private byte[] convertirImagenABytes(File archivo) throws IOException {
+        try (FileInputStream fis = new FileInputStream(archivo);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[16 * 1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            return baos.toByteArray();
         }
     }
 }
