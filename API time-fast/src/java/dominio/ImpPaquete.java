@@ -36,6 +36,26 @@ public class ImpPaquete {
         return paquetes;
     }
     
+    public static List<Paquete> obtenerPaquetes() {
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+        List<Paquete> paquetes = null;
+        
+        if (conexionBD != null) {
+            try {
+                paquetes = conexionBD.selectList("paquete.getPaquetes");
+            } catch (Exception e) {
+                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("No se pudo establecer conexión con la base de datos");
+        }
+        
+        return paquetes;
+    }
+    
+    
     public static Mensaje registrarPaquete(Paquete paquete) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();

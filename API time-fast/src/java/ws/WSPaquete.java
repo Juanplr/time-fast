@@ -41,6 +41,13 @@ public class WSPaquete {
             throw new NotFoundException("No se encontraron paquetes para el envío con idEnvio: " + idEnvio);
         }
     }
+    
+    @Path("obtener-paquetes")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Paquete> obtenerPaquetes() {
+       return ImpPaquete.obtenerPaquetes();
+    }
 
     @Path("agregar-paquete")
     @POST

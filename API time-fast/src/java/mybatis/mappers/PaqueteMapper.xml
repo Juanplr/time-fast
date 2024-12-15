@@ -5,45 +5,51 @@
 <mapper namespace="paquete">
 
     <select id="getPaquetesPorEnvio" resultType="pojo.Paquete">
-        SELECT idPaquete, idEnvio, descripcion, peso, alto, ancho, profundidad
+        SELECT idPaquete, idEnvio, descripcion, peso, alto, ancho, profundidad,
+        CONCAT(alto,'X', ancho,'X', profundidad) AS dimensiones,
         FROM paquete
-        WHERE  idEnvio = #{idEnvio}
+        WHERE  idEnvio = #{idEnvio};
+    </select>
+    
+    <select id="getPaquetes" resultType="pojo.Paquete">
+        SELECT idPaquete, idEnvio, descripcion, peso, alto, ancho, profundidad,
+        CONCAT(alto,'X', ancho,'X', profundidad) AS dimensiones,
+        FROM paquete;
     </select>
     
      <insert id="registrar" parameterType="pojo.Paquete">
-    INSERT INTO paquete (
-        idEnvio, 
-        descripcion, 
-        peso, 
-        alto, 
-        ancho, 
-        profundidad
-    ) VALUES (
-        #{idEnvio},
-        #{descripcion},
-        #{peso},
-        #{alto},
-        #{ancho},
-        #{profundidad}
-    );
-</insert>
+        INSERT INTO paquete (
+            idEnvio, 
+            descripcion, 
+            peso, 
+            alto, 
+            ancho, 
+            profundidad
+        ) VALUES (
+            #{idEnvio},
+            #{descripcion},
+            #{peso},
+            #{alto},
+            #{ancho},
+            #{profundidad}
+        );
+    </insert>
     
- <update id="editar" parameterType="pojo.Paquete">
-    UPDATE paquete
-    SET 
-        idEnvio = #{idEnvio},
-        descripcion = #{descripcion},
-        peso = #{peso},
-        alto = #{alto},
-        ancho = #{ancho},
-        profundidad = #{profundidad}
-    WHERE idPaquete = #{idPaquete};
-    </update>
+    <update id="editar" parameterType="pojo.Paquete">
+       UPDATE paquete
+       SET 
+           descripcion = #{descripcion},
+           peso = #{peso},
+           alto = #{alto},
+           ancho = #{ancho},
+           profundidad = #{profundidad}
+       WHERE idPaquete = #{idPaquete};
+       </update>
 
- <delete id="eliminar" parameterType="java.lang.Integer">
-    DELETE FROM paquete
-    WHERE idPaquete = #{idPaquete};
-</delete>
+    <delete id="eliminar" parameterType="java.lang.Integer">
+       DELETE FROM paquete
+       WHERE idPaquete = #{idPaquete};
+   </delete>
   
 
 
