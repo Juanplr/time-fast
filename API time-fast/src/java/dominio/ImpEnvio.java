@@ -37,6 +37,25 @@ public static List<Envio> obtenerEnvios() {
     return listaEnvios;
 }
 
+    public static List<Envio> obtenerEnviosPorNoGuia(String noGuia) {
+        List<Envio> listaEnvios = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaEnvios = conexionBD.selectList("envio.getObtenerEnviosPorNoGuia", noGuia);
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
+        }
+
+        return listaEnvios;
+    }
+
     
  
     public static Mensaje registrarEnvio(Envio envio) {

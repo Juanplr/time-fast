@@ -37,6 +37,23 @@ public class EnvioDAO {
         }
         return envios;
     }
+    
+    public static List<Envio>obtenerEnviosPorNoGuia(String noGuia){
+        List<Envio> envios = null;
+        String url = Constantes.URL+"envio/obtener-envios-por-noguia/"+noGuia;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        if(respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
+            Gson gson = new Gson();
+            try {
+                Type tipoLista = new TypeToken<List<Envio>>(){}.getType();
+                envios = gson.fromJson(respuesta.getContenido(), tipoLista);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return envios;
+    }
+    
     public static Mensaje agregarEnvio(Envio envio){
         Mensaje mensaje = null;
         String url = Constantes.URL+"envio/agregar-envio";

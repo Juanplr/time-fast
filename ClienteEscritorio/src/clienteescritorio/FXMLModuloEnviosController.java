@@ -118,7 +118,7 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
             Parent root = loader.load();
             
             FXMLFormularioEnviosController controlador = loader.getController();
-            //controlador.initializeValores(observador, colaborador);
+            controlador.initializeValores(observador, envio);
             
             Stage ecena = new Stage();
             Scene ecenario = new Scene(root);
@@ -139,7 +139,12 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
 
     @FXML
     private void irBuscar(MouseEvent event) {
-        
+         if(!tfBuscar.getText().isEmpty()){
+            String noGuia = tfBuscar.getText();
+            buscarEnvio(noGuia);
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "Campo de buscar Vacio", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -177,6 +182,20 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
     @Override
     public void notificarOperacion(String tipo, String nombre) {
         cargarLaInformacion();
+    }
+
+    private void buscarEnvio(String noGuia) {
+        envios.clear();
+        tvTablaEnvios.setItems(envios);
+        List<Envio> lista = EnvioDAO.obtenerEnviosPorNoGuia(noGuia);
+        if (lista!=null && !lista.isEmpty()) {
+            envios.addAll(lista);
+            tvTablaEnvios.setItems(envios);
+        }else{
+            Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el Envio", Alert.AlertType.WARNING);
+            cargarLaInformacion();
+        }
+        
     }
     
 }

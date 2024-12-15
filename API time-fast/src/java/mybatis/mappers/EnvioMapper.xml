@@ -5,7 +5,7 @@
 <mapper namespace="envio">
 
 
-    <select id="getObtenerEnvios" parameterType="int" resultType="pojo.Envio">
+    <select id="getObtenerEnvios"  resultType="pojo.Envio">
         SELECT 
             e.idEnvio,
             e.idCliente,
@@ -29,7 +29,7 @@
         LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
         LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
     </select>
-    <select id="getObtenerEnvios2" parameterType="int" resultType="pojo.Envio">
+    <select id="getObtenerEnvios2"  resultType="pojo.Envio">
         SELECT 
             e.idEnvio,
             e.idCliente,
@@ -53,6 +53,32 @@
         LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
         LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
     </select>
+    
+    <select id="getObtenerEnviosPorNoGuia" resultType="pojo.Envio">
+        SELECT 
+            e.idEnvio,
+            e.idCliente,
+            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
+            e.destino,
+            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.origenCiudad,
+            e.origenEstado,
+            e.noGuia,
+            e.costoDeEnvio,
+            e.idEstadoDeEnvio,
+            est.nombre AS estadoDeEnvio,
+            e.idColaborador,
+            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
+        FROM envio e
+        LEFT JOIN cliente c ON e.idCliente = c.idCliente
+        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
+        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador
+        WHERE e.noGuia = #{noGuia};
+    </select>
 
     
     <insert id="registrar" parameterType="pojo.Envio">
@@ -67,7 +93,8 @@
             noGuia,
             costoDeEnvio,
             idEstadoDeEnvio,
-            idColaborador
+            idColaborador,
+            destino
         ) VALUES (
             #{idCliente},
             #{origenCalle},
@@ -79,7 +106,8 @@
             #{noGuia},
             #{costoDeEnvio},
             #{idEstadoDeEnvio},
-            #{idColaborador}
+            #{idColaborador},
+            #{destino}
         );
     </insert>
 
@@ -93,10 +121,10 @@
             origenCodigoPostal = #{origenCodigoPostal},
             origenCiudad = #{origenCiudad},
             origenEstado = #{origenEstado},
-            noGuia = #{noGuia},
             costoDeEnvio = #{costoDeEnvio},
             idEstadoDeEnvio = #{idEstadoDeEnvio},
-            idColaborador = #{idColaborador}
+            idColaborador = #{idColaborador},
+            destino=#{destino}
         WHERE idEnvio = #{idEnvio};
     </update>
 

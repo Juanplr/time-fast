@@ -34,6 +34,16 @@ public class WSEnvio {
     public static List<Envio> obtenerEnvios() {
        return ImpEnvio.obtenerEnvios();
     }
+    
+    @Path("obtener-envios-por-noguia/{noGuia}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<Envio> obtenerEnviosPorNoGuia(@PathParam("noGuia") String noGuia) {
+       if(noGuia!=null && !noGuia.isEmpty()){
+           return ImpEnvio.obtenerEnviosPorNoGuia(noGuia);
+       }
+       throw new BadRequestException();
+    }
 
 
     @Path("agregar-envio")

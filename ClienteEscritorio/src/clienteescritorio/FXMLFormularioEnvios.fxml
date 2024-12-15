@@ -101,7 +101,7 @@
                </font>
             </Label>
             <TextField fx:id="tfCostoEnvio" layoutX="319.0" layoutY="332.0" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: #c6c5c5;" />
-            <Label layoutX="507.0" layoutY="312.0" text="Estado  del Envio:">
+            <Label fx:id="lEstadoEnvio" layoutX="507.0" layoutY="312.0" text="Estado  del Envio:">
                <font>
                   <Font size="14.0" />
                </font>
