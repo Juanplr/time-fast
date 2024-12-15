@@ -28,27 +28,12 @@ import pojo.Mensaje;
 @Path("envio")
 public class WSEnvio {
     
-   @Path("obtener-envios")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public static List<Envio> obtenerEnvios() {
-    List<Envio> listaEnvios = new ArrayList<>();
-    SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
-
-    if (conexionBD != null) {
-        try {
-            listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
-        } catch (Exception e) {
-            System.err.println("Error al recuperar los envíos: " + e.getMessage());
-        } finally {
-            conexionBD.close();
-        }
-    } else {
-        System.err.println("Por el momento no se puede consultar la información");
+    @Path("obtener-envios")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<Envio> obtenerEnvios() {
+       return ImpEnvio.obtenerEnvios();
     }
-
-    return listaEnvios;
-}
 
 
     @Path("agregar-envio")

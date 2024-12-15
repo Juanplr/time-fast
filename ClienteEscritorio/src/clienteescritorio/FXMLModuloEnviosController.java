@@ -5,53 +5,73 @@
  */
 package clienteescritorio;
 
+import clienteescritorio.dao.EnvioDAO;
+import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pojo.Envio;
+import pojo.Mensaje;
 
 /**
  * FXML Controller class
  *
  * @author reyes
  */
-public class FXMLModuloEnviosController implements Initializable {
-
-    @FXML
-    private ImageView imgCerrarSesion;
+public class FXMLModuloEnviosController implements Initializable, NotificadoOperacion {
+    
+    private ObservableList<Envio> envios;
+    
     @FXML
     private ImageView imgRegresar;
     @FXML
-    private TextField ftBuscar;
+    private TextField tfBuscar;
     @FXML
-    private ImageView imgBuscar;
+    private TableView<Envio> tvTablaEnvios;
     @FXML
-    private ImageView imgRegistrarEnvio;
+    private TableColumn colNoGuia;
     @FXML
-    private ImageView imgEliminarEnvio;
+    private TableColumn colOrigen;
     @FXML
-    private ImageView imgEditarEnvio;
+    private TableColumn colDestino;
+    @FXML
+    private TableColumn colConductor;
+    @FXML
+    private TableColumn colCliente;
+    @FXML
+    private TableColumn colEstado;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        configurarTabla();
+        cargarLaInformacion();
     }    
     
     public void irPantallaPrincipal(){
-                try {
+        try {
             Stage escenarioBase = (Stage) imgRegresar.getScene().getWindow();
                     
             Parent principal = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
@@ -64,30 +84,99 @@ public class FXMLModuloEnviosController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }
     }
+    private void configurarTabla() {
+           colNoGuia.setCellValueFactory(new PropertyValueFactory("noGuia"));
+           colOrigen.setCellValueFactory(new PropertyValueFactory("origen"));
+           colDestino.setCellValueFactory(new PropertyValueFactory("destino"));
+           colConductor.setCellValueFactory(new PropertyValueFactory("colaborador"));
+           colCliente.setCellValueFactory(new PropertyValueFactory("cliente"));
+           colEstado.setCellValueFactory(new PropertyValueFactory("estadoDeEnvio"));
+    }
+
+    private void cargarLaInformacion() {
+           envios = FXCollections.observableArrayList();
+           List<Envio> lista = EnvioDAO.obtenerEnvios();
+           
+           if (lista != null) {
+               envios.addAll(lista);
+               tvTablaEnvios.setItems(envios);
+           }else{
+               Utilidades.mostrarAlertaSimple("ERROR", "Lo sentimos por el momento no se puede cargar la informacion"
+                       + "de los Colaboradores, por favor intentélo mas tarde", Alert.AlertType.ERROR);
+               cerrarVentana();
+           }
+
+    }
+
+    private void cerrarVentana(){
+            ((Stage) tfBuscar.getScene().getWindow()).close();
+    }
+    
+    private void irAFormulario(NotificadoOperacion observador, Envio envio){
+         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioEnvios.fxml"));
+            Parent root = loader.load();
+            
+            FXMLFormularioEnviosController controlador = loader.getController();
+            //controlador.initializeValores(observador, colaborador);
+            
+            Stage ecena = new Stage();
+            Scene ecenario = new Scene(root);
+            ecena.setScene(ecenario);
+            ecena.setTitle("Formulario Envios");
+            ecena.initModality(Modality.APPLICATION_MODAL);
+            ecena.showAndWait();
+        } catch (Exception ex) {
+            Logger.getLogger(FXMLModuloColaboradoresController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void regresarPrincipal(MouseEvent event) {
         irPantallaPrincipal();
     }
 
-    @FXML
-    private void imgCerrarSesion(MouseEvent event) {
-    }
 
     @FXML
     private void irBuscar(MouseEvent event) {
+        
     }
 
     @FXML
     private void irRegistrarEnvio(MouseEvent event) {
+        irAFormulario(this, null);
     }
 
     @FXML
     private void irEliminarEnvio(MouseEvent event) {
+        Envio envio = tvTablaEnvios.getSelectionModel().getSelectedItem();
+        if(envio!= null){
+            Mensaje mensaje = EnvioDAO.eliminarEnvio(envio.getIdEnvio());
+            if(!mensaje.isError()){
+                Utilidades.mostrarAlertaSimple("Correcto", "Cliente Eliminado correctamente", Alert.AlertType.INFORMATION);
+                cargarLaInformacion();
+            }else{
+                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+            }
+            
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un cliente", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void irEditarEnvio(MouseEvent event) {
+        Envio envio = tvTablaEnvios.getSelectionModel().getSelectedItem();
+        if(envio!= null){
+            irAFormulario(this, envio);
+        }else{
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Envio", Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void notificarOperacion(String tipo, String nombre) {
+        cargarLaInformacion();
     }
     
 }

@@ -92,6 +92,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
 
     @FXML
     private void regresarPrincipal(MouseEvent event) {
+        cerrarVentana();
     }
 
 
@@ -123,6 +124,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
         tfMarca.setText(unidadEditada.getMarca());
         tfModelo.setText(unidadEditada.getModelo());
         tfVin.setText(unidadEditada.getVin());
+        tfVin.setEditable(false);
         tfNumeroIdentificacion.setText(unidadEditada.getNii());
         tfAnio.setText(unidadEditada.getAnio());
         int poscicion = buscarIdTipoUnidad(unidadEditada.getIdTipoUnidad());
@@ -151,7 +153,56 @@ public class FXMLFormularioUnidadesController implements Initializable {
     }
     
     private boolean validarCampos(Unidad unidad) {
+        if (unidad.getMarca() == null || unidad.getMarca().trim().isEmpty()) {
+            System.out.println("La marca es obligatoria.");
+            return false;
+        }
+
+        if (unidad.getModelo() == null || unidad.getModelo().trim().isEmpty()) {
+            System.out.println("El modelo es obligatorio.");
+            return false;
+        }
+
+        if (unidad.getAnio() == null || !unidad.getAnio().matches("\\d{4}")) {
+            System.out.println("El año debe ser un valor numérico de 4 dígitos.");
+            return false;
+        }
+
+        if (unidad.getVin() == null || !unidad.getVin().matches("[A-HJ-NPR-Z0-9]{17}")) {
+            System.out.println("El VIN debe tener exactamente 17 caracteres alfanuméricos (sin las letras I, O, Q).");
+            return false;
+        }
+
+        if (unidad.getTipoUnidad() == null || unidad.getTipoUnidad().trim().isEmpty()) {
+            System.out.println("El tipo de unidad (Gasolina, Diesel, Eléctrica, Híbrida) es obligatorio.");
+            return false;
+        }
+
+        if (unidad.getNii() == null || !unidad.getNii().equals(generarNII(unidad))) {
+            System.out.println("El Número de Identificación Interno (NII) no coincide con el formato requerido (Año + primeros 4 caracteres del VIN).");
+            return false;
+        }
+
+        if (unidad.getIdTipoUnidad() == null || unidad.getIdTipoUnidad() <= 0) {
+            System.out.println("El ID del tipo de unidad debe ser un valor positivo.");
+            return false;
+        }
+
+        if (unidad.getIdEstadoUnidad() == null || unidad.getIdEstadoUnidad() <= 0) {
+            System.out.println("El ID del estado de la unidad debe ser un valor positivo.");
+            return false;
+        }
+
         return true;
+    }
+
+    private String generarNII(Unidad unidad) {
+        String anio = unidad.getAnio();
+        String vin = unidad.getVin();
+        if (anio != null && vin != null && vin.length() >= 4) {
+            return anio + vin.substring(0, 4);
+        }
+        return null;
     }
 
     
@@ -189,5 +240,16 @@ public class FXMLFormularioUnidadesController implements Initializable {
             }
         }
         return -1;
+    }
+
+    @FXML
+    private void detectarEstado(ActionEvent event) {
+        if(cbEstadoUnidad.getSelectionModel().getSelectedItem().getIdEstadoUnidad()==2){
+            lMotivo.setVisible(true);
+            tfMotivo.setVisible(true);
+        }else{
+            lMotivo.setVisible(false);
+            tfMotivo.setVisible(false);
+        }
     }
 }

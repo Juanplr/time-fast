@@ -7,19 +7,51 @@
 
     <select id="getObtenerEnvios" parameterType="int" resultType="pojo.Envio">
         SELECT 
-            idEnvio,
-            idCliente,
-            origenCalle,
-            origenNumero,
-            origenColonia,
-            origenCodigoPostal,
-            origenCiudad,
-            origenEstado,
-            noGuia,
-            costoDeEnvio,
-            idEstadoDeEnvio,
-            idColaborador
-        FROM envio
+            e.idEnvio,
+            e.idCliente,
+            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
+            e.destino,
+            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.origenCiudad,
+            e.origenEstado,
+            e.noGuia,
+            e.costoDeEnvio,
+            e.idEstadoDeEnvio,
+            est.nombre AS estadoDeEnvio,
+            e.idColaborador,
+            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
+        FROM envio e
+        LEFT JOIN cliente c ON e.idCliente = c.idCliente
+        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
+        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
+    </select>
+    <select id="getObtenerEnvios2" parameterType="int" resultType="pojo.Envio">
+        SELECT 
+            e.idEnvio,
+            e.idCliente,
+            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS cliente,
+            CONCAT(c.calle, ', ', c.numeroDeCasa, ', ', c.colonia, ', CP: ', c.codigoPostal, ', ', c.ciudad, ', ', c.estado) AS destino,
+            CONCAT(e.origenCalle, ', ', e.origenNumero, ', ', e.origenColonia, ', CP: ', e.origenCodigoPostal, ', ', e.origenCiudad, ', ', e.origenEstado) AS origen,
+            e.origenCalle,
+            e.origenNumero,
+            e.origenColonia,
+            e.origenCodigoPostal,
+            e.origenCiudad,
+            e.origenEstado,
+            e.noGuia,
+            e.costoDeEnvio,
+            e.idEstadoDeEnvio,
+            est.nombre AS estadoDeEnvio,
+            e.idColaborador,
+            CONCAT(col.nombre, ' ', col.apellidoPaterno, ' ', col.apellidoMaterno) AS colaborador
+        FROM envio e
+        LEFT JOIN cliente c ON e.idCliente = c.idCliente
+        LEFT JOIN estadoDeEnvio est ON e.idEstadoDeEnvio = est.idEstadoDeEnvio
+        LEFT JOIN colaborador col ON e.idColaborador = col.idColaborador;       
     </select>
 
     

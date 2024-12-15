@@ -11,9 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import pojo.Cliente;
+import pojo.Colaborador;
 
 /**
  * FXML Controller class
@@ -22,8 +25,6 @@ import javafx.scene.input.MouseEvent;
  */
 public class FXMLFormularioEnviosController implements Initializable {
 
-    @FXML
-    private ImageView imgCerrarSesion;
     @FXML
     private ImageView imgRegresar;
     @FXML
@@ -37,19 +38,21 @@ public class FXMLFormularioEnviosController implements Initializable {
     @FXML
     private TextField tfCodigoPostal;
     @FXML
-    private TextField tfCliente;
-    @FXML
     private TextField tfNumeroGuia;
     @FXML
     private TextField tfCiudad;
     @FXML
     private TextField tfEstado;
     @FXML
-    private TextField tfCobductor;
-    @FXML
     private TextField tfCostoEnvio;
     @FXML
-    private TextField tfEstadoEnvio;
+    private TextField tfDestino;
+    @FXML
+    private ComboBox<Cliente> cbClientes;
+    @FXML
+    private ComboBox<Colaborador> cbConductores;
+    @FXML
+    private ComboBox<?> cbEstadoDeEnvio;
 
     /**
      * Initializes the controller class.
@@ -65,9 +68,6 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void onClickGuardar(ActionEvent event) {
     }
 
-    @FXML
-    private void irCerrarSesion(MouseEvent event) {
-    }
 
     @FXML
     private void irPantallaPrincipal(MouseEvent event) {

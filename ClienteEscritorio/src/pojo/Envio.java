@@ -13,129 +13,179 @@ public class Envio {
  
     private Integer idEnvio;
     private Integer idCliente;
+    private String cliente;
+    private String destino;
+    private String origen;
     private String origenCalle;
-    private String origenNunero;
+    private String origenNumero;
     private String origenColonia;
     private String origenCodigoPostal;
     private String origenCiudad;
     private String origenEstado;
     private String noGuia;
-    private float costoEnvio;
+    private float costoDeEnvio;
     private Integer idEstadoDeEnvio;
+    private String estadoDeEnvio;
     private Integer idColaborador;
+    private String colaborador;
+
+    public Envio() {
+    }
+
+    public Envio(Integer idEnvio, Integer idCliente, String cliente, String destino, String origen, String origenCalle, String origenNumero, String origenColonia, String origenCodigoPostal, String origenCiudad, String origenEstado, String noGuia, float costoDeEnvio, Integer idEstadoDeEnvio, String estadoDeEnvio, Integer idColaborador, String colaborador) {
+        this.idEnvio = idEnvio;
+        this.idCliente = idCliente;
+        this.cliente = cliente;
+        this.destino = destino;
+        this.origen = origen;
+        this.origenCalle = origenCalle;
+        this.origenNumero = origenNumero;
+        this.origenColonia = origenColonia;
+        this.origenCodigoPostal = origenCodigoPostal;
+        this.origenCiudad = origenCiudad;
+        this.origenEstado = origenEstado;
+        this.noGuia = noGuia;
+        this.costoDeEnvio = costoDeEnvio;
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+        this.estadoDeEnvio = estadoDeEnvio;
+        this.idColaborador = idColaborador;
+        this.colaborador = colaborador;
+    }
 
     public Integer getIdEnvio() {
         return idEnvio;
-    }
-
-    public void setIdEnvio(Integer idEnvio) {
-        this.idEnvio = idEnvio;
     }
 
     public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public String getCliente() {
+        return cliente;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public String getOrigen() {
+        return origen;
     }
 
     public String getOrigenCalle() {
         return origenCalle;
     }
 
-    public void setOrigenCalle(String origenCalle) {
-        this.origenCalle = origenCalle;
-    }
-
-    public String getOrigenNunero() {
-        return origenNunero;
-    }
-
-    public void setOrigenNunero(String origenNunero) {
-        this.origenNunero = origenNunero;
+    public String getOrigenNumero() {
+        return origenNumero;
     }
 
     public String getOrigenColonia() {
         return origenColonia;
     }
 
-    public void setOrigenColonia(String origenColonia) {
-        this.origenColonia = origenColonia;
-    }
-
     public String getOrigenCodigoPostal() {
         return origenCodigoPostal;
-    }
-
-    public void setOrigenCodigoPostal(String origenCodigoPostal) {
-        this.origenCodigoPostal = origenCodigoPostal;
     }
 
     public String getOrigenCiudad() {
         return origenCiudad;
     }
 
-    public void setOrigenCiudad(String origenCiudad) {
-        this.origenCiudad = origenCiudad;
-    }
-
     public String getOrigenEstado() {
         return origenEstado;
-    }
-
-    public void setOrigenEstado(String origenEstado) {
-        this.origenEstado = origenEstado;
     }
 
     public String getNoGuia() {
         return noGuia;
     }
 
-    public void setNoGuia(String noGuia) {
-        this.noGuia = noGuia;
-    }
-
-    public float getCostoEnvio() {
-        return costoEnvio;
-    }
-
-    public void setCostoEnvio(float costoEnvio) {
-        this.costoEnvio = costoEnvio;
+    public float getCostoDeEnvio() {
+        return costoDeEnvio;
     }
 
     public Integer getIdEstadoDeEnvio() {
         return idEstadoDeEnvio;
     }
 
-    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
-        this.idEstadoDeEnvio = idEstadoDeEnvio;
+    public String getEstadoDeEnvio() {
+        return estadoDeEnvio;
     }
 
     public Integer getIdColaborador() {
         return idColaborador;
     }
 
+    public String getColaborador() {
+        return colaborador;
+    }
+
+    public void setIdEnvio(Integer idEnvio) {
+        this.idEnvio = idEnvio;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
+
+    public void setOrigenCalle(String origenCalle) {
+        this.origenCalle = origenCalle;
+    }
+
+    public void setOrigenNumero(String origenNumero) {
+        this.origenNumero = origenNumero;
+    }
+
+    public void setOrigenColonia(String origenColonia) {
+        this.origenColonia = origenColonia;
+    }
+
+    public void setOrigenCodigoPostal(String origenCodigoPostal) {
+        this.origenCodigoPostal = origenCodigoPostal;
+    }
+
+    public void setOrigenCiudad(String origenCiudad) {
+        this.origenCiudad = origenCiudad;
+    }
+
+    public void setOrigenEstado(String origenEstado) {
+        this.origenEstado = origenEstado;
+    }
+
+    public void setNoGuia(String noGuia) {
+        this.noGuia = noGuia;
+    }
+
+    public void setCostoDeEnvio(float costoDeEnvio) {
+        this.costoDeEnvio = costoDeEnvio;
+    }
+
+    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+    }
+
+    public void setEstadoDeEnvio(String estadoDeEnvio) {
+        this.estadoDeEnvio = estadoDeEnvio;
+    }
+
     public void setIdColaborador(Integer idColaborador) {
         this.idColaborador = idColaborador;
     }
 
-    public Envio(Integer idEnvio, Integer idCliente, String origenCalle, String origenNunero, String origenColonia, String origenCodigoPostal, String origenCiudad, String origenEstado, String noGuia, float costoEnvio, Integer idEstadoDeEnvio, Integer idColaborador) {
-        this.idEnvio = idEnvio;
-        this.idCliente = idCliente;
-        this.origenCalle = origenCalle;
-        this.origenNunero = origenNunero;
-        this.origenColonia = origenColonia;
-        this.origenCodigoPostal = origenCodigoPostal;
-        this.origenCiudad = origenCiudad;
-        this.origenEstado = origenEstado;
-        this.noGuia = noGuia;
-        this.costoEnvio = costoEnvio;
-        this.idEstadoDeEnvio = idEstadoDeEnvio;
-        this.idColaborador = idColaborador;
+    public void setColaborador(String colaborador) {
+        this.colaborador = colaborador;
     }
-    
-    
-           
-    
+
 }
