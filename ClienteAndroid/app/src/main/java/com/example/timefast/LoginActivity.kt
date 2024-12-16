@@ -102,6 +102,7 @@ class LoginActivity : AppCompatActivity() {
     fun irPantallaPrincipal(colaborador:String){
         val intent = Intent(this@LoginActivity,EnviosAsignadosActivity::class.java)
         intent.putExtra("colaborador", colaborador);
+        Log.e("Datos de colaborador es : ", colaborador)
         startActivity(intent)
         finish()
     }

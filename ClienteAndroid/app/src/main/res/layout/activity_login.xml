@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="24dp"
     android:gravity="center"
     android:background="@android:color/white">
 
@@ -14,38 +16,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time-Fast"
-        android:textSize="32sp"
+        android:textSize="44sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="8dp" />
 
     <!-- Ícono -->
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
         android:src="@drawable/ic_logo"
     android:layout_marginBottom="32dp" />
 
+
     <!-- Campo de Número Personal -->
+
+    <TextView
+        android:id="@+id/Tv_personal_numero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Número Personal:"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
     <EditText
         android:id="@+id/personal_numero"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Numero Personal:"
+        android:hint="EMP123"
         android:inputType="text"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@android:color/darker_gray" />
+        android:layout_marginBottom="16dp"/>
+
 
     <!-- Campo de Contraseña -->
+    <TextView
+        android:id="@+id/Tv_contrasena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contraseña:"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
     <EditText
         android:id="@+id/contrasena"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Contraseña:"
+        android:hint="****************"
         android:inputType="textPassword"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@android:color/darker_gray" />
+        android:layout_marginBottom="8dp" />
 
     <!-- Texto de "¿Olvidaste tu contraseña?" -->
     <TextView
