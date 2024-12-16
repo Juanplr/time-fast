@@ -84,7 +84,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbEstadoUnidad" layoutX="22.0" layoutY="304.0" prefHeight="25.0" prefWidth="164.0" />
+            <ComboBox fx:id="cbEstadoUnidad" layoutX="22.0" layoutY="304.0" onAction="#detectarEstado" prefHeight="25.0" prefWidth="164.0" />
             <Label fx:id="lMotivo" layoutX="305.0" layoutY="281.0" text="Motivo:">
                <font>
                   <Font size="14.0" />

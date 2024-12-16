@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ *EMP123
  * @author juanl
  */
 public class ClienteEscritorio extends Application {

@@ -8,6 +8,9 @@ FLUSH PRIVILEGES;
 
 USE timeFast;
 
+ALTER TABLE envio
+ADD destino VARCHAR(200) NOT NULL AFTER origenEstado;
+
 CREATE TABLE rol(
 	idRol INTEGER AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
@@ -63,7 +66,8 @@ CREATE TABLE cliente(
 	ciudad VARCHAR(50) NOT NULL,
     estado VARCHAR(50) NOT NULL,
     telefono VARCHAR(10),
-    correo VARCHAR(100)
+    correo VARCHAR(100),
+    destino VARCHAR(200) NOT NULL
 );
 
 
@@ -170,7 +174,7 @@ INSERT INTO estadoDeEnvio (nombre) VALUES
 
 -- Datos para la tabla envio
 INSERT INTO envio (idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, origenCiudad, origenEstado, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador) VALUES 
-(1, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1),
+(3, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1),
 (2, 'Calle B', '202', 'Colonia B', '12345', 'Ciudad B', 'Estado B', 'GUIA002', 200.00, 2, 2);
 
 -- Datos para la tabla paquete
@@ -191,6 +195,21 @@ INSERT INTO historialDeBaja (idUnidad, motivo) VALUES
 INSERT INTO conductoresAsignados (idColaborador, idUnidad) VALUES 
 (1, 1),
 (2, 2);
+
+
+INSERT INTO cliente (
+    nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo
+)
+VALUES
+('Juan', 'Pérez', 'García', 'Av. Siempre Viva', '123', 'Centro', '45678', 'Ciudad México', 'CDMX', '5523456789', 'juan.perez@example.com'),
+('María', 'López', 'Hernández', 'Calle Independencia', '45', 'Reforma', '54321', 'Guadalajara', 'Jalisco', '3323456789', 'maria.lopez@example.com'),
+('Carlos', 'Gómez', 'Martínez', 'Boulevard del Sol', '321', 'Las Palmas', '67890', 'Monterrey', 'Nuevo León', '8123456789', 'carlos.gomez@example.com'),
+('Ana', 'Ramírez', 'Ortiz', 'Calle Luna', '78', 'Chapultepec', '98765', 'Puebla', 'Puebla', '2223456789', 'ana.ramirez@example.com'),
+('Luis', 'Fernández', 'Díaz', 'Av. Hidalgo', '150', 'Centro', '12345', 'Querétaro', 'Querétaro', '4423456789', 'luis.fernandez@example.com');
+
+
+
+
 
 
 

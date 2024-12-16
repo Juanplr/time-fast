@@ -7,10 +7,15 @@
 
     <select id="getAll" resultType="pojo.ConductoresAsignados">
         SELECT 
-            idConductoresAsignados,
-            idColaborador,
-            idUnidad
-        FROM conductoresAsignados
+            ca.idConductoresAsignados,
+            ca.idColaborador,
+            ca.idUnidad,
+            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS conductor,
+            CONCAT(u.marca, ' ', u.modelo) AS unidad,
+            u.vin
+        FROM conductoresAsignados ca
+        LEFT JOIN colaborador c ON ca.idColaborador = c.idColaborador
+        LEFT JOIN  unidad u ON ca.idUnidad = u.idUnidad;
     </select>
 
 

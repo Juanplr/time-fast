@@ -11,6 +11,7 @@ import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
+import pojo.EstadoDeEnvio;
 import pojo.Mensaje;
 /**
  *
@@ -18,24 +19,43 @@ import pojo.Mensaje;
  */
 public class ImpEnvio {
     
-public static List<Envio> obtenerEnvios() {
-    List<Envio> listaEnvios = new ArrayList<>();
-    SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+    public static List<Envio> obtenerEnvios() {
+        List<Envio> listaEnvios = new ArrayList<>();
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
 
-    if (conexionBD != null) {
-        try {
-            listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
-        } catch (Exception e) {
-            System.err.println("Error al recuperar los envíos: " + e.getMessage());
-        } finally {
-            conexionBD.close();
+        if (conexionBD != null) {
+            try {
+                listaEnvios = conexionBD.selectList("envio.getObtenerEnvios");
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
         }
-    } else {
-        System.err.println("Por el momento no se puede consultar la información");
+
+        return listaEnvios;
     }
 
-    return listaEnvios;
-}
+    public static List<Envio> obtenerEnviosPorNoGuia(String noGuia) {
+        List<Envio> listaEnvios = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaEnvios = conexionBD.selectList("envio.getObtenerEnviosPorNoGuia", noGuia);
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
+        }
+
+        return listaEnvios;
+    }
 
     
  
@@ -127,5 +147,24 @@ public static List<Envio> obtenerEnvios() {
         }
 
         return mensaje;
+    }
+    
+    public static List<EstadoDeEnvio> obtenerEstadosDeEnvios() {
+        List<EstadoDeEnvio> listaEstados = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaEstados = conexionBD.selectList("envio.getObtenerEstadosDeEnvio");
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
+        }
+
+        return listaEstados;
     }
 }

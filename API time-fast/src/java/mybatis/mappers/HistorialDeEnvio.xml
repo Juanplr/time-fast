@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="historialDeEnvio">
+
+   
+    <select id="getObtenerHistorialDeEnvio" resultType="pojo.HistorialDeEnvio">
+        SELECT 
+            idHistorialDeEnvio,
+            idPaquete,
+            idEnvio,
+            idColaborador,
+            motivo,
+            tiempoDeCambio
+        FROM historialDeEnvio
+    </select>
+    
+    
+    <select id="getHistorialDeEnvioPorNoGuia" parameterType="String" resultType="pojo.HistorialDeEnvio">
+    SELECT 
+        h.idHistorialDeEnvio,
+        h.idPaquete,
+        h.idEnvio,
+        h.idColaborador,
+        h.motivo,
+        h.tiempoDeCambio
+    FROM 
+        historialDeEnvio h
+    INNER JOIN envio e ON h.idEnvio = e.idEnvio
+    WHERE 
+        e.noGuia = #{noGuia};
+</select>
+
+
+    
+   
+
+ 
+    <insert id="insert" parameterType="pojo.HistorialDeEnvio">
+        INSERT INTO historialDeEnvio (
+            idPaquete,
+            idEnvio,
+            idColaborador,
+            motivo,
+            tiempoDeCambio
+        ) VALUES (
+            #{idPaquete},
+            #{idEnvio},
+            #{idColaborador},
+            #{motivo},
+            #{tiempoDeCambio}
+        );
+    </insert>
+
+
+    <update id="update" parameterType="pojo.HistorialDeEnvio">
+        UPDATE historialDeEnvio
+        SET
+            idPaquete = #{idPaquete},
+            idEnvio = #{idEnvio},
+            idColaborador = #{idColaborador},
+            motivo = #{motivo},
+            tiempoDeCambio = #{tiempoDeCambio}
+        WHERE idHistorialDeEnvio = #{idHistorialDeEnvio};
+    </update>
+
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM historialDeEnvio
+        WHERE idHistorialDeEnvio = #{idHistorialDeEnvio};
+    </delete>
+
+</mapper>

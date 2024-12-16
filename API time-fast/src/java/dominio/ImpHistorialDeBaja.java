@@ -6,105 +6,77 @@
 package dominio;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
+import pojo.HistorialDeBaja;
 import pojo.Mensaje;
-import pojo.Paquete;
+import mybatis.MyBatisUtil;
+
 /**
  *
  * @author Daniel García Jácome
  */
-public class ImpPaquete {
-    
-    public static List<Paquete> obtenerPaquetesPorEnvio(int idEnvio) {
+public class ImpHistorialDeBaja {
+
+    public static List<HistorialDeBaja> obtenerTodos() {
+        List<HistorialDeBaja> lista = new ArrayList<>();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        List<Paquete> paquetes = null;
-        
+
         if (conexionBD != null) {
             try {
-                paquetes = conexionBD.selectList("paquete.getPaquetesPorEnvio", idEnvio);
+                lista = conexionBD.selectList("historialDeBaja.getObtenerHistorialDeBaja");
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+                System.err.println("Error al recuperar historial de baja: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
         } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+            System.err.println("Por el momento no se puede consultar la información");
         }
-        
-        return paquetes;
+
+        return lista;
     }
     
-    public static List<Paquete> obtenerPaquetes() {
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        List<Paquete> paquetes = null;
-        
-        if (conexionBD != null) {
-            try {
-                paquetes = conexionBD.selectList("paquete.getPaquetes");
-            } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
-            } finally {
-                conexionBD.close();
-            }
-        } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+    public static HistorialDeBaja obtenerPorIdUnidad(int idUnidad) {
+    HistorialDeBaja lista = null;
+    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+    if (conexionBD != null) {
+        try {
+            lista = conexionBD.selectOne("historialDeBaja.getHistorialDeBajaPorIdUnidad", idUnidad);
+        } catch (Exception e) {
+            System.err.println("Error al recuperar historial de baja por idUnidad: " + e.getMessage());
+        } finally {
+            conexionBD.close();
         }
-        
-        return paquetes;
-    }
-    
-    
-    public static Mensaje registrarPaquete(Paquete paquete) {
-        Mensaje mensaje = new Mensaje();
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
-        if (conexionBD != null) {
-            try {
-                int resultado = conexionBD.insert("paquete.registrar", paquete);
-                conexionBD.commit();
-                
-                if (resultado > 0) {
-                    mensaje.setError(false);
-                    mensaje.setMensaje("Paquete registrado correctamente");
-                } else {
-                    mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo registrar el paquete");
-                }
-            } catch (Exception e) {
-                mensaje.setError(true);
-                mensaje.setMensaje("Error al registrar paquete: " + e.getMessage());
-            } finally {
-                conexionBD.close();
-            }
-        } else {
-            mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
-        }
-        
-        return mensaje;
+    } else {
+        System.err.println("No se pudo establecer conexión con la base de datos.");
     }
 
-    public static Mensaje editarPaquete(Paquete paquete) {
+    return lista;
+}
+
+
+    public static Mensaje registrar(HistorialDeBaja historial) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
+
         if (conexionBD != null) {
             try {
-                int resultado = conexionBD.update("paquete.editar", paquete);
+                int resultado = conexionBD.insert("historialDeBaja.insert", historial);
                 conexionBD.commit();
-                
+
                 if (resultado > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Paquete editado correctamente");
+                    mensaje.setMensaje("Historial de baja registrado correctamente");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo editar el paquete");
+                    mensaje.setMensaje("No se pudo registrar el historial de baja");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al editar paquete: " + e.getMessage());
+                mensaje.setMensaje("Error al registrar historial de baja: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
@@ -116,25 +88,55 @@ public class ImpPaquete {
         return mensaje;
     }
 
-    public static Mensaje eliminarPaquete(int idPaquete) {
+    public static Mensaje editar(HistorialDeBaja historial) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
+
         if (conexionBD != null) {
             try {
-                int resultado = conexionBD.delete("paquete.eliminar", idPaquete);
+                int resultado = conexionBD.update("historialDeBaja.update", historial);
                 conexionBD.commit();
-                
+
                 if (resultado > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Paquete eliminado correctamente");
+                    mensaje.setMensaje("Historial de baja editado correctamente");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo eliminar el paquete");
+                    mensaje.setMensaje("No se pudo editar el historial de baja");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al eliminar paquete: " + e.getMessage());
+                mensaje.setMensaje("Error al editar historial de baja: " + e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+        }
+
+        return mensaje;
+    }
+
+    public static Mensaje eliminar(int idHistorialDeBaja) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                int resultado = conexionBD.delete("historialDeBaja.delete", idHistorialDeBaja);
+                conexionBD.commit();
+
+                if (resultado > 0) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Historial de baja eliminado correctamente");
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se pudo eliminar el historial de baja");
+                }
+            } catch (Exception e) {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al eliminar historial de baja: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }

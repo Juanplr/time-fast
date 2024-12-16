@@ -29,6 +29,48 @@
         INNER JOIN rol ON rol.idRol = colaborador.idRol
         WHERE colaborador.idRol = #{idRol};
     </select>
+    
+    <select id="getConductores" resultType="pojo.Colaborador">
+        SELECT colaborador.idColaborador, 
+                colaborador.nombre, 
+                colaborador.apellidoPaterno, 
+                colaborador.apellidoMaterno, 
+                colaborador.curp, 
+                colaborador.correo, 
+                colaborador.noPersonal, 
+                colaborador.idRol, 
+                rol.nombre AS rol, 
+                colaborador.numeroDeLicencia
+        FROM colaborador
+        INNER JOIN rol ON rol.idRol = colaborador.idRol
+        WHERE rol.idRol = 3
+        AND EXISTS (
+            SELECT 1 
+            FROM conductoresAsignados 
+            WHERE conductoresAsignados.idColaborador = colaborador.idColaborador
+        );
+    </select>
+    
+    <select id="getConductoresSinAsignar" resultType="pojo.Colaborador">
+        SELECT colaborador.idColaborador, 
+                colaborador.nombre, 
+                colaborador.apellidoPaterno, 
+                colaborador.apellidoMaterno, 
+                colaborador.curp, 
+                colaborador.correo, 
+                colaborador.noPersonal, 
+                colaborador.idRol, 
+                rol.nombre AS rol, 
+                colaborador.numeroDeLicencia
+        FROM colaborador
+        INNER JOIN rol ON rol.idRol = colaborador.idRol
+        WHERE rol.idRol = 3
+        AND NOT  EXISTS (
+            SELECT 1 
+            FROM conductoresAsignados 
+            WHERE conductoresAsignados.idColaborador = colaborador.idColaborador
+        );
+    </select>
  
     <select id="getColaboradorPorNoPersonal" resultType="pojo.Colaborador">
         SELECT colaborador.idColaborador, colaborador.nombre, colaborador.apellidoPaterno, colaborador.apellidoMaterno, 

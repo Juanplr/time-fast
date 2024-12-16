@@ -7,7 +7,7 @@ package pojo;
 
 /**
  *
- * @author Daniel García Jácome
+ * @author juanl
  */
 public class ConductoresAsignados {
     private Integer idConductoresAsignados;
@@ -76,7 +76,4 @@ public class ConductoresAsignados {
     public void setVin(String vin) {
         this.vin = vin;
     }
-
-   
-    
 }

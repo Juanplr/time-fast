@@ -7,10 +7,10 @@ package pojo;
 
 /**
  *
- * @author Daniel García Jácome
+ * @author juanl
  */
 public class HistorialDeBaja {
-    private Integer idHistorialDeBaja;
+     private Integer idHistorialDeBaja;
     private Integer idUnidad;
     private String motivo;
 
@@ -46,7 +46,4 @@ public class HistorialDeBaja {
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
-
-    
-    
 }

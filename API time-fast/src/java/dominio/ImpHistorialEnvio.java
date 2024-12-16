@@ -6,75 +6,76 @@
 package dominio;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
+import pojo.HistorialDeEnvio;
 import pojo.Mensaje;
-import pojo.Paquete;
+import mybatis.MyBatisUtil;
+
 /**
  *
  * @author Daniel García Jácome
  */
-public class ImpPaquete {
+public class ImpHistorialEnvio {
     
-    public static List<Paquete> obtenerPaquetesPorEnvio(int idEnvio) {
+    public static List<HistorialDeEnvio> obtenerTodos() {
+        List<HistorialDeEnvio> lista = new ArrayList<>();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        List<Paquete> paquetes = null;
-        
+
         if (conexionBD != null) {
             try {
-                paquetes = conexionBD.selectList("paquete.getPaquetesPorEnvio", idEnvio);
+                lista = conexionBD.selectList("historialDeEnvio.getAll");
             } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
+                System.err.println("Error al recuperar historial de envío: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
         } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
+            System.err.println("Por el momento no se puede consultar la información");
         }
-        
-        return paquetes;
-    }
-    
-    public static List<Paquete> obtenerPaquetes() {
-        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        List<Paquete> paquetes = null;
-        
-        if (conexionBD != null) {
-            try {
-                paquetes = conexionBD.selectList("paquete.getPaquetes");
-            } catch (Exception e) {
-                System.err.println("Error al obtener paquetes por envío: " + e.getMessage());
-            } finally {
-                conexionBD.close();
-            }
-        } else {
-            System.err.println("No se pudo establecer conexión con la base de datos");
-        }
-        
-        return paquetes;
+
+        return lista;
     }
     
     
-    public static Mensaje registrarPaquete(Paquete paquete) {
+    public static List<HistorialDeEnvio> obtenerHistorialPorNoGuia(String noGuia) {
+    List<HistorialDeEnvio> lista = null;
+    SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+
+    if (conexionBD != null) {
+        try {
+            lista = conexionBD.selectList("historialDeEnvio.getHistorialDeEnvioPorNoGuia", noGuia);
+            System.out.println("Registros obtenidos: " + (lista != null ? lista.size() : "null"));
+        } catch (Exception e) {
+            System.err.println("Error al obtener historial de envío por noGuia: " + e.getMessage());
+        } finally {
+            conexionBD.close();
+        }
+    }
+    return lista;
+}
+
+
+    public static Mensaje registrar(HistorialDeEnvio historial) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         
         if (conexionBD != null) {
             try {
-                int resultado = conexionBD.insert("paquete.registrar", paquete);
+                int resultado = conexionBD.insert("historialDeEnvio.insert", historial);
                 conexionBD.commit();
                 
                 if (resultado > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Paquete registrado correctamente");
+                    mensaje.setMensaje("Historial de envío registrado correctamente");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo registrar el paquete");
+                    mensaje.setMensaje("No se pudo registrar el historial de envío");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al registrar paquete: " + e.getMessage());
+                mensaje.setMensaje("Error al registrar historial de envío: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
@@ -86,25 +87,25 @@ public class ImpPaquete {
         return mensaje;
     }
 
-    public static Mensaje editarPaquete(Paquete paquete) {
+    public static Mensaje editar(HistorialDeEnvio historial) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         
         if (conexionBD != null) {
             try {
-                int resultado = conexionBD.update("paquete.editar", paquete);
+                int resultado = conexionBD.update("historialDeEnvio.update", historial);
                 conexionBD.commit();
                 
                 if (resultado > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Paquete editado correctamente");
+                    mensaje.setMensaje("Historial de envío editado correctamente");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo editar el paquete");
+                    mensaje.setMensaje("No se pudo editar el historial de envío");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al editar paquete: " + e.getMessage());
+                mensaje.setMensaje("Error al editar historial de envío: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }
@@ -116,25 +117,25 @@ public class ImpPaquete {
         return mensaje;
     }
 
-    public static Mensaje eliminarPaquete(int idPaquete) {
+    public static Mensaje eliminar(int idHistorialDeEnvio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         
         if (conexionBD != null) {
             try {
-                int resultado = conexionBD.delete("paquete.eliminar", idPaquete);
+                int resultado = conexionBD.delete("historialDeEnvio.delete", idHistorialDeEnvio);
                 conexionBD.commit();
                 
                 if (resultado > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Paquete eliminado correctamente");
+                    mensaje.setMensaje("Historial de envío eliminado correctamente");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se pudo eliminar el paquete");
+                    mensaje.setMensaje("No se pudo eliminar el historial de envío");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al eliminar paquete: " + e.getMessage());
+                mensaje.setMensaje("Error al eliminar historial de envío: " + e.getMessage());
             } finally {
                 conexionBD.close();
             }

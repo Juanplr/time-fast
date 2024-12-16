@@ -7,11 +7,11 @@ package pojo;
 
 /**
  *
- * @author Daniel García Jácome
+ * @author juanl
  */
 public class EstadoDeEnvio {
-   private Integer idEstadoDeEnvio;
-   private String nombre;
+    private Integer idEstadoDeEnvio;
+    private String nombre;
 
     public EstadoDeEnvio() {
     }
@@ -35,6 +35,11 @@ public class EstadoDeEnvio {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
     
     
