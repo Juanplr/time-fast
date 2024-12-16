@@ -13,7 +13,7 @@ data class Colaborador(
     val idRol : Int,
     val rol : String,
     val numeroDeLicencia : String,
-    val fotografia : String,
+    val fotografia : String?,
     val contrasena : String
 
 )
