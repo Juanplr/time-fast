@@ -172,7 +172,7 @@ public class FXMLFormularioEnviosController implements Initializable {
 
     private void cargarConductores() {
         tiposDeConductores = FXCollections.observableArrayList();
-        tiposDeConductores.addAll(ColaboradorDAO.obtenerColaboradores());
+        tiposDeConductores.addAll(ColaboradorDAO.obtenerConductores());
         cbConductores.setItems(tiposDeConductores);
     }
 

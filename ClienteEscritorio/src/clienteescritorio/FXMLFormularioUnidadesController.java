@@ -255,7 +255,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
     }
 
     private int buscarIdEstadoUnidad(Integer idEstadoUnidad) {
-         for(int i=0; i<tiposDeEstado.size();i++){
+        for(int i=0; i<tiposDeEstado.size();i++){
             if(tiposDeEstado.get(i).getIdEstadoUnidad()== idEstadoUnidad){
                 return i;
             }

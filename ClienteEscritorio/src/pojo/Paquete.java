@@ -18,11 +18,12 @@ public class Paquete {
     private float alto;
     private float ancho;
     private float profundidad;
+    private String noGuia;
 
     public Paquete() {
     }
 
-    public Paquete(Integer idPaquete, Integer idEnvio, String descripcion, String dimensiones, float peso, float alto, float ancho, float profundidad) {
+    public Paquete(Integer idPaquete, Integer idEnvio, String descripcion, String dimensiones, float peso, float alto, float ancho, float profundidad, String noGuia) {
         this.idPaquete = idPaquete;
         this.idEnvio = idEnvio;
         this.descripcion = descripcion;
@@ -31,6 +32,7 @@ public class Paquete {
         this.alto = alto;
         this.ancho = ancho;
         this.profundidad = profundidad;
+        this.noGuia = noGuia;
     }
 
     public Integer getIdPaquete() {
@@ -65,6 +67,10 @@ public class Paquete {
         return profundidad;
     }
 
+    public String getNoGuia() {
+        return noGuia;
+    }
+
     public void setIdPaquete(Integer idPaquete) {
         this.idPaquete = idPaquete;
     }
@@ -96,4 +102,9 @@ public class Paquete {
     public void setProfundidad(float profundidad) {
         this.profundidad = profundidad;
     }
+
+    public void setNoGuia(String noGuia) {
+        this.noGuia = noGuia;
+    }
+
 }

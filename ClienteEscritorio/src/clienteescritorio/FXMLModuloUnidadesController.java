@@ -189,7 +189,7 @@ public class FXMLModuloUnidadesController implements Initializable, NotificadoOp
     }
     
     private void irAFormulario(NotificadoOperacion observador, Unidad unidad){
-         try {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioUnidades.fxml"));
             Parent root = loader.load();
             
