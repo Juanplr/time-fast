@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@android:color/white">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time-Fast"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Ícono -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_logo"
+    android:layout_marginBottom="32dp" />
+
+    <!-- Campo de Número Personal -->
+    <EditText
+        android:id="@+id/personal_numero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numero Personal:"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@android:color/darker_gray" />
+
+    <!-- Campo de Contraseña -->
+    <EditText
+        android:id="@+id/contrasena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña:"
+        android:inputType="textPassword"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@android:color/darker_gray" />
+
+    <!-- Texto de "¿Olvidaste tu contraseña?" -->
+    <TextView
+        android:id="@+id/olvidaste_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp"
+        android:gravity="end" />
+
+    <!-- Botón de Entrar -->
+    <Button
+        android:id="@+id/btn_entrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ENTRAR"
+        android:backgroundTint="@android:color/darker_gray"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
