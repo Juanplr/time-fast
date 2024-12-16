@@ -186,5 +186,19 @@ public class UnidadDAO {
         }
         return tiposEstado;
     }
-    
+    public static List<Unidad> obtenerUnidadesSinAsignar(){
+        List<Unidad> unidades = null;
+        String url = Constantes.URL+"unidad/obtener-unidades-sin-asignar";
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        if(respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            Gson gson = new Gson();
+            try {
+                Type tipoListaColaborador = new TypeToken<List<Unidad>>(){}.getType();
+                unidades = gson.fromJson(respuesta.getContenido(), tipoListaColaborador);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return unidades;
+    }
 }

@@ -21,15 +21,6 @@
         WHERE e.nombre = 'Disponible';  
     </select>
     
-    <select id="obtenerUnidadesSinAsignar" resultType="pojo.Unidad">
-        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
-        FROM unidad u
-        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
-        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
-        LEFT JOIN conductoresAsignados ca ON u.idUnidad = ca.idUnidad
-        WHERE ca.idUnidad IS NULL; 
-    </select>
-    
     <select id="obtenerUnidadesPorVin" resultType="pojo.Unidad">
         SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
         FROM unidad u
@@ -86,6 +77,19 @@
     <select id="obtenerEstadosDeUnidad" resultType="pojo.EstadoUnidad">
         SELECT idEstadoUnidad, nombre
         FROM estadoUnidad;
+    </select>
+    
+    <select id="obtenerUnidadesSinAsignar" resultType="pojo.Unidad">        
+        SELECT u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.nii, t.nombre AS tipoUnidad, e.nombre AS estadoUnidad, u.idTipoUnidad, u.idEstadoUnidad
+        FROM unidad u
+        LEFT JOIN tipoUnidad t ON u.idTipoUnidad = t.idTipoUnidad
+        LEFT JOIN estadoUnidad e ON u.idEstadoUnidad = e.idEstadoUnidad
+        WHERE u.idEstadoUnidad = 1
+        AND NOT  EXISTS (
+            SELECT 1 
+            FROM conductoresAsignados 
+            WHERE conductoresAsignados.idUnidad = u.idUnidad
+        );
     </select>
 
 </mapper>

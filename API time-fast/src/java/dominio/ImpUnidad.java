@@ -211,5 +211,18 @@ public class ImpUnidad {
         return respuesta;
     }
     
+    public static List<Unidad> obtenerUnidadesSinAsignar(){
+        SqlSession conexionDB = MyBatisUtil.obtenerConexion();
+        List<Unidad> respuesta = null;
+        if(conexionDB!=null){
+            try{
+                respuesta = conexionDB.selectList("unidad.obtenerUnidadesSinAsignar");
+            }catch(Exception e){
+                
+            }
+        }
+        return respuesta;
+    }
+    
     
 }

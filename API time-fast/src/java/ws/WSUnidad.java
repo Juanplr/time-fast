@@ -145,4 +145,11 @@ public class WSUnidad {
          return ImpUnidad.obtenerEstadosDeUnidad();
     }
     
+    @Path("obtener-unidades-sin-asignar")
+     @GET
+     @Produces(MediaType.APPLICATION_JSON)
+     public List<Unidad> getUnidadesSinAsignar(){
+         return ImpUnidad.obtenerUnidadesSinAsignar();
+     }
+    
 }

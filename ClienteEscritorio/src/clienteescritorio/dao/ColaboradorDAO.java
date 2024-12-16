@@ -207,5 +207,21 @@ public class ColaboradorDAO {
         }
         return colaboradores;
     }
+    public static List<Colaborador> obtenerConductoresSinAsignar(){
+        List<Colaborador> colaboradores = null;
+        String url = Constantes.URL+"colaborador/obtener-conductores-sin-asignar";
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+        if (respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            Gson gson = new Gson();
+            try {
+                //enviar una lista.
+                Type tipoListaColaborador = new TypeToken<List<Colaborador>>(){}.getType();
+                colaboradores = gson.fromJson(respuesta.getContenido(), tipoListaColaborador);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return colaboradores;
+    }
     
 }

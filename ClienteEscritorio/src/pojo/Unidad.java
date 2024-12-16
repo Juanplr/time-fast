@@ -125,5 +125,10 @@ public class Unidad {
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
+
+    @Override
+    public String toString() {
+        return  marca + " " + modelo;
+    }
     
 }

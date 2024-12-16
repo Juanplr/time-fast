@@ -2,6 +2,7 @@ package clienteescritorio;
 
 import clienteescritorio.dao.ColaboradorDAO;
 import clienteescritorio.dao.ConductoresAsignadosDAO;
+import clienteescritorio.dao.UnidadDAO;
 import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
 import java.net.URL;
@@ -75,9 +76,9 @@ public class FXMLFormularioAsignacionesController implements Initializable {
     private void onClickGuardar(ActionEvent event) {
         ConductoresAsignados conductor = new ConductoresAsignados();
         conductor.setIdColaborador((cbColaboradores.getSelectionModel().getSelectedItem() != null)?
-                cbColaboradores.getSelectionModel().getSelectedItem().getIdColaborador(): -1);
+                cbColaboradores.getSelectionModel().getSelectedItem().getIdColaborador(): conductorAsignadoEditado.getIdColaborador());
         conductor.setIdUnidad((cbUnidades.getSelectionModel().getSelectedItem() != null)?
-                cbUnidades.getSelectionModel().getSelectedItem().getIdUnidad(): -1);
+                cbUnidades.getSelectionModel().getSelectedItem().getIdUnidad(): conductorAsignadoEditado.getIdUnidad());
         if(validarCampos(conductor)){
             if(!modoEdicion){
                 guardarDatosAsignacion(conductor);
@@ -100,13 +101,13 @@ public class FXMLFormularioAsignacionesController implements Initializable {
 
     private void cargarConductores() {
         tiposDeConductores = FXCollections.observableArrayList();
-        tiposDeConductores.addAll(ColaboradorDAO.obtenerColaboradores());
+        tiposDeConductores.addAll(ColaboradorDAO.obtenerConductoresSinAsignar());
         cbColaboradores.setItems(tiposDeConductores);
     }
 
     private void cargarUnidades() {
         unidades = FXCollections.observableArrayList();
-        unidades.addAll();
+        unidades.addAll(UnidadDAO.obtenerUnidadesSinAsignar());
         cbUnidades.setItems(unidades);
     }
     private void cerrarVentana(){
@@ -133,6 +134,14 @@ public class FXMLFormularioAsignacionesController implements Initializable {
     }
 
     private boolean validarCampos(ConductoresAsignados conductor) {
+        if(conductor.getIdUnidad()<=0){
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Vehiculo", Alert.AlertType.ERROR);
+            return false;
+        }
+        if(conductor.getIdColaborador()<=0){
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Conductor", Alert.AlertType.ERROR);
+            return false;
+        }
         return true;
     }
 
