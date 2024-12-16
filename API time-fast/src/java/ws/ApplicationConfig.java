@@ -29,7 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
      private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ws.CorsFilter.class);
+        resources.add(ws.Cors.class);
         resources.add(ws.WSCliente.class);
         resources.add(ws.WSColaborador.class);
         resources.add(ws.WSConductoresAsignados.class);
@@ -40,7 +40,6 @@ public class ApplicationConfig extends Application {
         resources.add(ws.WSPaquete.class);
         resources.add(ws.WSRol.class);
         resources.add(ws.WSUnidad.class);
-        resources.add(ws.CorsFilter.class);
 
      }
 }
