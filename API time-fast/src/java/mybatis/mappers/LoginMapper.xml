@@ -5,10 +5,18 @@
 <mapper namespace="login">
 
     <select id="iniciarSesion" resultType="pojo.Colaborador">
-        SELECT idColaborador,colaborador.nombre,apellidoPaterno,apellidoMaterno,noPersonal,correo,curp,colaborador.idRol, rol.nombre as 'rol'
+        SELECT idColaborador,colaborador.nombre,apellidoPaterno,apellidoMaterno,noPersonal,correo,curp,colaborador.idRol, rol.nombre as 'rol',numeroDeLicencia
         FROM colaborador
         INNER JOIN rol ON rol.idRol = colaborador.idRol
         WHERE noPersonal = #{noPersonal} AND contrasena = #{contrasena};
     </select>
+    
+    <select id="iniciarSesionApp" resultType="pojo.Colaborador">
+        SELECT idColaborador,colaborador.nombre,apellidoPaterno,apellidoMaterno,noPersonal,correo,curp,colaborador.idRol, rol.nombre as 'rol',numeroDeLicencia
+        FROM colaborador
+        INNER JOIN rol ON rol.idRol = colaborador.idRol
+        WHERE colaborador.idRol = 3 AND noPersonal = #{noPersonal} AND contrasena = #{contrasena} ;
+    </select>
+    
 
 </mapper>

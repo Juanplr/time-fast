@@ -40,9 +40,14 @@ class ActualizarPerfilActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         obtenerColaborador()
-        obtenerFotoColaborador(colaborador.idColaborador)
         cargarDatosColaborador()
-        binding.cambiarFoto.setOnClickListener {
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        obtenerFotoColaborador(colaborador.idColaborador)
+        binding.cambiarFoto.setOnClickListener{
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             selecionarFotoImagenPerfil.launch(intent)
@@ -79,16 +84,29 @@ class ActualizarPerfilActivity : AppCompatActivity() {
         binding.numeroLicencia.setText(colaborador.numeroDeLicencia)
     }
 
-    fun validarCampos():Boolean{
-        var validar = false
-        if(binding.nombre.text.toString().isEmpty() && binding.apellidoPaterno.text.toString().isEmpty()
-            && binding.apellidoMaterno.text.toString().isEmpty() && binding.curp.text.toString().isEmpty()
-            && binding.email.text.toString().isEmpty() && binding.contrasena.text.toString().isEmpty()
-            && binding.numeroLicencia.text.toString().isEmpty()){
-            validar = true
-        }
-        return validar
+    fun validarCampos(): Boolean {
+        // Verifica si algún campo está vacío
+        val nombre = binding.nombre.text.toString()
+        val apellidoPaterno = binding.apellidoPaterno.text.toString()
+        val apellidoMaterno = binding.apellidoMaterno.text.toString()
+        val curp = binding.curp.text.toString()
+        val email = binding.email.text.toString()
+        val numeroLicencia = binding.numeroLicencia.text.toString()
+        val contrasena = binding.contrasena.text.toString()
+
+        // Mostrar en el log los valores de los campos (opcional)
+        Log.d("Campos", "Nombre: $nombre, Apellido Paterno: $apellidoPaterno, Apellido Materno: $apellidoMaterno, CURP: $curp, Email: $email, Licencia: $numeroLicencia, Contraseña: $contrasena")
+
+        // Devuelve true si todos los campos están llenos
+        return nombre.isNotEmpty() &&
+                apellidoPaterno.isNotEmpty() &&
+                apellidoMaterno.isNotEmpty() &&
+                curp.isNotEmpty() &&
+                email.isNotEmpty() &&
+                numeroLicencia.isNotEmpty() &&
+                contrasena.isNotEmpty()
     }
+
 
 
     fun enviarDatosActualizados(colaborador: Colaborador){
@@ -102,6 +120,8 @@ class ActualizarPerfilActivity : AppCompatActivity() {
             .setCallback { e, result ->
                 if(e == null){
                     Log.d("Colaborador actualizado", result)
+                    //Toast.makeText(this@ActualizarPerfilActivity, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show()
+                    respuestaEdicion(result)
 
                 }else{
 
@@ -115,14 +135,14 @@ class ActualizarPerfilActivity : AppCompatActivity() {
         try{
             val gson = Gson()
             val mensaje = gson.fromJson(resultado, Mensaje::class.java)
-            Toast.makeText(this@ActualizarPerfilActivity,mensaje.mensaje, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ActualizarPerfilActivity, "Informacion actualizada con éxito", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@ActualizarPerfilActivity,mensaje.mensaje, Toast.LENGTH_SHORT).show()
             Log.e("ERROR", mensaje.mensaje)
             if(!mensaje.error){
                 finish()
             }
         }catch (ex : Exception){
             Toast.makeText(this@ActualizarPerfilActivity, ex.message, Toast.LENGTH_SHORT).show()
-            ex.printStackTrace()
         }
     }
 
@@ -143,9 +163,10 @@ class ActualizarPerfilActivity : AppCompatActivity() {
         )
     }
 
+
     fun obtenerFotoColaborador(idColaborador : Int) {
         Ion.with(this@ActualizarPerfilActivity)
-            .load("GET", "${Constantes().url_ws}colaborador/obtener-foto/${idColaborador}")
+            .load("GET", "${Constantes().url_ws}/colaborador/obtener-foto/${idColaborador}")
             .asString()
             .setCallback() {
                     e, result ->
@@ -229,24 +250,31 @@ class ActualizarPerfilActivity : AppCompatActivity() {
             }
     }
 
-    fun cerrarSesion() {
-        val sharedPreferences = getSharedPreferences("Sesion", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.apply()
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
-        Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
-    }
-
-
     fun serializarInformacion(colaborador: Colaborador): String {
         val gson = Gson()
         val colaboradorJson = gson.toJson(colaborador)
         return colaboradorJson
     }
+
+    fun cerrarSesion() {
+        // Limpia las preferencias de sesión
+        val sharedPreferences = getSharedPreferences("Sesion", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear() // Borra todos los datos almacenados
+        editor.apply()
+
+        // Redirige al LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+        // Muestra un mensaje de cierre de sesión
+        Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
+
+        // Finaliza la actividad actual
+        finish()
+    }
+
 
 
 }
