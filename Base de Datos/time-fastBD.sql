@@ -8,8 +8,6 @@ FLUSH PRIVILEGES;
 
 USE timeFast;
 
-ALTER TABLE envio
-ADD destino VARCHAR(200) NOT NULL AFTER origenEstado;
 
 CREATE TABLE rol(
 	idRol INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -65,9 +63,8 @@ CREATE TABLE cliente(
     codigoPostal CHAR(5) NOT NULL,
 	ciudad VARCHAR(50) NOT NULL,
     estado VARCHAR(50) NOT NULL,
-    telefono VARCHAR(10),
-    correo VARCHAR(100),
-    destino VARCHAR(200) NOT NULL
+    telefono VARCHAR(10) UNIQUE NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL
 );
 
 
@@ -89,6 +86,7 @@ CREATE TABLE envio(
     costoDeEnvio FLOAT NOT NULL,
     idEstadoDeEnvio INTEGER NOT NULL,
     idColaborador INTEGER,
+    destino VARCHAR(200),
     FOREIGN KEY (idCliente) REFERENCES cliente(idCliente),
     FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
     FOREIGN KEY (idEstadoDeEnvio) REFERENCES estadoDeEnvio(idEstadoDeEnvio)
@@ -107,14 +105,13 @@ CREATE TABLE paquete(
 
 CREATE TABLE historialDeEnvio(
 	idHistorialDeEnvio INTEGER AUTO_INCREMENT PRIMARY KEY,
-    idPaquete INTEGER NOT NULL,
-	idEnvio INTEGER NOT NULL,
+    idEstadoDeEnvio INTEGER NOT NULL,
     idColaborador INTEGER NOT NULL,
+    noGuia VARCHAR(20) UNIQUE NOT NULL,
     motivo VARCHAR(250),
     tiempoDeCambio DATE,
 	FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
-    FOREIGN KEY (idEnvio) REFERENCES envio(idEnvio),
-    FOREIGN KEY (idPaquete) REFERENCES paquete(idPaquete)
+    FOREIGN KEY (idEstadoDeEnvio) REFERENCES estadoDeEnvio(idEstadoDeEnvio)
 );
 
 CREATE TABLE historialDeBaja(
@@ -130,8 +127,69 @@ CREATE TABLE conductoresAsignados(
     idUnidad INTEGER NOT NULL,
     FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
     FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad),
-    UNIQUE (idColaborador, idUnidad)
+    UNIQUE (idUnidad)
 );
+
+
+-- Triggers
+DELIMITER $$
+
+CREATE TRIGGER trg_delete_colaborador
+AFTER DELETE ON colaborador
+FOR EACH ROW
+BEGIN
+    -- Eliminar registros relacionados en historialDeEnvio
+    DELETE FROM historialDeEnvio WHERE idColaborador = OLD.idColaborador;
+
+    -- Eliminar registros relacionados en conductoresAsignados
+    DELETE FROM conductoresAsignados WHERE idColaborador = OLD.idColaborador;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_delete_unidad
+AFTER DELETE ON unidad
+FOR EACH ROW
+BEGIN
+    -- Eliminar registros relacionados en conductoresAsignados
+    DELETE FROM conductoresAsignados WHERE idUnidad = OLD.idUnidad;
+
+    -- Eliminar registros relacionados en historialDeBaja
+    DELETE FROM historialDeBaja WHERE idUnidad = OLD.idUnidad;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_delete_envio
+AFTER DELETE ON envio
+FOR EACH ROW
+BEGIN
+    -- Eliminar registros relacionados en paquete
+    DELETE FROM paquete WHERE idEnvio = OLD.idEnvio;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_delete_cliente
+AFTER DELETE ON cliente
+FOR EACH ROW
+BEGIN
+    -- Eliminar registros relacionados en envio
+    DELETE FROM envio WHERE idCliente = OLD.idCliente;
+END$$
+
+DELIMITER ;
+
+
+
+
+
 
 -- Datos para la tabla rol
 INSERT INTO rol (nombre) VALUES 
@@ -141,8 +199,8 @@ INSERT INTO rol (nombre) VALUES
 
 -- Datos para la tabla colaborador
 INSERT INTO colaborador (nombre, apellidoPaterno, apellidoMaterno, curp, correo, noPersonal, contrasena, idRol, fotografia, numeroDeLicencia) VALUES 
-('Juan', 'Perez', 'Lopez', 'JUAP900101HDFRRN01', 'juan.perez@example.com', 'EMP123', 'password123', 1, NULL, 'LIC12345'),
-('Maria', 'Gomez', 'Hernandez', 'MARG800202HDFRRN02', 'maria.gomez@example.com', 'EMP124', 'password124', 2, NULL, 'LIC54321');
+('Juan', 'Perez', 'Lopez', 'JUAP900101HDFRRN01', 'juan.perez@example.com', 'EMP123', 'password123', 1, NULL, ''),
+('Maria', 'Gomez', 'Hernandez', 'MARG800202HDFRRN02', 'maria.gomez@example.com', 'EMP124', 'password124', 2, NULL, '');
 
 -- Datos para la tabla tipoUnidad
 INSERT INTO tipoUnidad (nombre) VALUES 
@@ -161,21 +219,30 @@ INSERT INTO unidad (marca, modelo, anio, vin, idTipoUnidad, nii, idEstadoUnidad)
 ('Ford', 'F150', 2022, '1FTFW1E50LFA12345', 1, 'NII12345', 1),
 ('Chevrolet', 'Silverado', 2023, '3GCUYDED3MG123456', 1, 'NII54321', 2);
 
--- Datos para la tabla cliente
-INSERT INTO cliente (nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo) VALUES 
-('Carlos', 'Ramirez', 'Torres', 'Calle 1', '123', 'Colonia Centro', '12345', 'Ciudad 1', 'Estado 1', '5551234567', 'carlos.ramirez@example.com'),
-('Ana', 'Lopez', 'Martinez', 'Calle 2', '456', 'Colonia Norte', '67890', 'Ciudad 2', 'Estado 2', '5559876543', 'ana.lopez@example.com');
+
 
 -- Datos para la tabla estadoDeEnvio
 INSERT INTO estadoDeEnvio (nombre) VALUES 
 ('Pendiente'),
 ('En tránsito'),
-('Entregado');
+('Entregado'),
+("Detenido"),
+("Cancelado");
+
+INSERT INTO cliente (
+    nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo
+)
+VALUES
+('Juan', 'Pérez', 'García', 'Av. Siempre Viva', '123', 'Centro', '45678', 'Ciudad México', 'CDMX', '5523456789', 'juan.perez@example.com'),
+('María', 'López', 'Hernández', 'Calle Independencia', '45', 'Reforma', '54321', 'Guadalajara', 'Jalisco', '3323456789', 'maria.lopez@example.com'),
+('Carlos', 'Gómez', 'Martínez', 'Boulevard del Sol', '321', 'Las Palmas', '67890', 'Monterrey', 'Nuevo León', '8123456789', 'carlos.gomez@example.com'),
+('Ana', 'Ramírez', 'Ortiz', 'Calle Luna', '78', 'Chapultepec', '98765', 'Puebla', 'Puebla', '2223456789', 'ana.ramirez@example.com'),
+('Luis', 'Fernández', 'Díaz', 'Av. Hidalgo', '150', 'Centro', '12345', 'Querétaro', 'Querétaro', '4423456789', 'luis.fernandez@example.com');
 
 -- Datos para la tabla envio
-INSERT INTO envio (idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, origenCiudad, origenEstado, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador) VALUES 
-(3, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1),
-(2, 'Calle B', '202', 'Colonia B', '12345', 'Ciudad B', 'Estado B', 'GUIA002', 200.00, 2, 2);
+INSERT INTO envio (idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, origenCiudad, origenEstado, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador,destino) VALUES 
+(3, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1,"Calle5"),
+(2, 'Calle B', '202', 'Colonia B', '12345', 'Ciudad B', 'Estado B', 'GUIA002', 200.00, 2, 2,"Margaritas");
 
 -- Datos para la tabla paquete
 INSERT INTO paquete (idEnvio, descripcion, peso, alto, ancho, profundidad) VALUES 
@@ -195,23 +262,6 @@ INSERT INTO historialDeBaja (idUnidad, motivo) VALUES
 INSERT INTO conductoresAsignados (idColaborador, idUnidad) VALUES 
 (1, 1),
 (2, 2);
-
-
-INSERT INTO cliente (
-    nombre, apellidoPaterno, apellidoMaterno, calle, numeroDeCasa, colonia, codigoPostal, ciudad, estado, telefono, correo
-)
-VALUES
-('Juan', 'Pérez', 'García', 'Av. Siempre Viva', '123', 'Centro', '45678', 'Ciudad México', 'CDMX', '5523456789', 'juan.perez@example.com'),
-('María', 'López', 'Hernández', 'Calle Independencia', '45', 'Reforma', '54321', 'Guadalajara', 'Jalisco', '3323456789', 'maria.lopez@example.com'),
-('Carlos', 'Gómez', 'Martínez', 'Boulevard del Sol', '321', 'Las Palmas', '67890', 'Monterrey', 'Nuevo León', '8123456789', 'carlos.gomez@example.com'),
-('Ana', 'Ramírez', 'Ortiz', 'Calle Luna', '78', 'Chapultepec', '98765', 'Puebla', 'Puebla', '2223456789', 'ana.ramirez@example.com'),
-('Luis', 'Fernández', 'Díaz', 'Av. Hidalgo', '150', 'Centro', '12345', 'Querétaro', 'Querétaro', '4423456789', 'luis.fernandez@example.com');
-
-
-
-
-
-
 
 
 

@@ -38,7 +38,7 @@ public class WSHistorialDeEnvio {
     }
     
     
-     @Path("obtener-historial/{noGuia}")
+@Path("obtener-historial/{noGuia}")
 @GET
 @Produces(MediaType.APPLICATION_JSON)
 public List<HistorialDeEnvio> obtenerHistorialPorNoGuia(@PathParam("noGuia") String noGuia) {

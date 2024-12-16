@@ -223,20 +223,23 @@ public class FXMLFormularioUnidadesController implements Initializable {
         }
     }
      private void editarUnidad(Unidad unidad){
+        System.out.println(""+unidad.getIdEstadoUnidad());
         if(unidad.getIdEstadoUnidad()==2 && historial == null){
             HistorialDeBaja baja = new HistorialDeBaja();
             baja.setIdUnidad(unidad.getIdUnidad());
             baja.setMotivo(unidad.getMotivo());
             HistorialDeBajaDAO.agregarHistorialDeBaja(baja);
         }else{
+            if(unidad.getIdEstadoUnidad()==1 && historial != null){
+                HistorialDeBajaDAO.eliminarHistorialDeBaja(historial.getIdHistorialDeBaja());
+            }
+        }
+        if(unidad.getIdEstadoUnidad()==2 && historial != null){
             HistorialDeBaja baja = new HistorialDeBaja();
             baja.setIdUnidad(unidad.getIdUnidad());
             baja.setMotivo(unidad.getMotivo());
             baja.setIdHistorialDeBaja(historial.getIdHistorialDeBaja());
             HistorialDeBajaDAO.editarHistorialDeBaja(baja);
-        }
-        if(unidad.getIdEstadoUnidad()==1){
-            HistorialDeBajaDAO.eliminarHistorialDeBaja(historial.getIdHistorialDeBaja());
         }
         Mensaje msj = UnidadDAO.EditarUnidad(unidad);
         if(!msj.isError()){

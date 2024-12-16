@@ -8,6 +8,7 @@ package clienteescritorio;
 import clienteescritorio.dao.ClienteDAO;
 import clienteescritorio.dao.ColaboradorDAO;
 import clienteescritorio.dao.EnvioDAO;
+import clienteescritorio.dao.HistorialDeEnvioDAO;
 import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
 import java.net.URL;
@@ -29,6 +30,7 @@ import pojo.Cliente;
 import pojo.Colaborador;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
+import pojo.HistorialDeEnvio;
 import pojo.Mensaje;
 
 /**
@@ -139,9 +141,9 @@ public class FXMLFormularioEnviosController implements Initializable {
                 cbClientes.getSelectionModel().getSelectedItem().getIdCliente(): -1);
         envio.setIdColaborador((cbConductores.getSelectionModel().getSelectedItem() != null)?
                 cbConductores.getSelectionModel().getSelectedItem().getIdColaborador(): -1);
-        envio.setIdCliente((cbEstadoDeEnvio.getSelectionModel().getSelectedItem() != null)?
-                cbEstadoDeEnvio.getSelectionModel().getSelectedItem().getIdEstadoDeEnvio(): -1);
-        
+        envio.setIdEstadoDeEnvio((cbEstadoDeEnvio.getSelectionModel().getSelectedItem() != null)?
+                cbEstadoDeEnvio.getSelectionModel().getSelectedItem().getIdEstadoDeEnvio(): 1);
+        envio.setDestino(tfDestino.getText());
         if(validarCampos(envio)){
             if(!modoEdicion){
                 guardarDatosEnvio(envio);
@@ -215,6 +217,7 @@ public class FXMLFormularioEnviosController implements Initializable {
 
     private void guardarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.agregarEnvio(envio);
+        enviarHistorial(envio);
         if(!msj.isError()){
             Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + envio.getNoGuia()+" Agregado", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar",envio.getNoGuia() );
@@ -233,6 +236,12 @@ public class FXMLFormularioEnviosController implements Initializable {
         }else{
             Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
         }
+    }
+
+    private void enviarHistorial(Envio envio) {
+        HistorialDeEnvio historial = new HistorialDeEnvio();
+        historial.setIdEnvio(envio.getIdEnvio());
+        HistorialDeEnvioDAO.registrarHistorialEnvio(historial);
     }
     
 }
