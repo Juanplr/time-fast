@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -9,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLFormularioUnidadesController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLFormularioUnidadesController">
    <children>
       <Pane layoutX="6.0" prefHeight="400.0" prefWidth="593.0">
          <children>
@@ -25,12 +30,7 @@
                         <Image url="@recursos/caja.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="imgCerrarSesion" fitHeight="43.0" fitWidth="34.0" layoutX="552.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/cerrarUsuario.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="imgRegresar" fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/atrasEscritorio.png" />
                      </image>
@@ -52,7 +52,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="tfMarca" layoutX="22.0" layoutY="119.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
+            <TextField fx:id="tfMarca" layoutX="22.0" layoutY="122.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
             <TextField fx:id="tfModelo" layoutX="22.0" layoutY="171.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
             <Label layoutX="319.0" layoutY="102.0" text="Numero de Identificacion Interno:">
                <font>
@@ -65,20 +65,32 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="tfAño" layoutX="319.0" layoutY="174.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
-            <Label layoutX="319.0" layoutY="213.0" text="Tipo de unidad:">
+            <TextField fx:id="tfAnio" layoutX="319.0" layoutY="174.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
+            <Label fx:id="lEstadoUnidad" layoutX="25.0" layoutY="281.0" text="Estado de la unidad:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="tfTipoUnidad" layoutX="319.0" layoutY="233.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
-            <Button fx:id="btnGuardar" layoutX="254.0" layoutY="301.0" mnemonicParsing="false" onAction="#onClickGuardar" onMouseClicked="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
+            <Button fx:id="btnGuardar" layoutX="242.0" layoutY="349.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
             <Label layoutX="23.0" layoutY="211.0" text="VIN:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <TextField fx:id="tfVin" layoutX="22.0" layoutY="231.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
+            <ComboBox fx:id="cbTipoUnidad" layoutX="319.0" layoutY="231.0" prefHeight="25.0" prefWidth="208.0" />
+            <Label layoutX="319.0" layoutY="211.0" text="Tipo de unidad:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="cbEstadoUnidad" layoutX="22.0" layoutY="304.0" onAction="#detectarEstado" prefHeight="25.0" prefWidth="164.0" />
+            <Label fx:id="lMotivo" layoutX="305.0" layoutY="281.0" text="Motivo:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfMotivo" layoutX="298.0" layoutY="304.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #c6c5c5;" />
          </children>
       </Pane>
    </children>

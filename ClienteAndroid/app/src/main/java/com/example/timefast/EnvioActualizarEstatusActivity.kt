@@ -5,16 +5,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.timefast.databinding.ActivityEnvioActualizarEstatusBinding
 
 class EnvioActualizarEstatusActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityEnvioActualizarEstatusBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_envio_actualizar_estatus)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityEnvioActualizarEstatusBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
+
+
 }

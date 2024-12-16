@@ -1,6 +1,5 @@
 package ws;
 
-import com.google.gson.Gson;
 import dominio.ImpColaborador;
 import java.util.List;
 import javax.ws.rs.BadRequestException;
@@ -13,10 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import pojo.Colaborador;
 import pojo.Mensaje;
 
@@ -24,117 +20,77 @@ import pojo.Mensaje;
  * Web Service para la gestión de colaboradores
  * Autor: Daniel García Jácome
  */
-@Path("colaboradores")
+@Path("colaborador")
 public class WSColaborador {
-
-    @Context
-    private UriInfo context;
-
-    public WSColaborador() {
-    }
 
     @Path("obtener-colaboradores")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradores() {
+    public List<Colaborador> obtenerColaboradores() {
         List<Colaborador> listaColaboradores = ImpColaborador.obtenerColaboradores();
-        Gson gson = new Gson();
         if (listaColaboradores != null && !listaColaboradores.isEmpty()) {
-            // Convertir la lista a JSON antes de enviarla en la respuesta
-            String jsonResponse = gson.toJson(listaColaboradores);
-            return Response.ok(jsonResponse).build();
+            return listaColaboradores;
         } else {
             throw new NotFoundException("No se encontraron colaboradores.");
         }
+    }
+    
+    @Path("obtener-conductores")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerConductores() {
+        return ImpColaborador.obtenerConductores();
+    }
+    
+    @Path("obtener-conductores-sin-asignar")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerConductoresSinAsignar() {
+        return ImpColaborador.obtenerConductoresSinAsignar();
     }
 
     @Path("obtener-colaboradores-nombre/{nombre}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradoresPorNombre(@PathParam("nombre") String nombre) {
-        try {
-            List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorNombre(nombre);
-            Gson gson = new Gson();
-            if (colaboradores != null && !colaboradores.isEmpty()) {
-                // Convertir la lista de colaboradores a JSON
-                String jsonResponse = gson.toJson(colaboradores);
-                return Response.ok(jsonResponse).build();
-            } else {
-                throw new NotFoundException("No se encontraron colaboradores con el nombre: " + nombre);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+    public List<Colaborador> obtenerColaboradoresPorNombre(@PathParam("nombre") String nombre) {
+        if(!nombre.isEmpty()&& nombre!= null){
+            return ImpColaborador.obtenerColaboradoresPorNombre(nombre);
         }
+        throw new BadRequestException();
     }
 
     @Path("obtener-colaboradores-rol/{idRol}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerColaboradoresPorRol(@PathParam("idRol") int idRol) {
-        try {
-            List<Colaborador> colaboradores = ImpColaborador.obtenerColaboradoresPorRol(idRol);
-            Gson gson = new Gson();
-            if (colaboradores != null && !colaboradores.isEmpty()) {
-                // Convertir la lista de colaboradores a JSON
-                String jsonResponse = gson.toJson(colaboradores);
-                return Response.ok(jsonResponse).build();
-            } else {
-                throw new NotFoundException("No se encontraron colaboradores con el rol ID: " + idRol);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+    public List<Colaborador> obtenerColaboradoresPorRol(@PathParam("idRol") int idRol) {
+        if(idRol>0){
+            return ImpColaborador.obtenerColaboradoresPorRol(idRol);
         }
+        throw new BadRequestException();
     }
 
-@Path("obtener-colaboradores-noPersonal/{noPersonal}")
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
-    if (noPersonal != null && !noPersonal.isEmpty()) {
-        try {
-            System.out.println("Recibido noPersonal: " + noPersonal); 
-            Colaborador colaborador = ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
-            if (colaborador != null) {
-                Gson gson = new Gson();
-                String jsonResponse = gson.toJson(colaborador);
-                System.out.println("Colaborador encontrado: " + jsonResponse); 
-                return Response.ok(jsonResponse).build();
-            } else {
-                throw new NotFoundException("No se encontró el colaborador con número personal: " + noPersonal);
-            }
-        } catch (Exception e) {
-            System.err.println("Error al procesar la solicitud: " + e.getMessage());
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
-        }
-    } else {
-        throw new BadRequestException("El número personal proporcionado es inválido.");
+    @Path("obtener-colaboradores-noPersonal/{noPersonal}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String noPersonal) {
+       if(noPersonal!= null && !noPersonal.isEmpty()){
+           return ImpColaborador.obtenerColaboradorPorNoPersonal(noPersonal);
+       }
+       throw new BadRequestException();
     }
-}
-
-
 
     @Path("agregar-colaborador")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registrarColaborador(String jsonColaborador) {
+    public Mensaje registrarColaborador(Colaborador colaborador) {
+        if (colaborador == null) {
+            throw new BadRequestException();
+        }
         try {
-            Gson gson = new Gson();
-            Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
-            Mensaje mensaje = ImpColaborador.registrarColaborador(colaborador);
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.CREATED).entity(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return ImpColaborador.registrarColaborador(colaborador);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+            throw new BadRequestException();
         }
     }
 
@@ -142,41 +98,55 @@ public Response obtenerColaboradorPorNoPersonal(@PathParam("noPersonal") String 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editarColaborador(String jsonColaborador) {
+    public Mensaje editarColaborador(Colaborador colaborador) {
+        if (colaborador == null) {
+            throw new BadRequestException();
+        }
         try {
-            Gson gson = new Gson();
-            Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
             Mensaje mensaje = ImpColaborador.editarColaborador(colaborador);
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.ok(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BadRequestException("Error al procesar la solicitud: " + e.getMessage());
+            throw new BadRequestException();
         }
     }
 
     @Path("eliminar-colaborador/{idColaborador}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response eliminarColaborador(@PathParam("idColaborador") int idColaborador) {
+    public Mensaje eliminarColaborador(@PathParam("idColaborador") int idColaborador) {
+        if (idColaborador <= 0) {
+            throw new BadRequestException();
+        }
         try {
             Mensaje mensaje = ImpColaborador.eliminarColaborador(idColaborador);
-            Gson gson = new Gson();
-            if (!mensaje.isError()) {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.ok(jsonResponse).build();
-            } else {
-                String jsonResponse = gson.toJson(mensaje);
-                return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
-            }
+            return mensaje;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BadRequestException("Error al intentar eliminar el colaborador: " + e.getMessage());
+            throw new BadRequestException();
         }
+    }
+    
+    @Path("subir-foto/{idColaborador}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje subirFoto(@PathParam("idColaborador") Integer idColaborador,
+            byte[] foto){
+        if(foto.length > 0 && idColaborador !=null && idColaborador >0){
+            return ImpColaborador.guardarFoto(idColaborador, foto);
+        }else{
+            throw new BadRequestException();
+        }  
+    }
+    
+    @Path("obtener-foto/{idColaborador}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Colaborador obtenerFoto(@PathParam("idColaborador") Integer idColaborador){
+        if(idColaborador !=null && idColaborador >0){
+            return ImpColaborador.obtenerFoto(idColaborador);
+        }else{
+            throw new BadRequestException();
+        }  
     }
 }

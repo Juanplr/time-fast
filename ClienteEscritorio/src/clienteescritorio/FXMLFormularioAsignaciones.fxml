@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="429.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="clienteescritorio.FXMLFormularioAsignacionesController">
+   <children>
+      <Pane prefHeight="59.0" prefWidth="454.0" style="-fx-background-color: #c6c5c5;">
+         <children>
+            <Label layoutX="189.0" layoutY="-4.0" prefHeight="71.0" prefWidth="228.0" text="Time-Fast">
+               <font>
+                  <Font name="Tw Cen MT Condensed Extra Bold" size="45.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="43.0" fitWidth="49.0" layoutX="132.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/caja.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="34.0" fitWidth="24.0" layoutX="23.0" layoutY="19.0" onMouseClicked="#regresarPrincipal" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@recursos/atrasEscritorio.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button fx:id="btnGuardar" layoutX="192.0" layoutY="260.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="77.0" text="Agregar" />
+      <ComboBox fx:id="cbUnidades" layoutX="275.0" layoutY="182.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbColaboradores" layoutX="24.0" layoutY="182.0" prefWidth="150.0" />
+      <Label layoutX="24.0" layoutY="111.0" text="Conductor:" />
+      <Label layoutX="256.0" layoutY="111.0" text="Vehiculo:" />
+      <TextField fx:id="tfColaborador" layoutX="24.0" layoutY="137.0" prefHeight="25.0" prefWidth="182.0" style="-fx-background-color: #c6c5c5;" />
+      <TextField fx:id="tfUnidad" layoutX="252.0" layoutY="137.0" prefHeight="25.0" prefWidth="182.0" style="-fx-background-color: #c6c5c5;" />
+   </children>
+</AnchorPane>

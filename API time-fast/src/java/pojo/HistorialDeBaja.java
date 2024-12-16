@@ -10,21 +10,33 @@ package pojo;
  * @author Daniel García Jácome
  */
 public class HistorialDeBaja {
-    private Integer idHistorialBaja;
+    private Integer idHistorialDeBaja;
     private Integer idUnidad;
     private String motivo;
 
     public HistorialDeBaja() {
     }
 
-    public HistorialDeBaja(Integer idHistorialBaja, Integer idUnidad, String motivo) {
-        this.idHistorialBaja = idHistorialBaja;
+    public HistorialDeBaja(Integer idHistorialDeBaja, Integer idUnidad, String motivo) {
+        this.idHistorialDeBaja = idHistorialDeBaja;
         this.idUnidad = idUnidad;
         this.motivo = motivo;
     }
 
-    public void setIdHistorialBaja(Integer idHistorialBaja) {
-        this.idHistorialBaja = idHistorialBaja;
+    public Integer getIdHistorialDeBaja() {
+        return idHistorialDeBaja;
+    }
+
+    public Integer getIdUnidad() {
+        return idUnidad;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setIdHistorialDeBaja(Integer idHistorialDeBaja) {
+        this.idHistorialDeBaja = idHistorialDeBaja;
     }
 
     public void setIdUnidad(Integer idUnidad) {
@@ -35,17 +47,6 @@ public class HistorialDeBaja {
         this.motivo = motivo;
     }
 
-    public Integer getIdHistorialBaja() {
-        return idHistorialBaja;
-    }
-
-    public Integer getIdUnidad() {
-        return idUnidad;
-    }
-
-    public String getMotivo() {
-        return motivo;
-    }
     
     
 }

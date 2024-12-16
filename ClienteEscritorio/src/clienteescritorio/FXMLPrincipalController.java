@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import pojo.Colaborador;
 
 /**
  * FXML Controller class
@@ -38,6 +39,10 @@ public class FXMLPrincipalController implements Initializable {
     private ImageView moduloColaboradores;
     @FXML
     private ImageView moduloEnvios;
+    
+    private Colaborador colaborador;
+    @FXML
+    private ImageView moduloAsignaciones;
 
 
     /**
@@ -46,6 +51,10 @@ public class FXMLPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+    
+     public void setColaborador(Colaborador colaborador) {
+        this.colaborador = colaborador;
     }
     
     
@@ -121,6 +130,20 @@ public class FXMLPrincipalController implements Initializable {
         }
     }
     
+    private void moduloAsignaciones(){
+        try{
+            Stage escenarioBase = (Stage) moduloUnidades.getScene().getWindow();
+            
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloAsignacion.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Asignaciones");
+            escenarioBase.show();
+        }catch(Exception e){
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Asignaciones", Alert.AlertType.ERROR);
+        }
+    }
+    
     
     
     @FXML
@@ -146,6 +169,11 @@ public class FXMLPrincipalController implements Initializable {
     @FXML
     private void irModuloEnvios(MouseEvent event) {
         moduloEnvios();
+    }
+
+    @FXML
+    private void irModuloAsignaciones(MouseEvent event) {
+        moduloAsignaciones();
     }
 
 }

@@ -10,17 +10,14 @@ package pojo;
  * @author Daniel García Jácome
  */
 public class EstadoDeEnvio {
-    private Integer idEstadoDeEnvio;
-    private String  nombre;
+   private Integer idEstadoDeEnvio;
+   private String nombre;
 
     public EstadoDeEnvio() {
     }
 
-    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+    public EstadoDeEnvio(Integer idEstadoDeEnvio, String nombre) {
         this.idEstadoDeEnvio = idEstadoDeEnvio;
-    }
-
-    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -30,6 +27,14 @@ public class EstadoDeEnvio {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setIdEstadoDeEnvio(Integer idEstadoDeEnvio) {
+        this.idEstadoDeEnvio = idEstadoDeEnvio;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     

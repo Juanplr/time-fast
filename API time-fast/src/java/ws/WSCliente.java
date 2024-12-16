@@ -43,7 +43,7 @@ public class WSCliente {
     @Path("obtener-cliente-correo/{correo}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Cliente getCLientePorCorreo(@PathParam("correo") String correo){
+    public List<Cliente> getCLientePorCorreo(@PathParam("correo") String correo){
          if(!correo.isEmpty() && Utilidades.validarInyecciónSQL(correo)){
             return ImpCliente.obtenerClientePorCorreo(correo);
         }
@@ -53,7 +53,7 @@ public class WSCliente {
     @Path("obtener-cliente-numero-telefono/{telefono}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Cliente getCLientePorNumeroTelefono(@PathParam("telefono") String telefono){
+    public List<Cliente> getCLientePorNumeroTelefono(@PathParam("telefono") String telefono){
          if(!telefono.isEmpty() && Utilidades.validarInyecciónSQL(telefono)){
             return ImpCliente.obtenerClientePorNumeroTelefonico(telefono);
         }
@@ -89,17 +89,19 @@ public class WSCliente {
             if(!validarCliente(cliente)){
                 return ImpCliente.editarCliente(cliente);
             }else{
-               throw new BadRequestException("Datos del Cliente equivocados");
+               System.out.println("No paso la validacion");
+               throw new BadRequestException();
             }
         } else {
-            throw new BadRequestException("Parámetro inválido: el cliente no puede estar vacio.");
+            System.out.println("No hay un cliente");
+            throw new BadRequestException();
         }
     }
     
     @Path("eliminar-cliente")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminarColaborador(@FormParam("idCliente") Integer idCliente){
+    public Mensaje eliminarCliente(@FormParam("idCliente") Integer idCliente){
         if(idCliente != null&& idCliente > 0){
             return ImpCliente.eliminarCliente(idCliente);
         }
@@ -108,24 +110,25 @@ public class WSCliente {
     
     private boolean validarCliente(Cliente cliente) {
         boolean error = false;
-        // Validar que el nombre no tenga números
-        if (!cliente.getNombre().matches("^[a-zA-Z\\s]+$")){
+
+        // Validar que el nombre no tenga números y acepte caracteres con acentos y ñ
+        if (!cliente.getNombre().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
-        // Validar que el apellido paterno no tenga números
-        if (!cliente.getApellidoPaterno().matches("^[a-zA-Z\\s]+$")) {
+        // Validar que el apellido paterno no tenga números y acepte caracteres con acentos y ñ
+        if (!cliente.getApellidoPaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
-        // Validar que el apellido materno no tenga números
-        if (!cliente.getApellidoMaterno().matches("^[a-zA-Z\\s]+$")) {
+        // Validar que el apellido materno no tenga números y acepte caracteres con acentos y ñ
+        if (!cliente.getApellidoMaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
         // Validar que el número de teléfono tenga exactamente 10 dígitos
         if (!cliente.getTelefono().matches("^\\d{10}$")) {
-           error = true;
+            error = true;
         }
 
         // Validar que el correo tenga un formato válido
@@ -135,4 +138,5 @@ public class WSCliente {
 
         return error;
     }
+
 }

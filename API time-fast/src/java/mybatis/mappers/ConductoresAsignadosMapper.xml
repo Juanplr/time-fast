@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="conductoresAsignados">
+
+
+    <select id="getAll" resultType="pojo.ConductoresAsignados">
+        SELECT 
+            ca.idConductoresAsignados,
+            ca.idColaborador,
+            ca.idUnidad,
+            CONCAT(c.nombre, ' ', c.apellidoPaterno, ' ', c.apellidoMaterno) AS conductor,
+            CONCAT(u.marca, ' ', u.modelo) AS unidad,
+            u.vin
+        FROM conductoresAsignados ca
+        LEFT JOIN colaborador c ON ca.idColaborador = c.idColaborador
+        LEFT JOIN  unidad u ON ca.idUnidad = u.idUnidad;
+    </select>
+
+
+    <insert id="insert" parameterType="pojo.ConductoresAsignados">
+        INSERT INTO conductoresAsignados (
+            idColaborador,
+            idUnidad
+        ) VALUES (
+            #{idColaborador},
+            #{idUnidad}
+        );
+    </insert>
+
+    
+    <update id="update" parameterType="pojo.ConductoresAsignados">
+        UPDATE conductoresAsignados
+        SET
+            idColaborador = #{idColaborador},
+            idUnidad = #{idUnidad}
+        WHERE idConductoresAsignados = #{idConductoresAsignados};
+    </update>
+
+   
+    <delete id="delete" parameterType="int">
+        DELETE FROM conductoresAsignados
+        WHERE idConductoresAsignados = #{idConductoresAsignados};
+    </delete>
+
+</mapper>
