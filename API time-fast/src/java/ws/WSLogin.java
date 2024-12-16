@@ -41,5 +41,16 @@ public class WSLogin {
         }
         throw new BadRequestException();
     }
+    
+    @Path("iniciar-sesion-app")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Colaborador iniciarSesionConductor(@FormParam("noPersonal") String noPersonal,@FormParam("contrasena") String password){
+        if(!noPersonal.isEmpty() && !password.isEmpty() && noPersonal.length() <=10 && Utilidades.validarInyecciónSQL(password) && Utilidades.validarInyecciónSQL(noPersonal)){
+            return ImpLogin.validarSesionConductor(noPersonal, password);
+        }  
+        throw new BadRequestException();
+    }
+    
 }
 

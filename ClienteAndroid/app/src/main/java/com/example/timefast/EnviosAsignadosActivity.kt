@@ -24,6 +24,17 @@ class EnviosAsignadosActivity : AppCompatActivity() {
         binding = ActivityEnviosAsignadosBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+
+        // Inicializa colaborador desde el Intent
+        val colaboradorJson = intent.getStringExtra("colaborador")
+        if (colaboradorJson != null) {
+            val gson = Gson()
+            colaborador = gson.fromJson(colaboradorJson, Colaborador::class.java)
+        } else {
+            // Manejar el caso donde colaborador no se pasó en el Intent
+            throw IllegalStateException("Colaborador no inicializado. Asegúrate de pasar el colaborador desde la actividad anterior.")
+        }
     }
 
     override fun onStart() {

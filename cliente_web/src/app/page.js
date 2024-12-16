@@ -6,122 +6,134 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Package, Truck, Home, CheckCircle, Search } from 'lucide-react'
 
-export default function Page() {
-  const [guia, setGuia] = useState('')
-  const [envio, setEnvio] = useState(null)
-  const [error, setError] = useState('') 
+export default function PaginaEnvio() {
+  const [numeroGuia, setNumeroGuia] = useState('')
+  const [datosEnvio, setDatosEnvio] = useState(null)
+  const [listaPaquetes, setListaPaquetes] = useState([])
+  const [historialEnvios, setHistorialEnvios] = useState([])
+  const [mensajeError, setMensajeError] = useState('')
+  const [cargando, setCargando] = useState(false)
 
-  const buscarEnvio = () => {
-    if (!guia.trim()) {
-      setError('Por favor, ingrese un número de guía válido.') 
+  const buscarEnvioPorGuia = async () => {
+    if (!numeroGuia.trim()) {
+      setMensajeError('Por favor, ingrese un número de guía válido.')
+      setDatosEnvio(null)
+      setListaPaquetes([])
+      setHistorialEnvios([])
       return
     }
 
-    setError('') 
+    setMensajeError('')
+    setCargando(true)
 
-   
-    setTimeout(() => {
-      setEnvio({
-        numero: guia,
-        estado: 'En tránsito',
-        origen: 'Ciudad de México',
-        destino: 'Guadalajara',
-        fechaEnvio: '2023-11-05',
-        fechaEstimadaEntrega: '2023-11-10',
-        paquetes: [
-          { id: 1, peso: '2kg', dimensiones: '30x20x15cm' },
-          { id: 2, peso: '1.5kg', dimensiones: '25x15x10cm' }
-        ],
-        historial: [
-          { fecha: '2023-11-05', estado: 'Pedido recibido', completado: true },
-          { fecha: '2023-11-06', estado: 'En tránsito', completado: true },
-          { fecha: '2023-11-07', estado: 'En centro de distribución local', completado: true },
-          { fecha: '', estado: 'Entregado', completado: false }
-        ]
-      })
-    }, 1000)
+    try {
+      const respuestaEnvio = await fetch(`http://localhost:8084/time-fast/api/envio/obtener-envios-por-noguia/${numeroGuia}`)
+      if (!respuestaEnvio.ok) throw new Error('No se pudo obtener la información del envío.')
+      const datos = await respuestaEnvio.json()
+
+      if (datos.length > 0) {
+        const envio = datos[0]
+        setDatosEnvio(envio)
+
+        // Obtener Paquetes
+        const respuestaPaquetes = await fetch(`http://localhost:8084/time-fast/api/paquetes/obtener-paquetes-envio/${envio.idEnvio}`)
+        setListaPaquetes(respuestaPaquetes.ok ? await respuestaPaquetes.json() : [])
+
+        // Obtener Historial de Envío
+        const respuestaHistorial = await fetch(`http://localhost:8084/time-fast/api/historial-envio/obtener-historial/${numeroGuia}`)
+        setHistorialEnvios(respuestaHistorial.ok ? await respuestaHistorial.json() : [])
+      } else {
+        setMensajeError('No se encontraron resultados para el número de guía ingresado.')
+        setDatosEnvio(null)
+        setListaPaquetes([])
+        setHistorialEnvios([])
+      }
+    } catch (error) {
+      setMensajeError(error.message)
+    } finally {
+      setCargando(false)
+    }
   }
 
-  const getIconForState = (state) => {
-    switch (state) {
-      case 'Pedido recibido':
-        return <Package className="w-6 h-6" />
-      case 'En tránsito':
-        return <Truck className="w-6 h-6" />
-      case 'En centro de distribución local':
-        return <Home className="w-6 h-6" />
-      case 'Entregado':
-        return <CheckCircle className="w-6 h-6" />
-      default:
-        return null
+  const obtenerIconoPorEstado = (estado) => {
+    switch (estado) {
+      case 'Pedido recibido': return <Package className="w-6 h-6" />
+      case 'En tránsito': return <Truck className="w-6 h-6" />
+      case 'Centro de distribución': return <Home className="w-6 h-6" />
+      case 'Entregado': return <CheckCircle className="w-6 h-6" />
+      default: return null
     }
   }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Consulta de Envíos</h1>
-      <div className="flex flex-col gap-2 mb-4">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Ingrese número de guía"
-            value={guia}
-            onChange={(e) => setGuia(e.target.value)}
-          />
-          <Button onClick={buscarEnvio}><Search className="w-4 h-4 mr-2" /> Buscar</Button>
-        </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>} {/* Muestra el mensaje de error */}
+      <div className="flex gap-2 mb-4">
+        <Input
+          type="text"
+          placeholder="Ingrese número de guía"
+          value={numeroGuia}
+          onChange={(e) => setNumeroGuia(e.target.value)}
+        />
+        <Button onClick={buscarEnvioPorGuia} disabled={cargando}>
+          {cargando ? 'Buscando...' : <><Search className="w-4 h-4 mr-2" /> Buscar</>}
+        </Button>
       </div>
 
-      {envio && (
+      {mensajeError && <p className="text-red-500">{mensajeError}</p>}
+
+      {datosEnvio && (
         <Card>
-          <CardHeader>
-            <CardTitle>Detalles del Envío</CardTitle>
-          </CardHeader>
+          <CardHeader><CardTitle>Detalles del Envío</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <p><strong>Número de Guía:</strong> {envio.numero}</p>
-                <p><strong>Estado:</strong> {envio.estado}</p>
-                <p><strong>Origen:</strong> {envio.origen}</p>
-                <p><strong>Destino:</strong> {envio.destino}</p>
+                <p><strong>Cliente:</strong> {datosEnvio.cliente}</p>
+                <p><strong>Número de Guía:</strong> {datosEnvio.noGuia}</p>
+                <p><strong>Estado:</strong> {datosEnvio.estadoDeEnvio}</p>
+                <p><strong>Origen:</strong> {datosEnvio.origen}</p>
+                <p><strong>Destino:</strong> {datosEnvio.destino}</p>
               </div>
               <div>
-                <p><strong>Fecha de Envío:</strong> {envio.fechaEnvio}</p>
-                <p><strong>Fecha Estimada de Entrega:</strong> {envio.fechaEstimadaEntrega}</p>
+                <p><strong>Costo de Envío:</strong> ${datosEnvio.costoDeEnvio}</p>
+                <p><strong>Colaborador:</strong> {datosEnvio.colaborador}</p>
               </div>
             </div>
 
-            <h3 className="font-semibold mt-4 mb-2">Estado del Envío:</h3>
-            <div className="flex justify-between items-center mb-4">
-              {envio.historial.map((evento, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <div className={`rounded-full p-2 ${evento.completado ? 'bg-green-500' : 'bg-gray-300'}`}>
-                    {getIconForState(evento.estado)}
-                  </div>
-                  <p className="text-xs mt-1 text-center">{evento.estado}</p>
-                </div>
-              ))}
+            {/* Estado del Envío */}
+            <h3 className="font-bold text-xl mt-4">Estado del Envío:</h3>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="rounded-full p-3 bg-green-500 text-white">
+                {obtenerIconoPorEstado(datosEnvio.estadoDeEnvio)}
+              </div>
+              <p>{datosEnvio.estadoDeEnvio}</p>
             </div>
 
-            <h3 className="font-semibold mt-4 mb-2">Paquetes:</h3>
-            <ul>
-              {envio.paquetes.map(paquete => (
-                <li key={paquete.id}>
-                  Peso: {paquete.peso}, Dimensiones: {paquete.dimensiones}
-                </li>
-              ))}
-            </ul>
+            {/* Detalles del Paquete */}
+            <h3 className="font-bold text-xl mt-4">Detalles del Paquete:</h3>
+            {listaPaquetes.map((paquete, index) => (
+              <div key={index} className="mb-4">
+                <p><strong>ID Paquete:</strong> {paquete.idPaquete}</p>
+                <p><strong>Descripción:</strong> {paquete.descripcion}</p>
+                <p><strong>Peso:</strong> {paquete.peso} kg</p>
+                <p><strong>Dimensiones:</strong> {paquete.alto}X{paquete.ancho}X{paquete.profundidad}</p>
+              </div>
+            ))}
 
-            <h3 className="font-semibold mt-4 mb-2">Historial Detallado:</h3>
-            <ul>
-              {envio.historial.map((evento, index) => (
-                <li key={index} className="flex items-center mb-2">
-                  {getIconForState(evento.estado)}
-                  <span className="ml-2">{evento.fecha}: {evento.estado}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Historial de Envios */}
+            <h3 className="font-bold text-xl mt-4">Historial de Envíos:</h3>
+            {historialEnvios.map((historial, index) => (
+              <div key={index} className="flex items-center gap-4 mb-4">
+                <div className="rounded-full p-3 bg-gray-300 text-black">
+                  <Package className="w-6 h-6" />
+                </div>
+                <div>
+                  <p><strong>Fecha del Cambio:</strong> {historial.tiempoDeCambio}</p>
+                  <p><strong>Motivo:</strong> {historial.motivo}</p>
+                  <p><strong>ID Paquete:</strong> {historial.idPaquete}</p>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}
