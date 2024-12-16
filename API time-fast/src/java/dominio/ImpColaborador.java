@@ -235,4 +235,47 @@ public class ImpColaborador {
         }
         return colaborador;
     }
+    
+    public static List<Colaborador> obtenerConductores() {
+
+        List<Colaborador> listaColaboradores = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaColaboradores = conexionBD.selectList("colaborador.getConductores");
+            } catch (Exception e) {
+                
+                System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
+            } finally {
+                
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
+        }
+
+        return listaColaboradores;
+    }
+    public static List<Colaborador> obtenerConductoresSinAsignar() {
+
+        List<Colaborador> listaColaboradores = null;
+        SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                listaColaboradores = conexionBD.selectList("colaborador.getConductoresSinAsignar");
+            } catch (Exception e) {
+                
+                System.err.println("Error al recuperar los colaboradores: " + e.getMessage());
+            } finally {
+                
+                conexionBD.close();
+            }
+        } else {
+            System.err.println("Por el momento no se puede consultar la información");
+        }
+
+        return listaColaboradores;
+    }
 }

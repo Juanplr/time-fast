@@ -34,6 +34,20 @@ public class WSColaborador {
             throw new NotFoundException("No se encontraron colaboradores.");
         }
     }
+    
+    @Path("obtener-conductores")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerConductores() {
+        return ImpColaborador.obtenerConductores();
+    }
+    
+    @Path("obtener-conductores-sin-asignar")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerConductoresSinAsignar() {
+        return ImpColaborador.obtenerConductoresSinAsignar();
+    }
 
     @Path("obtener-colaboradores-nombre/{nombre}")
     @GET

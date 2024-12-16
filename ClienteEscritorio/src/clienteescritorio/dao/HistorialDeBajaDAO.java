@@ -12,8 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.List;
-import pojo.Envio;
-import pojo.EstadoDeEnvio;
+import pojo.HistorialDeBaja;
 import pojo.Mensaje;
 import pojo.RespuestaHTTP;
 
@@ -21,113 +20,104 @@ import pojo.RespuestaHTTP;
  *
  * @author juanl
  */
-public class EnvioDAO {
-    
-    public static List<Envio>obtenerEnvios(){
-        List<Envio> envios = null;
-        String url = Constantes.URL+"envio/obtener-envios";
+public class HistorialDeBajaDAO {
+
+    public static List<HistorialDeBaja> obtenerHistorialesDeBaja() {
+        List<HistorialDeBaja> historiales = null;
+        String url = Constantes.URL + "historial-baja/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        if(respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
-                Type tipoLista = new TypeToken<List<Envio>>(){}.getType();
-                envios = gson.fromJson(respuesta.getContenido(), tipoLista);
+                Type tipoLista = new TypeToken<List<HistorialDeBaja>>() {}.getType();
+                historiales = gson.fromJson(respuesta.getContenido(), tipoLista);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return envios;
+        return historiales;
     }
-    
-    public static List<Envio>obtenerEnviosPorNoGuia(String noGuia){
-        List<Envio> envios = null;
-        String url = Constantes.URL+"envio/obtener-envios-por-noguia/"+noGuia;
+
+    public static HistorialDeBaja obtenerHistorialPorIdUnidad(int idUnidad) {
+        HistorialDeBaja historial = null;
+        String url = Constantes.URL + "historial-baja/obtener-por-idunidad/" + idUnidad;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        if(respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
-                Type tipoLista = new TypeToken<List<Envio>>(){}.getType();
-                envios = gson.fromJson(respuesta.getContenido(), tipoLista);
+                historial = gson.fromJson(respuesta.getContenido(), HistorialDeBaja.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return envios;
+        return historial;
     }
-    
-    public static Mensaje agregarEnvio(Envio envio){
+
+    public static Mensaje agregarHistorialDeBaja(HistorialDeBaja historial) {
         Mensaje mensaje = null;
-        String url = Constantes.URL+"envio/agregar-envio";
+        String url = Constantes.URL + "historial-baja/agregar";
         Gson gson = new Gson();
         try {
-            String parametros = gson.toJson(envio);
+            String parametros = gson.toJson(historial);
             RespuestaHTTP respuesta = ConexionWS.peticionPOSTJSON(url, parametros);
-            if(respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            }else{
+            } else {
+                mensaje = new Mensaje();
                 mensaje.setError(true);
                 mensaje.setMensaje(respuesta.getContenido());
             }
         } catch (Exception e) {
+            mensaje = new Mensaje();
             mensaje.setError(true);
             mensaje.setMensaje(e.getMessage());
         }
-        
+
         return mensaje;
     }
-    public static Mensaje editarEnvio(Envio envio){
+
+    public static Mensaje editarHistorialDeBaja(HistorialDeBaja historial) {
         Mensaje mensaje = null;
-        String url = Constantes.URL+"envio/editar-envio";
+        String url = Constantes.URL + "historial-baja/editar";
         Gson gson = new Gson();
         try {
-            String parametros = gson.toJson(envio);
+            String parametros = gson.toJson(historial);
             RespuestaHTTP respuesta = ConexionWS.peticionPUTJSON(url, parametros);
-            if(respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            }else{
+            } else {
+                mensaje = new Mensaje();
                 mensaje.setError(true);
                 mensaje.setMensaje(respuesta.getContenido());
             }
         } catch (Exception e) {
+            mensaje = new Mensaje();
             mensaje.setError(true);
             mensaje.setMensaje(e.getMessage());
         }
-        
+
         return mensaje;
     }
-    public static Mensaje eliminarEnvio(Integer idEnvio){
+
+    public static Mensaje eliminarHistorialDeBaja(int idHistorialDeBaja) {
         Mensaje mensaje = null;
-        String url = Constantes.URL+"envio/eliminar-envio/"+idEnvio;
+        String url = Constantes.URL + "historial-baja/eliminar/" + idHistorialDeBaja;
         Gson gson = new Gson();
         try {
             RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url, "");
-            if(respuesta.getCodigoRespuesta()==HttpURLConnection.HTTP_OK){
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 mensaje = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            }else{
+            } else {
+                mensaje = new Mensaje();
                 mensaje.setError(true);
                 mensaje.setMensaje(respuesta.getContenido());
             }
         } catch (Exception e) {
+            mensaje = new Mensaje();
             mensaje.setError(true);
             mensaje.setMensaje(e.getMessage());
         }
-        
+
         return mensaje;
-    }
-    
-     public static List<EstadoDeEnvio>obtenerEstadosDeEnvios(){
-        List<EstadoDeEnvio> envios = null;
-        String url = Constantes.URL+"envio/obtener-estados-envios";
-        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        if(respuesta.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
-            Gson gson = new Gson();
-            try {
-                Type tipoLista = new TypeToken<List<EstadoDeEnvio>>(){}.getType();
-                envios = gson.fromJson(respuesta.getContenido(), tipoLista);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return envios;
     }
 }

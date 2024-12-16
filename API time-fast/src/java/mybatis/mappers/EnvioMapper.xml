@@ -133,5 +133,10 @@
         DELETE FROM envio
         WHERE idEnvio = #{idEnvio};
     </delete>
+    
+    <select id="getObtenerEstadosDeEnvio"  resultType="pojo.EstadoDeEnvio">
+        SELECT idEstadoDeEnvio, nombre
+        FROM estadoDeEnvio;
+    </select>
 
 </mapper>

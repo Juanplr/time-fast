@@ -20,6 +20,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
+import pojo.EstadoDeEnvio;
 import pojo.Mensaje;
 /**
  *
@@ -76,5 +77,12 @@ public class WSEnvio {
             throw new BadRequestException("El idEnvio debe ser mayor que 0.");
         }
         return ImpEnvio.eliminarEnvio(idEnvio);
+    }
+    
+    @Path("obtener-estados-envios")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<EstadoDeEnvio> obtenerEstadosEnvios() {
+       return ImpEnvio.obtenerEstadosDeEnvios();
     }
 }

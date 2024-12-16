@@ -20,6 +20,7 @@ public class Unidad {
    private Integer idEstadoUnidad;
    private String tipoUnidad;
    private String estadoUnidad;
+   private String motivo;
 
     public Unidad() {
     }
@@ -115,6 +116,14 @@ public class Unidad {
 
     public void setEstadoUnidad(String estadoUnidad) {
         this.estadoUnidad = estadoUnidad;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
     
 }

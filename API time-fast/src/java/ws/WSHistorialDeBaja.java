@@ -42,17 +42,11 @@ public class WSHistorialDeBaja {
     @Path("obtener-por-idunidad/{idUnidad}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<HistorialDeBaja> obtenerHistorialPorIdUnidad(@PathParam("idUnidad") int idUnidad) {
+    public HistorialDeBaja obtenerHistorialPorIdUnidad(@PathParam("idUnidad") int idUnidad) {
         if (idUnidad > 0) {
-            List<HistorialDeBaja> lista = ImpHistorialDeBaja.obtenerPorIdUnidad(idUnidad);
-            if (!lista.isEmpty()) {
-                return lista;
-            } else {
-                throw new NotFoundException("No se encontraron registros para la idUnidad proporcionada: " + idUnidad);
-            }
-        } else {
-            throw new BadRequestException("El parámetro idUnidad debe ser mayor que 0.");
+            return ImpHistorialDeBaja.obtenerPorIdUnidad(idUnidad);
         }
+        throw  new BadRequestException();
     }
 
     @Path("agregar")

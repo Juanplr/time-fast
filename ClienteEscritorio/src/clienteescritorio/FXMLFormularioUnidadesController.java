@@ -5,6 +5,7 @@
  */
 package clienteescritorio;
 
+import clienteescritorio.dao.HistorialDeBajaDAO;
 import clienteescritorio.dao.UnidadDAO;
 import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
@@ -23,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import pojo.EstadoUnidad;
+import pojo.HistorialDeBaja;
 import pojo.Mensaje;
 import pojo.TipoUnidad;
 import pojo.Unidad;
@@ -54,6 +56,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
     private NotificadoOperacion observador; 
     private Unidad unidadEditada;
     private boolean modoEdicion = false;
+    private HistorialDeBaja historial = null;
     
     ObservableList<TipoUnidad> tiposDeUnidades;
     ObservableList<EstadoUnidad> tiposDeEstado;
@@ -83,10 +86,16 @@ public class FXMLFormularioUnidadesController implements Initializable {
         this.observador = observador;
         if(unidadEditada!= null){
             modoEdicion = true;
+            agregarHistorial();
             lEstadoUnidad.setVisible(true);
             cbEstadoUnidad.setVisible(true);
             llenarcampos();
             btnGuardar.setText("Editar");
+             if(unidadEditada.getIdEstadoUnidad()==2){
+                lMotivo.setVisible(true);
+                tfMotivo.setVisible(true);
+                llenarMotivo();
+            }
         }
     }
 
@@ -106,16 +115,18 @@ public class FXMLFormularioUnidadesController implements Initializable {
        unidad.setAnio(tfAnio.getText());
        unidad.setIdTipoUnidad((cbTipoUnidad.getSelectionModel().getSelectedItem()!= null)?
                cbTipoUnidad.getSelectionModel().getSelectedItem().getIdTipoUnidad(): -1);
+       unidad.setIdEstadoUnidad((cbEstadoUnidad.getSelectionModel().getSelectedItem()!= null)?
+               cbEstadoUnidad.getSelectionModel().getSelectedItem().getIdEstadoUnidad(): 1);
        if(validarCampos(unidad)){
            if(!modoEdicion){
                guardarDatosUnidad(unidad);
            }else{
-               unidad.setIdEstadoUnidad(1);
                unidad.setIdUnidad(unidadEditada.getIdUnidad());
+               if(unidad.getIdEstadoUnidad()==2){
+                   unidad.setMotivo(tfMotivo.getText());
+               }
                editarUnidad(unidad);
            }
-       }else{
-           Utilidades.mostrarAlertaSimple("Campos Obligatorios", "Hubo un error al llenar los campos", Alert.AlertType.ERROR);
        }
         
     }
@@ -154,42 +165,37 @@ public class FXMLFormularioUnidadesController implements Initializable {
     
     private boolean validarCampos(Unidad unidad) {
         if (unidad.getMarca() == null || unidad.getMarca().trim().isEmpty()) {
-            System.out.println("La marca es obligatoria.");
+            Utilidades.mostrarAlertaSimple("Error", "La marca es obligatoria.", Alert.AlertType.ERROR);
             return false;
         }
 
         if (unidad.getModelo() == null || unidad.getModelo().trim().isEmpty()) {
-            System.out.println("El modelo es obligatorio.");
+            Utilidades.mostrarAlertaSimple("Error", "El modelo es obligatorio.", Alert.AlertType.ERROR);
             return false;
         }
 
         if (unidad.getAnio() == null || !unidad.getAnio().matches("\\d{4}")) {
-            System.out.println("El año debe ser un valor numérico de 4 dígitos.");
+            Utilidades.mostrarAlertaSimple("Error", "El año debe ser un valor numérico de 4 dígitos.", Alert.AlertType.ERROR);
             return false;
         }
 
         if (unidad.getVin() == null || !unidad.getVin().matches("[A-HJ-NPR-Z0-9]{17}")) {
-            System.out.println("El VIN debe tener exactamente 17 caracteres alfanuméricos (sin las letras I, O, Q).");
-            return false;
-        }
-
-        if (unidad.getTipoUnidad() == null || unidad.getTipoUnidad().trim().isEmpty()) {
-            System.out.println("El tipo de unidad (Gasolina, Diesel, Eléctrica, Híbrida) es obligatorio.");
+            Utilidades.mostrarAlertaSimple("Error", "El VIN debe tener exactamente 17 caracteres alfanuméricos (sin las letras I, O, Q).", Alert.AlertType.ERROR);
             return false;
         }
 
         if (unidad.getNii() == null || !unidad.getNii().equals(generarNII(unidad))) {
-            System.out.println("El Número de Identificación Interno (NII) no coincide con el formato requerido (Año + primeros 4 caracteres del VIN).");
+            Utilidades.mostrarAlertaSimple("", "El Número de Identificación Interno (NII) no coincide con el formato requerido (Año + primeros 4 caracteres del VIN).",Alert.AlertType.ERROR);
             return false;
         }
 
-        if (unidad.getIdTipoUnidad() == null || unidad.getIdTipoUnidad() <= 0) {
-            System.out.println("El ID del tipo de unidad debe ser un valor positivo.");
+        if (unidad.getIdTipoUnidad() == null || unidad.getIdTipoUnidad() < 0) {
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Tipo De Unidad.", Alert.AlertType.ERROR);
             return false;
         }
 
-        if (unidad.getIdEstadoUnidad() == null || unidad.getIdEstadoUnidad() <= 0) {
-            System.out.println("El ID del estado de la unidad debe ser un valor positivo.");
+        if (unidad.getIdEstadoUnidad() == null || unidad.getIdEstadoUnidad() < 0) {
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Estado de la unidad", Alert.AlertType.ERROR);
             return false;
         }
 
@@ -217,6 +223,21 @@ public class FXMLFormularioUnidadesController implements Initializable {
         }
     }
      private void editarUnidad(Unidad unidad){
+        if(unidad.getIdEstadoUnidad()==2 && historial == null){
+            HistorialDeBaja baja = new HistorialDeBaja();
+            baja.setIdUnidad(unidad.getIdUnidad());
+            baja.setMotivo(unidad.getMotivo());
+            HistorialDeBajaDAO.agregarHistorialDeBaja(baja);
+        }else{
+            HistorialDeBaja baja = new HistorialDeBaja();
+            baja.setIdUnidad(unidad.getIdUnidad());
+            baja.setMotivo(unidad.getMotivo());
+            baja.setIdHistorialDeBaja(historial.getIdHistorialDeBaja());
+            HistorialDeBajaDAO.editarHistorialDeBaja(baja);
+        }
+        if(unidad.getIdEstadoUnidad()==1){
+            HistorialDeBajaDAO.eliminarHistorialDeBaja(historial.getIdHistorialDeBaja());
+        }
         Mensaje msj = UnidadDAO.EditarUnidad(unidad);
         if(!msj.isError()){
             Utilidades.mostrarAlertaSimple("Registro Exitoso", "Todo good", Alert.AlertType.INFORMATION);
@@ -251,5 +272,14 @@ public class FXMLFormularioUnidadesController implements Initializable {
             lMotivo.setVisible(false);
             tfMotivo.setVisible(false);
         }
+    }
+    
+    private void agregarHistorial(){
+        System.out.println(unidadEditada.getIdUnidad());
+        historial = HistorialDeBajaDAO.obtenerHistorialPorIdUnidad(unidadEditada.getIdUnidad());
+    }
+
+    private void llenarMotivo() {
+        tfMotivo.setText(historial.getMotivo());
     }
 }

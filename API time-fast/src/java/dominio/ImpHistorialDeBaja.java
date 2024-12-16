@@ -38,13 +38,13 @@ public class ImpHistorialDeBaja {
         return lista;
     }
     
-    public static List<HistorialDeBaja> obtenerPorIdUnidad(int idUnidad) {
-    List<HistorialDeBaja> lista = new ArrayList<>();
+    public static HistorialDeBaja obtenerPorIdUnidad(int idUnidad) {
+    HistorialDeBaja lista = null;
     SqlSession conexionBD = MyBatisUtil.obtenerConexion();
 
     if (conexionBD != null) {
         try {
-            lista = conexionBD.selectList("historialDeBaja.getHistorialDeBajaPorIdUnidad", idUnidad);
+            lista = conexionBD.selectOne("historialDeBaja.getHistorialDeBajaPorIdUnidad", idUnidad);
         } catch (Exception e) {
             System.err.println("Error al recuperar historial de baja por idUnidad: " + e.getMessage());
         } finally {

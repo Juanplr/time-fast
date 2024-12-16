@@ -177,7 +177,9 @@ public class FXMLFormularioEnviosController implements Initializable {
     }
 
     private void cargarEstadosDeEnvio() {
-        
+        tiposDeEsadosDeEnvio = FXCollections.observableArrayList();
+        tiposDeEsadosDeEnvio.addAll(EnvioDAO.obtenerEstadosDeEnvios());
+        cbEstadoDeEnvio.setItems(tiposDeEsadosDeEnvio);
     }
 
     private int buscarCliente(Integer idCliente) {
