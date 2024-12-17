@@ -16,7 +16,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clienteescritorio.FXMLFormularioEnviosController">
    <children>
-      <Pane layoutX="6.0" prefHeight="400.0" prefWidth="667.0">
+      <Pane layoutX="6.0" prefHeight="425.0" prefWidth="667.0">
          <children>
             <Pane layoutX="-7.0" prefHeight="59.0" prefWidth="673.0" style="-fx-background-color: #c6c5c5;">
                <children>
@@ -94,7 +94,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btnGuardar" layoutX="231.0" layoutY="357.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
+            <Button fx:id="btnGuardar" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#onClickGuardar" prefHeight="25.0" prefWidth="85.0" text="Guardar" />
             <Label layoutX="315.0" layoutY="312.0" text="Costo Envio:">
                <font>
                   <Font size="14.0" />
@@ -120,6 +120,12 @@
                </font>
             </Label>
             <ComboBox fx:id="cbConductores" layoutX="319.0" layoutY="278.0" prefHeight="25.0" prefWidth="201.0" />
+            <TextField fx:id="tfMotivo" layoutX="162.0" layoutY="355.0" prefHeight="25.0" prefWidth="140.0" style="-fx-background-color: #c6c5c5;" />
+            <Label fx:id="lMotivo" layoutX="169.0" layoutY="335.0" text="Motivo:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

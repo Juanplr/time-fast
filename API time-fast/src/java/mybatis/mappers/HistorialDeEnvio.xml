@@ -4,67 +4,61 @@
 
 <mapper namespace="historialDeEnvio">
 
-   
     <select id="getObtenerHistorialDeEnvio" resultType="pojo.HistorialDeEnvio">
         SELECT 
-            idHistorialDeEnvio,
-            idPaquete,
-            idEnvio,
-            idColaborador,
-            motivo,
-            tiempoDeCambio
-        FROM historialDeEnvio
+            h.idHistorialDeEnvio,
+            h.idEstadoDeEnvio,
+            h.idColaborador,
+            c.nombre AS colaborador,
+            h.noGuia,
+            h.motivo,
+            h.tiempoDeCambio
+        FROM historialDeEnvio h
+        INNER JOIN colaborador c ON h.idColaborador = c.idColaborador
     </select>
-    
-    
+
     <select id="getHistorialDeEnvioPorNoGuia" parameterType="String" resultType="pojo.HistorialDeEnvio">
-    SELECT 
-        h.idHistorialDeEnvio,
-        h.idPaquete,
-        h.idEnvio,
-        h.idColaborador,
-        h.motivo,
-        h.tiempoDeCambio
-    FROM 
-        historialDeEnvio h
-    INNER JOIN envio e ON h.idEnvio = e.idEnvio
-    WHERE 
-        e.noGuia = #{noGuia};
-</select>
+        SELECT 
+            h.idHistorialDeEnvio,
+            h.idEstadoDeEnvio,
+            h.idColaborador,
+            c.nombre AS colaborador,
+            h.noGuia,
+            h.motivo,
+            h.tiempoDeCambio
+        FROM 
+            historialDeEnvio h
+        INNER JOIN colaborador c ON h.idColaborador = c.idColaborador
+        WHERE 
+            h.noGuia = #{noGuia};
+    </select>
 
-
-    
-   
-
- 
     <insert id="insert" parameterType="pojo.HistorialDeEnvio">
         INSERT INTO historialDeEnvio (
-            idPaquete,
-            idEnvio,
+            idEstadoDeEnvio,
             idColaborador,
+            noGuia,
             motivo,
             tiempoDeCambio
         ) VALUES (
-            #{idPaquete},
-            #{idEnvio},
+            #{idEstadoDeEnvio},
             #{idColaborador},
+            #{noGuia},
             #{motivo},
             #{tiempoDeCambio}
         );
     </insert>
 
-
     <update id="update" parameterType="pojo.HistorialDeEnvio">
         UPDATE historialDeEnvio
         SET
-            idPaquete = #{idPaquete},
-            idEnvio = #{idEnvio},
+            idEstadoDeEnvio = #{idEstadoDeEnvio},
             idColaborador = #{idColaborador},
+            noGuia = #{noGuia},
             motivo = #{motivo},
             tiempoDeCambio = #{tiempoDeCambio}
         WHERE idHistorialDeEnvio = #{idHistorialDeEnvio};
     </update>
-
 
     <delete id="delete" parameterType="int">
         DELETE FROM historialDeEnvio

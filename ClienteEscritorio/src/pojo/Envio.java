@@ -188,4 +188,11 @@ public class Envio {
         this.colaborador = colaborador;
     }
 
+    @Override
+    public String toString() {
+        return "noGuia: " + noGuia;
+    }
+    
+    
+
 }

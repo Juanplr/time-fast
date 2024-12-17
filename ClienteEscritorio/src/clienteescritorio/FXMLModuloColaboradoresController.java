@@ -139,10 +139,10 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
         if(colaborador!= null){
             Mensaje mensaje = ColaboradorDAO.eliminarColaborador(colaborador.getIdColaborador());
             if(!mensaje.isError()){
-                Utilidades.mostrarAlertaSimple("Correcto", "Colaborador agregado correctamente", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Correcto", "Colaborador Eliminado correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No puedes Eliminar un colaborador que este asignado a una unidad.", Alert.AlertType.ERROR);
             }
             
         }else{
@@ -180,10 +180,10 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
                    if(lista!=null && !lista.isEmpty()){
                         colaboradores.addAll(lista);
                         tablaColaboradores.setItems(colaboradores);
-                   }else{
+                   }
+               }else{
                         Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el colaborador", Alert.AlertType.WARNING);
                        cargarLaInformacion();
-                   }
                }
            }
         }

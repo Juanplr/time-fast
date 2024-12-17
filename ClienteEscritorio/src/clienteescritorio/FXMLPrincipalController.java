@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pojo.Colaborador;
 
@@ -53,7 +54,7 @@ public class FXMLPrincipalController implements Initializable {
         // TODO
     }
     
-     public void setColaborador(Colaborador colaborador) {
+    public void setColaborador(Colaborador colaborador) {
         this.colaborador = colaborador;
     }
     
@@ -103,16 +104,21 @@ public class FXMLPrincipalController implements Initializable {
     
     
     private void moduloEnvios(){
-        try{
-            Stage escenarioBase = (Stage) moduloUnidades.getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLModuloEnvios.fxml"));
+            Parent root = loader.load();
             
-            Parent principal = FXMLLoader.load(getClass().getResource("FXMLModuloEnvios.fxml"));
-            Scene escenaPrincipal = new Scene(principal);
-            escenarioBase.setScene(escenaPrincipal);
-            escenarioBase.setTitle("Time-Fast Envios");
-            escenarioBase.show();
-        }catch(Exception e){
-            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Envios", Alert.AlertType.ERROR);
+            FXMLModuloEnviosController controlador = loader.getController();
+            controlador.inizializar(colaborador);
+            
+            Stage ecena = new Stage();
+            Scene ecenario = new Scene(root);
+            ecena.setScene(ecenario);
+            ecena.setTitle("Formulario Envios");
+            ecena.initModality(Modality.APPLICATION_MODAL);
+            ecena.showAndWait();
+        } catch (Exception ex) {
+           Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Envios", Alert.AlertType.ERROR);
         }
     }
     

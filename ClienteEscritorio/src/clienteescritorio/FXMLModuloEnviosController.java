@@ -30,6 +30,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pojo.Colaborador;
 import pojo.Envio;
 import pojo.Mensaje;
 
@@ -64,11 +65,18 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
     /**
      * Initializes the controller class.
      */
+    
+    private Colaborador colaboradorLoguiado;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarLaInformacion();
-    }    
+    }
+    
+    public void inizializar(Colaborador colaboradorLoguiado) {
+        this.colaboradorLoguiado = colaboradorLoguiado;
+    }
     
     public void irPantallaPrincipal(){
         try {
@@ -118,7 +126,7 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
             Parent root = loader.load();
             
             FXMLFormularioEnviosController controlador = loader.getController();
-            controlador.initializeValores(observador, envio);
+            controlador.initializeValores(observador, envio, colaboradorLoguiado);
             
             Stage ecena = new Stage();
             Scene ecenario = new Scene(root);
