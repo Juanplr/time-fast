@@ -12,6 +12,7 @@ import clienteescritorio.dao.HistorialDeEnvioDAO;
 import clienteescritorio.observador.NotificadoOperacion;
 import clienteescritorio.utilidades.Utilidades;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,7 @@ public class FXMLFormularioEnviosController implements Initializable {
     
     private NotificadoOperacion observador; 
     private Envio envioEditado;
+    private Colaborador colaboradorLoguiado;
     private boolean modoEdicion = false;
     ObservableList<Cliente> tiposDeClientes;
     ObservableList<Colaborador> tiposDeConductores;
@@ -82,6 +84,10 @@ public class FXMLFormularioEnviosController implements Initializable {
     
     @FXML
     private Label lEstadoEnvio;
+    @FXML
+    private TextField tfMotivo;
+    @FXML
+    private Label lMotivo;
     
     
     @Override
@@ -91,16 +97,20 @@ public class FXMLFormularioEnviosController implements Initializable {
         cargarEstadosDeEnvio();
         lEstadoEnvio.setVisible(false);
         cbEstadoDeEnvio.setVisible(false);
-        
+        lMotivo.setVisible(false);
+        tfMotivo.setVisible(false);
     }
-    public void initializeValores(NotificadoOperacion observador, Envio envioEditado){
+    public void initializeValores(NotificadoOperacion observador, Envio envioEditado, Colaborador colaboradorLoguiado){
         this.envioEditado = envioEditado;
+        this.colaboradorLoguiado = colaboradorLoguiado;
         this.observador = observador;
         if(envioEditado!=null){
             modoEdicion = true;
             tfNumeroGuia.setEditable(false);
             lEstadoEnvio.setVisible(true);
             cbEstadoDeEnvio.setVisible(true);
+            lMotivo.setVisible(true);
+            tfMotivo.setVisible(true);
             llenarcampos();
         }
     }
@@ -212,13 +222,57 @@ public class FXMLFormularioEnviosController implements Initializable {
     }
 
     private boolean validarCampos(Envio envio) {
+        if (envio.getOrigenCalle() == null || envio.getOrigenCalle().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Calle' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getOrigenNumero() == null || envio.getOrigenNumero().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Número' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getOrigenColonia() == null || envio.getOrigenColonia().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Colonia' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getOrigenCodigoPostal() == null || envio.getOrigenCodigoPostal().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Código Postal' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getOrigenCiudad() == null || envio.getOrigenCiudad().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Ciudad' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getOrigenEstado() == null || envio.getOrigenEstado().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Estado' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getDestino() == null || envio.getDestino().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Destino' es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getCostoDeEnvio() <= 0) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Costo de Envío' debe ser mayor a 0.", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (envio.getNoGuia() == null || envio.getNoGuia().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Número de Guía es obligatorio.", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if ((envio.getIdEstadoDeEnvio() == 4 || envio.getIdEstadoDeEnvio() == 5) && 
+            (tfMotivo.getText() == null || tfMotivo.getText().trim().isEmpty())) {
+            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Motivo' es obligatorio cuando el estado del envío es 'Cancelado' o 'Detenido'.", Alert.AlertType.WARNING);
+            return false;
+        }
+
         return true;
     }
 
+
     private void guardarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.agregarEnvio(envio);
-        enviarHistorial(envio);
         if(!msj.isError()){
+            enviarHistorial(envio);
             Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + envio.getNoGuia()+" Agregado", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar",envio.getNoGuia() );
             cerrarVentana();
@@ -230,6 +284,7 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void editarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.editarEnvio(envio);
         if(!msj.isError()){
+            enviarHistorial(envio);
             Utilidades.mostrarAlertaSimple("Edición", "Envio: " +envio.getNoGuia()+ " Editado" , Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Edición",envio.getNoGuia());
             cerrarVentana();
@@ -240,8 +295,20 @@ public class FXMLFormularioEnviosController implements Initializable {
 
     private void enviarHistorial(Envio envio) {
         HistorialDeEnvio historial = new HistorialDeEnvio();
-        historial.setIdEnvio(envio.getIdEnvio());
-        HistorialDeEnvioDAO.registrarHistorialEnvio(historial);
+        historial.setIdEstadoDeEnvio(envio.getIdEstadoDeEnvio());
+        historial.setIdColaborador(colaboradorLoguiado.getIdColaborador());
+        historial.setNoGuia(envio.getNoGuia());
+        if(tfMotivo.getText().isEmpty()){
+            historial.setMotivo("S/M");
+        }else{
+            historial.setMotivo(tfMotivo.getText());
+        }
+        LocalDate fechaActual = LocalDate.now();
+        historial.setTiempoDeCambio(fechaActual.toString());
+        Mensaje mensaje = HistorialDeEnvioDAO.registrarHistorialEnvio(historial);
+        if(mensaje.isError()){
+            System.out.println(mensaje.getMensaje());
+        }
     }
     
 }
