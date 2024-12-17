@@ -78,7 +78,6 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
             escenarioBase.setTitle("Time-Fast Principal");
             escenarioBase.show();
         } catch (IOException ex) {
-            // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }
     }
@@ -102,7 +101,7 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
                 Utilidades.mostrarAlertaSimple("Correcto", "Cliente Eliminado correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar el Cliente", Alert.AlertType.ERROR);
             }
             
         }else{
@@ -179,7 +178,7 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
                         clientes.addAll(lista);
                         tvTablaClientes.setItems(clientes);
                    }else{
-                       Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el colaborador", Alert.AlertType.WARNING);
+                       Utilidades.mostrarAlertaSimple("Aviso", "No se encontro el Cliente(s)", Alert.AlertType.WARNING);
                        cargarLaInformacion();
                    }
                }
@@ -200,7 +199,7 @@ public class FXMLModuloClientesController implements Initializable, NotificadoOp
             Stage ecena = new Stage();
             Scene ecenario = new Scene(root);
             ecena.setScene(ecenario);
-            ecena.setTitle("Formulario Colaboador");
+            ecena.setTitle("Formulario Cliente");
             ecena.initModality(Modality.APPLICATION_MODAL);
             ecena.showAndWait();
         } catch (IOException ex) {

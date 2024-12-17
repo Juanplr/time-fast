@@ -11,8 +11,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -148,15 +146,15 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     
     private boolean validarCampos(Colaborador colaborador) {
         if (colaborador.getNombre() == null || colaborador.getNombre().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Nombre' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Nombre es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (colaborador.getApellidoPaterno() == null || colaborador.getApellidoPaterno().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Apellido Paterno' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Apellido Paterno es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (colaborador.getApellidoMaterno() != null && colaborador.getApellidoMaterno().trim().length() > 50) {
-            Utilidades.mostrarAlertaSimple("Validación", "El Apellido Materno no debe exceder los 50 caracteres.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El Apellido Materno es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (colaborador.getCurp() == null || colaborador.getCurp().length() != 18) {
@@ -168,7 +166,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             return false;
         }
         if (colaborador.getNoPersonal() == null || colaborador.getNoPersonal().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Número Personal' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Número Personal es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (colaborador.getContrasena() == null || colaborador.getContrasena().length() < 6) {
@@ -194,7 +192,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             observador.notificarOperacion("Guardar", colaborador.getNombre());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el colaborador", Alert.AlertType.ERROR);
         }
     }
     private void cerrarVentana(){
@@ -217,7 +215,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             observador.notificarOperacion("Edición", colaborador.getNombre());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el colaborador", Alert.AlertType.ERROR);
         }
     }
     
@@ -251,7 +249,6 @@ public class FXMLFormularioColaboradoresController implements Initializable {
     @FXML
     private void oyenteDelRol(ActionEvent event) {
         int rol = cbRol.getSelectionModel().getSelectedItem().getIdRol();
-        System.out.println(rol);
         if(rol == 3){
             lNoLicencia.setVisible(true);
             tfNoLicencia.setVisible(true);

@@ -86,7 +86,7 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
                tablaColaboradores.setItems(colaboradores);
            }else{
                Utilidades.mostrarAlertaSimple("ERROR", "Lo sentimos por el momento no se puede cargar la informacion"
-                       + "de los Colaboradores, por favor intentélo mas tarde", Alert.AlertType.ERROR);
+                       + "de los Colaboradores, por favor intentélo más tarde", Alert.AlertType.ERROR);
                cerrarVentana();
            }
 

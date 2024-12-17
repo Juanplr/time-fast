@@ -145,8 +145,17 @@ public class FXMLFormularioEnviosController implements Initializable {
         envio.setOrigenCiudad(tfCiudad.getText());
         envio.setOrigenEstado(tfEstado.getText());
         envio.setNoGuia(tfNumeroGuia.getText());
-        float costo = Float.parseFloat(tfCostoEnvio.getText());
-        envio.setCostoDeEnvio(costo);
+        try {
+            if (tfCostoEnvio.getText().trim().isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "El costo del envío es obligatorio.", Alert.AlertType.ERROR);
+                return;
+            }
+            float costo = Float.parseFloat(tfCostoEnvio.getText());
+            envio.setCostoDeEnvio(costo);
+        } catch (NumberFormatException e) {
+            Utilidades.mostrarAlertaSimple("Error", "El costo del envío debe ser un número válido.", Alert.AlertType.ERROR);
+            return;
+        }
         envio.setIdCliente((cbClientes.getSelectionModel().getSelectedItem() != null)?
                 cbClientes.getSelectionModel().getSelectedItem().getIdCliente(): -1);
         envio.setIdColaborador((cbConductores.getSelectionModel().getSelectedItem() != null)?
@@ -223,35 +232,35 @@ public class FXMLFormularioEnviosController implements Initializable {
 
     private boolean validarCampos(Envio envio) {
         if (envio.getOrigenCalle() == null || envio.getOrigenCalle().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Calle' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Calle es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getOrigenNumero() == null || envio.getOrigenNumero().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Número' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Número es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getOrigenColonia() == null || envio.getOrigenColonia().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Colonia' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Colonia es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getOrigenCodigoPostal() == null || envio.getOrigenCodigoPostal().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Código Postal' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Código Postal es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getOrigenCiudad() == null || envio.getOrigenCiudad().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Ciudad' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Ciudad es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getOrigenEstado() == null || envio.getOrigenEstado().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Estado' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Estado es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getDestino() == null || envio.getDestino().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Destino' es obligatorio.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Destino es obligatorio.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getCostoDeEnvio() <= 0) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Costo de Envío' debe ser mayor a 0.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Costo de Envío debe ser mayor a 0.", Alert.AlertType.WARNING);
             return false;
         }
         if (envio.getNoGuia() == null || envio.getNoGuia().trim().isEmpty()) {
@@ -261,7 +270,7 @@ public class FXMLFormularioEnviosController implements Initializable {
 
         if ((envio.getIdEstadoDeEnvio() == 4 || envio.getIdEstadoDeEnvio() == 5) && 
             (tfMotivo.getText() == null || tfMotivo.getText().trim().isEmpty())) {
-            Utilidades.mostrarAlertaSimple("Validación", "El campo 'Motivo' es obligatorio cuando el estado del envío es 'Cancelado' o 'Detenido'.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Validación", "El campo Motivo es obligatorio cuando el estado del envío es 'Cancelado' o 'Detenido'.", Alert.AlertType.WARNING);
             return false;
         }
 
@@ -277,7 +286,7 @@ public class FXMLFormularioEnviosController implements Initializable {
             observador.notificarOperacion("Guardar",envio.getNoGuia() );
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el envío"+ msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }
 
@@ -289,13 +298,14 @@ public class FXMLFormularioEnviosController implements Initializable {
             observador.notificarOperacion("Edición",envio.getNoGuia());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el envío", Alert.AlertType.ERROR);
         }
     }
 
     private void enviarHistorial(Envio envio) {
         HistorialDeEnvio historial = new HistorialDeEnvio();
         historial.setIdEstadoDeEnvio(envio.getIdEstadoDeEnvio());
+        System.out.println(colaboradorLoguiado.getIdColaborador());
         historial.setIdColaborador(colaboradorLoguiado.getIdColaborador());
         historial.setNoGuia(envio.getNoGuia());
         if(tfMotivo.getText().isEmpty()){

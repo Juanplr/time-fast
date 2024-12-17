@@ -9,6 +9,8 @@ import clienteescritorio.utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -103,24 +105,28 @@ public class FXMLPrincipalController implements Initializable {
     }
     
     
-    private void moduloEnvios(){
+    private void moduloEnvios() {
         try {
+
+            Stage escenarioBase = (Stage) moduloEnvios.getScene().getWindow();
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLModuloEnvios.fxml"));
-            Parent root = loader.load();
-            
+            Parent principal = loader.load();
+
             FXMLModuloEnviosController controlador = loader.getController();
             controlador.inizializar(colaborador);
-            
-            Stage ecena = new Stage();
-            Scene ecenario = new Scene(root);
-            ecena.setScene(ecenario);
-            ecena.setTitle("Formulario Envios");
-            ecena.initModality(Modality.APPLICATION_MODAL);
-            ecena.showAndWait();
-        } catch (Exception ex) {
-           Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Envios", Alert.AlertType.ERROR);
+
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Envios");
+            escenarioBase.show();
+        } catch (IOException ex) {
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al módulo Envios", Alert.AlertType.ERROR);
         }
     }
+
+
     
     private void moduloPaquetes(){
         try{

@@ -206,8 +206,6 @@ public class ConexionWS {
             conexion.setDoOutput(true);
             conexion.setRequestMethod("PUT");
             conexion.setRequestProperty("Content-Type", "image/png");
-
-    
             try (OutputStream os = conexion.getOutputStream()) {
                 os.write(datos);
                 os.flush();
