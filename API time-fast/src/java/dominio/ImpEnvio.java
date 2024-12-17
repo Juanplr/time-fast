@@ -5,7 +5,6 @@
  */
 package dominio;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import mybatis.MyBatisUtil;
@@ -13,12 +12,13 @@ import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoDeEnvio;
 import pojo.Mensaje;
+
 /**
  *
  * @author Daniel García Jácome
  */
 public class ImpEnvio {
-    
+
     public static List<Envio> obtenerEnvios() {
         List<Envio> listaEnvios = new ArrayList<>();
         SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
@@ -57,17 +57,15 @@ public class ImpEnvio {
         return listaEnvios;
     }
 
-    
- 
     public static Mensaje registrarEnvio(Envio envio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
+
         if (conexionBD != null) {
             try {
                 int resultado = conexionBD.insert("envio.registrar", envio);
                 conexionBD.commit();
-                
+
                 if (resultado > 0) {
                     mensaje.setError(false);
                     mensaje.setMensaje("Envío registrado correctamente");
@@ -85,19 +83,19 @@ public class ImpEnvio {
             mensaje.setError(true);
             mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
         }
-        
+
         return mensaje;
     }
 
     public static Mensaje editarEnvio(Envio envio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
+
         if (conexionBD != null) {
             try {
                 int resultado = conexionBD.update("envio.editar", envio);
                 conexionBD.commit();
-                
+
                 if (resultado > 0) {
                     mensaje.setError(false);
                     mensaje.setMensaje("Envío editado correctamente");
@@ -122,12 +120,12 @@ public class ImpEnvio {
     public static Mensaje eliminarEnvio(int idEnvio) {
         Mensaje mensaje = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
-        
+
         if (conexionBD != null) {
             try {
                 int resultado = conexionBD.delete("envio.eliminar", idEnvio);
                 conexionBD.commit();
-                
+
                 if (resultado > 0) {
                     mensaje.setError(false);
                     mensaje.setMensaje("Envío eliminado correctamente");
@@ -148,7 +146,7 @@ public class ImpEnvio {
 
         return mensaje;
     }
-    
+
     public static List<EstadoDeEnvio> obtenerEstadosDeEnvios() {
         List<EstadoDeEnvio> listaEstados = null;
         SqlSession conexionBD = mybatis.MyBatisUtil.obtenerConexion();
@@ -167,4 +165,24 @@ public class ImpEnvio {
 
         return listaEstados;
     }
+
+    public static List<Envio> obtenerEnviosConductor() {
+        List<Envio> listaEnvios = new ArrayList<>();
+        SqlSession conexionDB = mybatis.MyBatisUtil.obtenerConexion();
+
+        if (conexionDB != null) {
+            try {
+                listaEnvios = conexionDB.selectList("envio.getObtenerEnviosConductor");
+            } catch (Exception e) {
+                System.err.println("Error al recuperar los envíos: " + e.getMessage());
+
+            } finally {
+                conexionDB.close();
+            }
+        }else{
+            System.out.println("ERROR con el servidor");
+        }
+        return listaEnvios;
+    }
+
 }

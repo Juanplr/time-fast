@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <!-- Número de guía -->
+    <TextView
+        android:id="@+id/tvNumeroGuia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="ENV001"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+
+    <!-- Dirección de destino -->
+    <TextView
+        android:id="@+id/tvDireccionDestino"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Calle Principal 123, Ciudad de México"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
+    <!-- Contenedor del estatus -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Icono del estatus -->
+        <ImageView
+            android:id="@+id/ivEstatus"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+            <!--android:src="@drawable/ic_recibido"-->
+
+        <!-- Texto del estatus -->
+        <TextView
+            android:id="@+id/tvEstatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recibido"
+            android:textSize="14sp"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
+</LinearLayout>
+
