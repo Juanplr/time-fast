@@ -44,10 +44,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/guia_value"
+            android:id="@+id/guia_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ENV001"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -58,10 +57,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/origen_value"
+            android:id="@+id/origen_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bodega Central, Av. Principal 100, CDMX"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -72,10 +70,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/destino_value"
+            android:id="@+id/destino_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Calle Principal 123, Ciudad de México"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -86,10 +83,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/paquetes_value"
+            android:id="@+id/paquetes_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Laptop Dell XPS 15\nMonitor LG 27 pulgadas"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -100,10 +96,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/estatus_value"
+            android:id="@+id/estatus_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\uD83D\uDFE2 En camino"
             android:layout_marginBottom="8dp"
             android:textColor="@android:color/holo_blue_dark" />
 
@@ -115,10 +110,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/cliente_value"
+            android:id="@+id/cliente_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Juan Pérez\n555-1234\njuan.perez@email.com"
             android:layout_marginBottom="16dp" />
 
         <!-- Botón para actualizar estatus -->

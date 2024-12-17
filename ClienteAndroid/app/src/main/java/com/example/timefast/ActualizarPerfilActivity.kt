@@ -250,12 +250,6 @@ class ActualizarPerfilActivity : AppCompatActivity() {
             }
     }
 
-    fun serializarInformacion(colaborador: Colaborador): String {
-        val gson = Gson()
-        val colaboradorJson = gson.toJson(colaborador)
-        return colaboradorJson
-    }
-
     fun cerrarSesion() {
         // Limpia las preferencias de sesión
         val sharedPreferences = getSharedPreferences("Sesion", MODE_PRIVATE)
