@@ -28,7 +28,6 @@ class EnviosAsignadosActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_envios_asignados)
         binding = ActivityEnviosAsignadosBinding.inflate(layoutInflater)
         val view = binding.root
