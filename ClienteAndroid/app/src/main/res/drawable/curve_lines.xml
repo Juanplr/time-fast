@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="600dp"
+    android:height="800dp"
+    android:viewportWidth="600"
+    android:viewportHeight="800">
+
+    <!-- Fondo Blanco -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,0 H600 V800 H0 Z" />
+
+    <!-- Línea Curva 1 (Arriba) -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:pathData="M0,200 Q350,100 300,80 T600,0" />
+
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:pathData="M0,800 Q350,650 300,720 T600,650" />
+
+</vector>

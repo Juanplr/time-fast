@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/dominio/ImpEnvio.java</file>
-            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/mybatis/mappers/EnvioMapper.xml</file>
-            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/ws/WSEnvio.java</file>
-=======
-            <file>file:/C:/Users/juanl/Documents/time-fast/API%20time-fast/src/java/mybatis/mappers/HistorialDeEnvio.xml</file>
->>>>>>> main
+            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/mybatis/mappers/HistorialDeEnvio.xml</file>
+            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/dominio/ImpHistorialEnvio.java</file>
+            <file>file:/C:/Users/reyes/Documents/Agosto-Febrero%202025/IntegracionSoluciones/Time-Fast/time-fast/API%20time-fast/src/java/ws/WSHistorialDeEnvio.java</file>
         </group>
     </open-files>
 </project-private>

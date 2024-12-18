@@ -34,7 +34,8 @@
                 android:textAlignment="center"
                 android:text="Actualizar Perfil"
                 android:textSize="26sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#000000"/>
 
             <ImageView
                 android:id="@+id/cerrar_sesion"
@@ -58,7 +59,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cambiar foto de perfil"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-medium" />
+
+
         <!--
         <TextView
             android:id="@+id/cambiar_foto"
@@ -78,7 +84,8 @@
             android:layout_height="wrap_content"
             android:text="Nombre(s):"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/nombre"
@@ -86,7 +93,8 @@
             android:layout_height="wrap_content"
             android:hint="Nombre"
             android:inputType="text"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_apellido_paterno"
@@ -94,7 +102,8 @@
             android:layout_height="wrap_content"
             android:text="Apellido Paterno:"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/apellido_paterno"
@@ -102,7 +111,8 @@
             android:layout_height="wrap_content"
             android:hint="Apellido Paterno:"
             android:inputType="text"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_apellido_materno"
@@ -110,7 +120,8 @@
             android:layout_height="wrap_content"
             android:text="Apellido Materno"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/apellido_materno"
@@ -118,7 +129,8 @@
             android:layout_height="wrap_content"
             android:hint="Apellido Materno:"
             android:inputType="text"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_Curp"
@@ -126,7 +138,8 @@
             android:layout_height="wrap_content"
             android:text="Curp:"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/curp"
@@ -134,7 +147,8 @@
             android:layout_height="wrap_content"
             android:hint="CURP:"
             android:inputType="text"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_correo"
@@ -142,7 +156,8 @@
             android:layout_height="wrap_content"
             android:text="Correo:"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/email"
@@ -150,7 +165,8 @@
             android:layout_height="wrap_content"
             android:hint="Correo:"
             android:inputType="textEmailAddress"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_contrasena"
@@ -158,7 +174,8 @@
             android:layout_height="wrap_content"
             android:text="Contraseña:"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/contrasena"
@@ -166,7 +183,8 @@
             android:layout_height="wrap_content"
             android:hint="Contraseña:"
             android:inputType="textPassword"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/Tv_no_licencia"
@@ -174,7 +192,8 @@
             android:layout_height="wrap_content"
             android:text="Número de licencia::"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/numero_licencia"
@@ -182,15 +201,17 @@
             android:layout_height="wrap_content"
             android:hint="Número de licencia:"
             android:inputType="text"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"/>
 
         <!-- Botón de Actualizar Perfil -->
         <Button
             android:id="@+id/guardar_cambios"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Actualizar Perfil"
-            android:backgroundTint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

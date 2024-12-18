@@ -25,7 +25,7 @@ public class ImpHistorialEnvio {
 
         if (conexionBD != null) {
             try {
-                lista = conexionBD.selectList("historialDeEnvio.getAll");
+                lista = conexionBD.selectList("historialDeEnvio.getObtenerHistorialDeEnvio");
             } catch (Exception e) {
                 System.err.println("Error al recuperar historial de envío: " + e.getMessage());
             } finally {

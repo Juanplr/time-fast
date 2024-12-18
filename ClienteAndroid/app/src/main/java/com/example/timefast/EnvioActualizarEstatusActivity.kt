@@ -1,6 +1,7 @@
 package com.example.timefast
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,46 +10,37 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.timefast.adapter.EstadoAdapter
 import com.example.timefast.databinding.ActivityEnvioActualizarEstatusBinding
+import com.example.timefast.poko.Envio
 import com.example.timefast.poko.EstadoEnvio
 import com.example.timefast.util.Constantes
 import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class EnvioActualizarEstatusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEnvioActualizarEstatusBinding
     private lateinit var listaEstados: List<EstadoEnvio>
+    private lateinit var envio: Envio
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_envio_actualizar_estatus)
         binding = ActivityEnvioActualizarEstatusBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        obtenerEnvio()
         cargarEstatusDesdeWeb()
+        configurarBotonGuardar()
     }
 
 
-    override fun onStart() {
-        super.onStart()
-        binding.btnGuardarCambios.setOnClickListener{
-            val estadoSeleccionado = binding.spinnerEstatus.selectedItem as EstadoEnvio
-            val nombreEstatus = estadoSeleccionado.nombre
-            val idEstatus = estadoSeleccionado.idEstadoDeEnvio
-            val comentario = binding.edittextComentario.text.toString()
 
-            if (validarComentario(nombreEstatus, comentario)) {
-                //enviarCambios(idEstatus, comentario)
-            }
-        }
-    }
-
-
-    private fun cargarEstatusDesdeWeb() {
+    fun cargarEstatusDesdeWeb() {
         Ion.with(this)
             .load("GET", "${Constantes().url_ws}/envio/obtener-estados-envios")
             .asString()
@@ -67,21 +59,61 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
             }
     }
 
-
-
-     fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
-        val adapter = EstadoAdapter(this, estados)
+    private fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, estados.map { it.nombre })
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerEstatus.adapter = adapter
+
+        // Almacenar los estados completos (opcional si los necesitas luego)
+        listaEstados = estados
+    }
+
+    private fun enviarActualizacionEstatus(idEstatus: Int, comentario: String) {
+        val json = JSONObject()
+        json.put("idEnvio", envio.idEnvio) // Desde el objeto envio
+        json.put("idEstadoDeEnvio", idEstatus) // Desde el Spinner
+        json.put("idColaborador", envio.idColaborador) // Desde el objeto envio
+        json.put("noGuia", envio.noGuia) // Desde el objeto envio
+        json.put("motivo", comentario) // Comentario ingresado
+        json.put("tiempoDeCambio", obtenerFechaActual()) // Fecha actual
+
+        Log.e("EnvioActualizarEstatusActivity", "JSON enviado: $json")
+
+        Ion.with(this)
+            .load("PUT", "${Constantes().url_ws}/historial-envio/editar")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(json.toString())
+            .asString()
+            .setCallback { e, result ->
+                if (e == null) {
+                    Toast.makeText(this, "Estatus actualizado correctamente", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
 
-    private fun validarComentario(estatus: String, comentario: String): Boolean {
-        return if ((estatus == "Detenido" || estatus == "Cancelado") && comentario.isBlank()) {
-            Toast.makeText(
-                this,
-                "El comentario es obligatorio para el estatus '$estatus'",
-                Toast.LENGTH_SHORT
-            ).show()
+    private fun configurarBotonGuardar() {
+        binding.btnGuardarCambios.setOnClickListener {
+            val posicionSeleccionada = binding.spinnerEstatus.selectedItemPosition
+            val estadoSeleccionado = listaEstados[posicionSeleccionada] // Estado completo
+            val idEstatus = estadoSeleccionado.idEstadoDeEnvio
+            val nombreEstatus = estadoSeleccionado.nombre
+            val comentario = binding.edittextComentario.text.toString()
+
+            if (validarComentario(nombreEstatus, comentario)) {
+                enviarActualizacionEstatus(idEstatus, comentario)
+            }
+        }
+    }
+
+
+
+    private fun validarComentario(nombreEstatus: String, comentario: String): Boolean {
+        return if ((nombreEstatus == "Detenido" || nombreEstatus == "Cancelado") && comentario.isBlank()) {
+            Toast.makeText(this, "El comentario es obligatorio para el estatus '$nombreEstatus'", Toast.LENGTH_SHORT).show()
             false
         } else {
             true
@@ -89,6 +121,21 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
     }
 
 
+    private fun obtenerFechaActual(): String {
+        val formatoFecha = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return formatoFecha.format(Date())
+    }
 
+    fun obtenerEnvio(){
+        val envioJson = intent.getStringExtra("envio")
+        if (envioJson != null) {
+            val gson = Gson()
+            envio = gson.fromJson(envioJson, Envio::class.java)
+        } else {
+            // Manejar el caso donde colaborador no se pasó en el Intent
+            throw IllegalStateException("Envio no inicializado. Asegúrate de pasar el colaborador desde la actividad anterior.")
+        }
+    }
 
 }
+
