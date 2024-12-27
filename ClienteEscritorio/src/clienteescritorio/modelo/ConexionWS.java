@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import pojo.RespuestaHTTP;
-import sun.nio.cs.StandardCharsets;
 
 public class ConexionWS {
     
@@ -53,6 +52,7 @@ public class ConexionWS {
             os.close();
             int codigoRespuesta = conexionHttp.getResponseCode();
             respuesta.setCodigoRespuesta(codigoRespuesta);
+            System.out.println("Codigo WS POst: "+codigoRespuesta);
             if(codigoRespuesta == HttpURLConnection.HTTP_OK){
                 respuesta.setContenido(obtenerContenidoWS(conexionHttp.getInputStream()));
             }else{
@@ -169,6 +169,7 @@ public class ConexionWS {
         in.close();
         return respuestaEntrada.toString();
     }
+    
     public static RespuestaHTTP peticionPOSTJSON(String url, String parametros){
         RespuestaHTTP respuesta = new RespuestaHTTP();
         try {
@@ -195,7 +196,7 @@ public class ConexionWS {
         } catch (IOException io){
             respuesta.setCodigoRespuesta(Constantes.ERROR_PETICION);
             respuesta.setContenido("Error: no se pudo realizar la solicitud correspondiente.");
-        } 
+        }
         return respuesta;
     }
     public static RespuestaHTTP peticionPUTBINARIO(String url, byte[] datos) {

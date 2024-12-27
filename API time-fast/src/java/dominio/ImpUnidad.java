@@ -103,7 +103,7 @@ public class ImpUnidad {
     public static Mensaje agregarUnidad(Unidad unidad) {
        Mensaje mensaje = new Mensaje();
        SqlSession conexionDB = MyBatisUtil.obtenerConexion();
-       if(conexionDB!=null){
+        if(conexionDB!=null){
            try{
                int filasAFectas = conexionDB.insert("unidad.agregarUnidad", unidad);
                conexionDB.commit();
@@ -116,13 +116,13 @@ public class ImpUnidad {
                }
            }catch(Exception e){
                mensaje.setError(true);
-                mensaje.setMensaje(e.getMessage());
+               mensaje.setMensaje(e.getMessage());
             } finally {
                 conexionDB.close();
             }
-           }else{
+        }else{
            mensaje.setError(true);
-            mensaje.setMensaje("No se pudo establecer conexión con la base de datos.");
+           mensaje.setMensaje("No se pudo establecer conexión con la base de datos.");
        }
         return mensaje;
     }

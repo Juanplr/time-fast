@@ -9,8 +9,6 @@ import clienteescritorio.utilidades.Utilidades;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pojo.Colaborador;
 
@@ -71,7 +68,6 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setTitle("Time-Fast Colaboradores");
             escenarioBase.show();
         } catch (IOException ex) {
-            // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Colaboradores :(", Alert.AlertType.ERROR);
         }
     }
@@ -85,7 +81,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Unidades");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Unidades", Alert.AlertType.ERROR);
         }
     }
@@ -99,7 +95,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Clientes");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Clientes", Alert.AlertType.ERROR);
         }
     }
@@ -137,7 +133,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Paquetes");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Paquetes", Alert.AlertType.ERROR);
         }
     }
@@ -151,7 +147,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Asignaciones");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Asignaciones", Alert.AlertType.ERROR);
         }
     }
@@ -186,6 +182,26 @@ public class FXMLPrincipalController implements Initializable {
     @FXML
     private void irModuloAsignaciones(MouseEvent event) {
         moduloAsignaciones();
+    }
+
+    @FXML
+    private void cambiarMouse(MouseEvent event) {
+        ((ImageView) event.getSource()).setCursor(javafx.scene.Cursor.HAND); 
+    }
+
+    @FXML
+    private void cerrarSesion(MouseEvent event) {
+        try{
+            Stage escenarioBase = (Stage) imgCerrarSesion.getScene().getWindow();
+            colaborador = null;
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLInicioSesion.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Inicio Sesion");
+            escenarioBase.show();
+        }catch(IOException e){
+            Utilidades.mostrarAlertaSimple("Error", "No se puede cerrar sesión", Alert.AlertType.ERROR);
+        }
     }
 
 }

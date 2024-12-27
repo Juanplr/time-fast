@@ -219,6 +219,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
             observador.notificarOperacion("Guardar", unidad.getMarca());
             cerrarVentana();
         }else{
+            unidad = null;
             Utilidades.mostrarAlertaSimple("Error", "No se puede Guardar la unidad", Alert.AlertType.ERROR);
         }
     }
@@ -246,6 +247,7 @@ public class FXMLFormularioUnidadesController implements Initializable {
             observador.notificarOperacion("Guardar", unidad.getMarca());
             cerrarVentana();
         }else{
+            unidad = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo editar la unidad", Alert.AlertType.ERROR);
         }
     }

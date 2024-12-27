@@ -65,7 +65,6 @@ public class FXMLInicioSesionController implements Initializable {
             escenarioBase.setTitle("Time-Fast");
             escenarioBase.show();
         } catch (IOException ex) {
-           // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
            Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }   
     }

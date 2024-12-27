@@ -184,6 +184,7 @@ public class FXMLFormularioClientesController implements Initializable {
             observador.notificarOperacion("Guardar", cliente.getNombre());
             cerrarVentana();
         }else{
+            cliente = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el Cliente", Alert.AlertType.ERROR);
         }
     }
@@ -195,6 +196,7 @@ public class FXMLFormularioClientesController implements Initializable {
             observador.notificarOperacion("Editado", cliente.getNombre());
             cerrarVentana();
         }else{
+            cliente = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el Cliente", Alert.AlertType.ERROR);
         }
     }

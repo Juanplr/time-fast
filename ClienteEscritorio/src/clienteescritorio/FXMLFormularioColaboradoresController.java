@@ -192,7 +192,8 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             observador.notificarOperacion("Guardar", colaborador.getNombre());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el colaborador", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            colaborador = null;
         }
     }
     private void cerrarVentana(){
@@ -215,6 +216,7 @@ public class FXMLFormularioColaboradoresController implements Initializable {
             observador.notificarOperacion("Edición", colaborador.getNombre());
             cerrarVentana();
         }else{
+            colaborador = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el colaborador", Alert.AlertType.ERROR);
         }
     }

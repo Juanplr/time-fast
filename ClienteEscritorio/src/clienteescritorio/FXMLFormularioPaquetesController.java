@@ -191,6 +191,7 @@ public class FXMLFormularioPaquetesController implements Initializable {
             observador.notificarOperacion("Guardar", ""+paquete.getIdEnvio());
             cerrarVentana();
         }else{
+            paquete = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo agregar el paquete", Alert.AlertType.ERROR);
         }
     }
@@ -202,6 +203,7 @@ public class FXMLFormularioPaquetesController implements Initializable {
             observador.notificarOperacion("Guardar", ""+paquete.getIdEnvio());
             cerrarVentana();
         }else{
+            paquete = null;
             Utilidades.mostrarAlertaSimple("Error", "No se puede editar el paquete", Alert.AlertType.ERROR);
         }
     }

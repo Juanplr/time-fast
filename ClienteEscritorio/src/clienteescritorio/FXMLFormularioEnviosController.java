@@ -281,11 +281,16 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void guardarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.agregarEnvio(envio);
         if(!msj.isError()){
-            enviarHistorial(envio);
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + envio.getNoGuia()+" Agregado", Alert.AlertType.INFORMATION);
-            observador.notificarOperacion("Guardar",envio.getNoGuia() );
-            cerrarVentana();
+            if(enviarHistorial(envio)){
+                Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + envio.getNoGuia()+" Agregado", Alert.AlertType.INFORMATION);
+                observador.notificarOperacion("Guardar",envio.getNoGuia() );
+                cerrarVentana();
+            }else{
+                envio = null;
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el envío"+ msj.getMensaje(), Alert.AlertType.ERROR);
+            }
         }else{
+            envio = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo Guardar el envío"+ msj.getMensaje(), Alert.AlertType.ERROR);
         }
     }
@@ -293,16 +298,21 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void editarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.editarEnvio(envio);
         if(!msj.isError()){
-            enviarHistorial(envio);
-            Utilidades.mostrarAlertaSimple("Edición", "Envio: " +envio.getNoGuia()+ " Editado" , Alert.AlertType.INFORMATION);
-            observador.notificarOperacion("Edición",envio.getNoGuia());
-            cerrarVentana();
+            if(enviarHistorial(envio)){
+                Utilidades.mostrarAlertaSimple("Edición", "Envio: " +envio.getNoGuia()+ " Editado" , Alert.AlertType.INFORMATION);
+                observador.notificarOperacion("Edición",envio.getNoGuia());
+                cerrarVentana();
+            }else{
+                envio = null;
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el envío", Alert.AlertType.ERROR);
+            }
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el envío", Alert.AlertType.ERROR);
+           envio = null;
+           Utilidades.mostrarAlertaSimple("Error", "No se pudo editar el envío", Alert.AlertType.ERROR);
         }
     }
 
-    private void enviarHistorial(Envio envio) {
+    private boolean enviarHistorial(Envio envio) {
         HistorialDeEnvio historial = new HistorialDeEnvio();
         historial.setIdEstadoDeEnvio(envio.getIdEstadoDeEnvio());
         System.out.println(colaboradorLoguiado.getIdColaborador());
@@ -316,9 +326,7 @@ public class FXMLFormularioEnviosController implements Initializable {
         LocalDate fechaActual = LocalDate.now();
         historial.setTiempoDeCambio(fechaActual.toString());
         Mensaje mensaje = HistorialDeEnvioDAO.registrarHistorialEnvio(historial);
-        if(mensaje.isError()){
-            System.out.println(mensaje.getMensaje());
-        }
+        return mensaje.isError();
     }
     
 }

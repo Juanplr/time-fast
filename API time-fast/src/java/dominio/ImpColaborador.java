@@ -118,7 +118,8 @@ public class ImpColaborador {
                     mensaje.setMensaje("No se pudo registrar al colaborador(as)");
                 }
             } catch (Exception e) {
-                mensaje.setMensaje(e.getMessage());
+               mensaje.setError(true);
+               mensaje.setMensaje("Revisa que la CURP, numero personal o el correo electrónico no sean los de un colaborador ya agregado");
             }
         } else {
             mensaje.setError(true);
@@ -147,7 +148,7 @@ public class ImpColaborador {
             } catch (Exception e) {
                 e.printStackTrace();  
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al editar el colaborador: " + e.getMessage());
+                mensaje.setMensaje("Error al editar el colaborador");
             } finally {
                 conexionBD.close();
             }
@@ -177,7 +178,7 @@ public class ImpColaborador {
             } catch (Exception e) {
                 e.printStackTrace(); 
                 mensaje.setError(true);
-                mensaje.setMensaje("Error al eliminar el colaborador: " + e.getMessage());
+                mensaje.setMensaje("Error al eliminar el colaborador" );
             } finally {
                 if (conexionBD != null) {
                     conexionBD.close();
@@ -212,7 +213,7 @@ public class ImpColaborador {
                 }
             } catch (Exception e) {
                 msj.setError(true);
-                    msj.setMensaje(e.getMessage());
+                msj.setMensaje(e.getMessage());
             }
         }else{
             msj.setError(true);

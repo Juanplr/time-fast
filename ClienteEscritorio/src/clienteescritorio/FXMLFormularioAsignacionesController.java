@@ -154,6 +154,7 @@ public class FXMLFormularioAsignacionesController implements Initializable {
             observador.notificarOperacion("Guardar",""+conductor.getIdColaborador() );
             cerrarVentana();
         }else{
+            conductor = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo agregar la asignación", Alert.AlertType.ERROR);
         }
     }
@@ -165,6 +166,7 @@ public class FXMLFormularioAsignacionesController implements Initializable {
             observador.notificarOperacion("Guardar",""+conductor.getIdColaborador() );
             cerrarVentana();
         }else{
+            conductor = null;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo editar la asignación", Alert.AlertType.ERROR);
         }
     }

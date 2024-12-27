@@ -19,7 +19,6 @@ public class LoginDAO {
         RespuestaHTTP respuestaWS = ConexionWS.peticionPOST(url, parametros);
         if(respuestaWS.getCodigoRespuesta()== HttpURLConnection.HTTP_OK){
             Gson gson = new Gson();
-            System.out.println("JSON: "  + respuestaWS.getContenido());
             respuestaLogin = gson.fromJson(respuestaWS.getContenido(), Colaborador.class);
         }else{
         }

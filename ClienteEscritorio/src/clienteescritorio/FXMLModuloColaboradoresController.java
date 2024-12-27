@@ -227,7 +227,7 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
 
     @Override
     public void notificarOperacion(String tipo, String nombre) {
-        System.out.println("tipo:" + tipo +"Nombre:" + nombre);
+        //System.out.println("tipo:" + tipo +"Nombre:" + nombre);
         cargarLaInformacion();
     }
     
