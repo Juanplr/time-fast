@@ -137,7 +137,8 @@ public class FXMLFormularioUnidadesController implements Initializable {
         tfVin.setText(unidadEditada.getVin());
         tfVin.setEditable(false);
         tfNumeroIdentificacion.setText(unidadEditada.getNii());
-        tfAnio.setText(unidadEditada.getAnio());
+        
+        tfAnio.setText(unidadEditada.getAnio().substring(0, 4));
         int poscicion = buscarIdTipoUnidad(unidadEditada.getIdTipoUnidad());
         cbTipoUnidad.getSelectionModel().select(poscicion);
         int pocicionUnidad = buscarIdEstadoUnidad(unidadEditada.getIdEstadoUnidad());
