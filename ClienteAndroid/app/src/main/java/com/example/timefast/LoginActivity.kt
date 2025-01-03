@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                             Log.e("LoginActivity", "Error de deserialización: ${ex.message}")
                         }
                     }else{
-                        Toast.makeText(this@LoginActivity, "Numero Personal o Contraseña incorrectos", Toast.LENGTH_LONG).show()
+                       Toast.makeText(this@LoginActivity, "Numero Personal o Contraseña incorrectos", Toast.LENGTH_LONG).show()
                     }
                 }else{
                     Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()

@@ -85,4 +85,12 @@ public class WSEnvio {
     public static List<EstadoDeEnvio> obtenerEstadosEnvios() {
        return ImpEnvio.obtenerEstadosDeEnvios();
     }
+    
+    @Path("obtener-envios-conductor")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public static List<Envio> obtenerEnvioConductor(){
+        return ImpEnvio.obtenerEnviosConductor();
+    }
+    
 }
