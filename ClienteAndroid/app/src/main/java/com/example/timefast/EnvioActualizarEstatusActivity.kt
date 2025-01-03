@@ -1,6 +1,7 @@
 package com.example.timefast
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,11 +10,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.timefast.adapter.EstadoAdapter
 import com.example.timefast.databinding.ActivityEnvioActualizarEstatusBinding
+import com.example.timefast.poko.Envio
 import com.example.timefast.poko.EstadoEnvio
+import com.example.timefast.poko.HistorialDeEnvio
 import com.example.timefast.util.Constantes
 import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EnvioActualizarEstatusActivity : AppCompatActivity() {
 
@@ -42,7 +47,9 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
             val comentario = binding.edittextComentario.text.toString()
 
             if (validarComentario(nombreEstatus, comentario)) {
-                //enviarCambios(idEstatus, comentario)
+                if(editarEnvio(null)){
+                    enviarCambios(idEstatus, comentario)
+                }
             }
         }
     }
@@ -87,6 +94,56 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
             true
         }
     }
+
+    private fun enviarCambios(idEstatus: Int, comentario: String) {
+        val fechaActual = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val historial = HistorialDeEnvio(
+            idHistorialDeEnvio = null,
+            idEstadoDeEnvio = idEstatus,
+            idColaborador = -1, //EL ID del conductor que esta cambiando los datos del envio
+            colaborador = null,
+            noGuia = "AQUI Va los datos del no guia",
+            motivo = if (comentario.isEmpty()) "S/M" else comentario,
+            tiempoDeCambio = fechaActual
+        )
+
+        val gson = Gson()
+        val parametros = gson.toJson(historial)
+
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("POST", "${Constantes().url_ws}/historial-envio/agregar")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, result ->
+                if (e == null) {
+
+                    Log.d("HistorialEnvio", "Respuesta: $result")
+                } else {
+                    Log.e("HistorialEnvio", "Error al enviar historial", e)
+                }
+            }
+    }
+    private fun editarEnvio(envio: Envio?):Boolean{
+        var validacion = false
+        val gson = Gson()
+        val parametros = gson.toJson(envio)
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("PUT","${Constantes().url_ws}/envio/editar-envio")
+            .setHeader("Content-Type","application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, result ->
+                if(e == null){
+                    validacion = true
+
+                }else{
+                    validacion = false
+                }
+            }
+        return validacion
+    }
+
 
 
 
