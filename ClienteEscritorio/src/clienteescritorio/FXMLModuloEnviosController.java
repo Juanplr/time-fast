@@ -110,7 +110,7 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
                tvTablaEnvios.setItems(envios);
            }else{
                Utilidades.mostrarAlertaSimple("ERROR", "Lo sentimos por el momento no se puede cargar la informacion"
-                       + "de los Colaboradores, por favor intentélo mas tarde", Alert.AlertType.ERROR);
+                       + "de los Envios, por favor intentélo mas tarde", Alert.AlertType.ERROR);
                cerrarVentana();
            }
 
@@ -166,14 +166,14 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
         if(envio!= null){
             Mensaje mensaje = EnvioDAO.eliminarEnvio(envio.getIdEnvio());
             if(!mensaje.isError()){
-                Utilidades.mostrarAlertaSimple("Correcto", "Cliente Eliminado correctamente", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Correcto", "Envío Eliminado correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar el envío", Alert.AlertType.ERROR);
             }
             
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "Selecciona un cliente", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un envío", Alert.AlertType.ERROR);
         }
     }
 
@@ -183,7 +183,7 @@ public class FXMLModuloEnviosController implements Initializable, NotificadoOper
         if(envio!= null){
             irAFormulario(this, envio);
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Envio", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un envío", Alert.AlertType.ERROR);
         }
     }
 

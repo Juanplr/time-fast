@@ -34,7 +34,7 @@ public class WSCliente {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Cliente> getCLientesPorNombre(@PathParam("nombre") String nombre){
-         if(!nombre.isEmpty() && Utilidades.validarInyecciónSQL(nombre)){
+        if(!nombre.isEmpty() && Utilidades.validarInyecciónSQL(nombre)){
             return ImpCliente.obtenerClientesPorNombre(nombre);
         }
         throw new BadRequestException();
@@ -44,7 +44,7 @@ public class WSCliente {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Cliente> getCLientePorCorreo(@PathParam("correo") String correo){
-         if(!correo.isEmpty() && Utilidades.validarInyecciónSQL(correo)){
+        if(!correo.isEmpty() && Utilidades.validarInyecciónSQL(correo)){
             return ImpCliente.obtenerClientePorCorreo(correo);
         }
         throw new BadRequestException();
@@ -54,7 +54,7 @@ public class WSCliente {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Cliente> getCLientePorNumeroTelefono(@PathParam("telefono") String telefono){
-         if(!telefono.isEmpty() && Utilidades.validarInyecciónSQL(telefono)){
+        if(!telefono.isEmpty() && Utilidades.validarInyecciónSQL(telefono)){
             return ImpCliente.obtenerClientePorNumeroTelefonico(telefono);
         }
         throw new BadRequestException();
@@ -110,28 +110,22 @@ public class WSCliente {
     
     private boolean validarCliente(Cliente cliente) {
         boolean error = false;
-
-        // Validar que el nombre no tenga números y acepte caracteres con acentos y ñ
         if (!cliente.getNombre().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
-        // Validar que el apellido paterno no tenga números y acepte caracteres con acentos y ñ
         if (!cliente.getApellidoPaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
-        // Validar que el apellido materno no tenga números y acepte caracteres con acentos y ñ
         if (!cliente.getApellidoMaterno().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
             error = true;
         }
 
-        // Validar que el número de teléfono tenga exactamente 10 dígitos
         if (!cliente.getTelefono().matches("^\\d{10}$")) {
             error = true;
         }
 
-        // Validar que el correo tenga un formato válido
         if (!cliente.getCorreo().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             error = true;
         }

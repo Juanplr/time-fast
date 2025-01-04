@@ -57,6 +57,24 @@ public class PaqueteDAO {
 
         return paquetes;
     }
+    
+    public static List<Paquete> obtenerPaquetesPorNoGuia(String noGuia){
+        List<Paquete> paquetes = null;
+        String url = Constantes.URL + "paquetes/obtener-paquetes-noguia/" + noGuia;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            try {
+                Type tipoListaPaquete = new TypeToken<List<Paquete>>() {}.getType();
+                paquetes = gson.fromJson(respuesta.getContenido(), tipoListaPaquete);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return paquetes;
+    }
 
     public static Mensaje registrarPaquete(Paquete paquete){
         Mensaje msj = new Mensaje();

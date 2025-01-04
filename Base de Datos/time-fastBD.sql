@@ -100,93 +100,35 @@ CREATE TABLE paquete(
     alto FLOAT NOT NULL,
     ancho FLOAT NOT NULL,
     profundidad FLOAT NOT NULL,
-    FOREIGN KEY (idEnvio) REFERENCES envio(idEnvio)
+    FOREIGN KEY (idEnvio) REFERENCES envio(idEnvio) ON DELETE CASCADE
 );
 
 CREATE TABLE historialDeEnvio(
 	idHistorialDeEnvio INTEGER AUTO_INCREMENT PRIMARY KEY,
     idEstadoDeEnvio INTEGER NOT NULL,
     idColaborador INTEGER NOT NULL,
-    noGuia VARCHAR(20) UNIQUE NOT NULL,
+    noGuia VARCHAR(20) NOT NULL,
     motivo VARCHAR(250),
     tiempoDeCambio DATE,
-	FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
-    FOREIGN KEY (idEstadoDeEnvio) REFERENCES estadoDeEnvio(idEstadoDeEnvio)
+	FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador) ON DELETE CASCADE,
+    FOREIGN KEY (idEstadoDeEnvio) REFERENCES estadoDeEnvio(idEstadoDeEnvio) ON DELETE CASCADE
 );
 
 CREATE TABLE historialDeBaja(
 	idHistorialDeBaja INTEGER AUTO_INCREMENT PRIMARY KEY,
     idUnidad INTEGER NOT NULL,
     motivo VARCHAR(250),
-	FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad)
+	FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad) ON DELETE CASCADE
 );
 
 CREATE TABLE conductoresAsignados(
     idConductoresAsignados INTEGER AUTO_INCREMENT PRIMARY KEY,
     idColaborador INTEGER NOT NULL,
     idUnidad INTEGER NOT NULL,
-    FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador),
-    FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad),
+    FOREIGN KEY (idColaborador) REFERENCES colaborador(idColaborador) ON DELETE CASCADE,
+    FOREIGN KEY (idUnidad) REFERENCES unidad(idUnidad) ON DELETE CASCADE,
     UNIQUE (idUnidad)
 );
-
-
--- Triggers
-DELIMITER $$
-
-CREATE TRIGGER trg_delete_colaborador
-AFTER DELETE ON colaborador
-FOR EACH ROW
-BEGIN
-    -- Eliminar registros relacionados en historialDeEnvio
-    DELETE FROM historialDeEnvio WHERE idColaborador = OLD.idColaborador;
-
-    -- Eliminar registros relacionados en conductoresAsignados
-    DELETE FROM conductoresAsignados WHERE idColaborador = OLD.idColaborador;
-END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
-CREATE TRIGGER trg_delete_unidad
-AFTER DELETE ON unidad
-FOR EACH ROW
-BEGIN
-    -- Eliminar registros relacionados en conductoresAsignados
-    DELETE FROM conductoresAsignados WHERE idUnidad = OLD.idUnidad;
-
-    -- Eliminar registros relacionados en historialDeBaja
-    DELETE FROM historialDeBaja WHERE idUnidad = OLD.idUnidad;
-END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
-CREATE TRIGGER trg_delete_envio
-AFTER DELETE ON envio
-FOR EACH ROW
-BEGIN
-    -- Eliminar registros relacionados en paquete
-    DELETE FROM paquete WHERE idEnvio = OLD.idEnvio;
-END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
-CREATE TRIGGER trg_delete_cliente
-AFTER DELETE ON cliente
-FOR EACH ROW
-BEGIN
-    -- Eliminar registros relacionados en envio
-    DELETE FROM envio WHERE idCliente = OLD.idCliente;
-END$$
-
-DELIMITER ;
-
-
 
 
 
@@ -239,29 +181,6 @@ VALUES
 ('Ana', 'Ramírez', 'Ortiz', 'Calle Luna', '78', 'Chapultepec', '98765', 'Puebla', 'Puebla', '2223456789', 'ana.ramirez@example.com'),
 ('Luis', 'Fernández', 'Díaz', 'Av. Hidalgo', '150', 'Centro', '12345', 'Querétaro', 'Querétaro', '4423456789', 'luis.fernandez@example.com');
 
--- Datos para la tabla envio
-INSERT INTO envio (idCliente, origenCalle, origenNumero, origenColonia, origenCodigoPostal, origenCiudad, origenEstado, noGuia, costoDeEnvio, idEstadoDeEnvio, idColaborador,destino) VALUES 
-(3, 'Calle A', '101', 'Colonia A', '54321', 'Ciudad A', 'Estado A', 'GUIA001', 150.50, 1, 1,"Calle5"),
-(2, 'Calle B', '202', 'Colonia B', '12345', 'Ciudad B', 'Estado B', 'GUIA002', 200.00, 2, 2,"Margaritas");
-
--- Datos para la tabla paquete
-INSERT INTO paquete (idEnvio, descripcion, peso, alto, ancho, profundidad) VALUES 
-(1, 'Paquete pequeño', 2.5, 30, 20, 15),
-(2, 'Paquete mediano', 5.0, 50, 40, 30);
-
--- Datos para la tabla historialDeEnvio
-INSERT INTO historialDeEnvio (idPaquete, idEnvio, idColaborador, motivo, tiempoDeCambio) VALUES 
-(1, 1, 1, 'Asignación inicial', '2024-11-01'),
-(2, 2, 2, 'En tránsito', '2024-11-02');
-
--- Datos para la tabla historialDeBaja
-INSERT INTO historialDeBaja (idUnidad, motivo) VALUES 
-(2, 'Falla mecánica');
-
--- Datos para la tabla conductoresAsignados
-INSERT INTO conductoresAsignados (idColaborador, idUnidad) VALUES 
-(1, 1),
-(2, 2);
 
 
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clienteescritorio;
 
 import clienteescritorio.dao.EnvioDAO;
@@ -83,14 +78,39 @@ public class FXMLFormularioPaquetesController implements Initializable {
     private void onClickGuardar(ActionEvent event) {
         Paquete paquete = new Paquete();
         paquete.setDescripcion(tfDescripcion.getText());
-        float peso = Float.parseFloat(tfPeso.getText());
-        float alto = Float.parseFloat(tfAlto.getText());
-        float ancho = Float.parseFloat(tfAncho.getText());
-        float profundidad = Float.parseFloat(tfProfundidad.getText());
-        paquete.setPeso(peso);
-        paquete.setAlto(alto);
-        paquete.setAncho(ancho);
-        paquete.setProfundidad(profundidad);
+        try {
+            if (tfPeso.getText().trim().isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "El peso del paquete es obligatorio.", Alert.AlertType.ERROR);
+                return;
+            }
+            float peso = Float.parseFloat(tfPeso.getText());
+            paquete.setPeso(peso);
+
+            if (tfAlto.getText().trim().isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "La altura del paquete es obligatoria.", Alert.AlertType.ERROR);
+                return;
+            }
+            float alto = Float.parseFloat(tfAlto.getText());
+            paquete.setAlto(alto);
+
+            if (tfAncho.getText().trim().isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "El ancho del paquete es obligatorio.", Alert.AlertType.ERROR);
+                return;
+            }
+            float ancho = Float.parseFloat(tfAncho.getText());
+            paquete.setAncho(ancho);
+
+            if (tfProfundidad.getText().trim().isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "La profundidad del paquete es obligatoria.", Alert.AlertType.ERROR);
+                return;
+            }
+            float profundidad = Float.parseFloat(tfProfundidad.getText());
+            paquete.setProfundidad(profundidad);
+
+        } catch (NumberFormatException e) {
+            Utilidades.mostrarAlertaSimple("Error", "Los campos Peso, Alto, Ancho y Profundidad deben contener valores numéricos válidos.", Alert.AlertType.ERROR);
+            return;
+        }
         paquete.setIdEnvio((cbEnvios.getSelectionModel().getSelectedItem()!= null)?
                cbEnvios.getSelectionModel().getSelectedItem().getIdEnvio(): -1);
         if(validarCampos(paquete)){
@@ -130,8 +150,39 @@ public class FXMLFormularioPaquetesController implements Initializable {
     }
 
     private boolean validarCampos(Paquete paquete) {
+        if (paquete.getDescripcion() == null || paquete.getDescripcion().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Error", "La descripción del paquete es obligatoria.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (paquete.getPeso() <= 0) {
+            Utilidades.mostrarAlertaSimple("Error", "El peso del paquete debe ser un valor positivo.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (paquete.getAlto() <= 0) {
+            Utilidades.mostrarAlertaSimple("Error", "La altura del paquete debe ser un valor positivo.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (paquete.getAncho() <= 0) {
+            Utilidades.mostrarAlertaSimple("Error", "El ancho del paquete debe ser un valor positivo.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (paquete.getProfundidad() <= 0) {
+            Utilidades.mostrarAlertaSimple("Error", "La profundidad del paquete debe ser un valor positivo.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        if (paquete.getIdEnvio() == null || paquete.getIdEnvio() <= 0) {
+            Utilidades.mostrarAlertaSimple("Error", "Debe seleccionarse un envío válido para el paquete.", Alert.AlertType.ERROR);
+            return false;
+        }
+
         return true;
     }
+
 
     private void guardarDatosPaquete(Paquete paquete) {
         Mensaje msj = PaqueteDAO.registrarPaquete(paquete);
@@ -140,18 +191,20 @@ public class FXMLFormularioPaquetesController implements Initializable {
             observador.notificarOperacion("Guardar", ""+paquete.getIdEnvio());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            paquete = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo agregar el paquete", Alert.AlertType.ERROR);
         }
     }
 
     private void editarDatosPaquete(Paquete paquete) {
         Mensaje msj = PaqueteDAO.editarPaquete(paquete);
         if(!msj.isError()){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Paquete Editado", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Edición", "Paquete Editado", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar", ""+paquete.getIdEnvio());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            paquete = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se puede editar el paquete", Alert.AlertType.ERROR);
         }
     }
 

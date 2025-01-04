@@ -48,6 +48,16 @@ public class WSPaquete {
     public List<Paquete> obtenerPaquetes() {
        return ImpPaquete.obtenerPaquetes();
     }
+    
+    @Path("obtener-paquetes-noguia/{noGuia}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Paquete> obtenerPaquetesPorNoGuia(@PathParam("noGuia") String noGuia) {
+       if(noGuia!=null && !noGuia.isEmpty()){
+           return ImpPaquete.obtenerPaquetesPorNoGuia(noGuia);
+       }
+       throw new BadRequestException();
+    }
 
     @Path("agregar-paquete")
     @POST

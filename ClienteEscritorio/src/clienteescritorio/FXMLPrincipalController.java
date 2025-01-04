@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pojo.Colaborador;
 
@@ -69,7 +68,6 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setTitle("Time-Fast Colaboradores");
             escenarioBase.show();
         } catch (IOException ex) {
-            // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Colaboradores :(", Alert.AlertType.ERROR);
         }
     }
@@ -83,7 +81,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Unidades");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Unidades", Alert.AlertType.ERROR);
         }
     }
@@ -97,30 +95,34 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Clientes");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Clientes", Alert.AlertType.ERROR);
         }
     }
     
     
-    private void moduloEnvios(){
+    private void moduloEnvios() {
         try {
+
+            Stage escenarioBase = (Stage) moduloEnvios.getScene().getWindow();
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLModuloEnvios.fxml"));
-            Parent root = loader.load();
-            
+            Parent principal = loader.load();
+
             FXMLModuloEnviosController controlador = loader.getController();
             controlador.inizializar(colaborador);
-            
-            Stage ecena = new Stage();
-            Scene ecenario = new Scene(root);
-            ecena.setScene(ecenario);
-            ecena.setTitle("Formulario Envios");
-            ecena.initModality(Modality.APPLICATION_MODAL);
-            ecena.showAndWait();
-        } catch (Exception ex) {
-           Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Envios", Alert.AlertType.ERROR);
+
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Time-Fast Envios");
+            escenarioBase.show();
+        } catch (IOException ex) {
+            Utilidades.mostrarAlertaSimple("Error", "No podemos ir al módulo Envios", Alert.AlertType.ERROR);
         }
     }
+
+
     
     private void moduloPaquetes(){
         try{
@@ -131,7 +133,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Paquetes");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Paquetes", Alert.AlertType.ERROR);
         }
     }
@@ -145,7 +147,7 @@ public class FXMLPrincipalController implements Initializable {
             escenarioBase.setScene(escenaPrincipal);
             escenarioBase.setTitle("Time-Fast Asignaciones");
             escenarioBase.show();
-        }catch(Exception e){
+        }catch(IOException e){
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir al modulo Asignaciones", Alert.AlertType.ERROR);
         }
     }
@@ -180,6 +182,26 @@ public class FXMLPrincipalController implements Initializable {
     @FXML
     private void irModuloAsignaciones(MouseEvent event) {
         moduloAsignaciones();
+    }
+
+    @FXML
+    private void cambiarMouse(MouseEvent event) {
+        ((ImageView) event.getSource()).setCursor(javafx.scene.Cursor.HAND); 
+    }
+
+    @FXML
+    private void cerrarSesion(MouseEvent event) {
+        try{
+            Stage escenarioBase = (Stage) imgCerrarSesion.getScene().getWindow();
+            colaborador = null;
+            Parent principal = FXMLLoader.load(getClass().getResource("FXMLInicioSesion.fxml"));
+            Scene escenaPrincipal = new Scene(principal);
+            escenarioBase.setScene(escenaPrincipal);
+            escenarioBase.setTitle("Inicio Sesion");
+            escenarioBase.show();
+        }catch(IOException e){
+            Utilidades.mostrarAlertaSimple("Error", "No se puede cerrar sesión", Alert.AlertType.ERROR);
+        }
     }
 
 }

@@ -86,7 +86,7 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
                tablaColaboradores.setItems(colaboradores);
            }else{
                Utilidades.mostrarAlertaSimple("ERROR", "Lo sentimos por el momento no se puede cargar la informacion"
-                       + "de los Colaboradores, por favor intentélo mas tarde", Alert.AlertType.ERROR);
+                       + "de los Colaboradores, por favor intentélo más tarde", Alert.AlertType.ERROR);
                cerrarVentana();
            }
 
@@ -227,7 +227,7 @@ public class FXMLModuloColaboradoresController implements Initializable, Notific
 
     @Override
     public void notificarOperacion(String tipo, String nombre) {
-        System.out.println("tipo:" + tipo +"Nombre:" + nombre);
+        //System.out.println("tipo:" + tipo +"Nombre:" + nombre);
         cargarLaInformacion();
     }
     

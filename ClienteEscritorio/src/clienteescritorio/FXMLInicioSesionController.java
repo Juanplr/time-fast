@@ -23,6 +23,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pojo.Colaborador;
+import pojo.LoginRespuesta;
 
 /**
  * FXML Controller class
@@ -65,7 +66,6 @@ public class FXMLInicioSesionController implements Initializable {
             escenarioBase.setTitle("Time-Fast");
             escenarioBase.show();
         } catch (IOException ex) {
-           // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
            Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }   
     }
@@ -97,12 +97,12 @@ public class FXMLInicioSesionController implements Initializable {
         } 
     }
     private void verificarCredenciales(String noPersonal, String password){
-        Colaborador respuesta = LoginDAO.iniciarSesion(noPersonal, password);
-        if(respuesta != null){
-            Utilidades.mostrarAlertaSimple("Bienvenido", "Bienvenido " + respuesta.getNombre(), Alert.AlertType.INFORMATION);
-            irPantallaPrincipal(respuesta);
+        LoginRespuesta respuesta = LoginDAO.iniciarSesion(noPersonal, password);
+        if(!respuesta.isError()){
+            Utilidades.mostrarAlertaSimple("Bienvenido", "Bienvenido " + respuesta.getColaborador().getNombre(), Alert.AlertType.INFORMATION);
+            irPantallaPrincipal(respuesta.getColaborador());
         }else{
-            Utilidades.mostrarAlertaSimple("Atención", "Numero Personal y/o Contraseña incorrecta", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Atención", respuesta.getMensaje(), Alert.AlertType.ERROR);
         }
     }
     

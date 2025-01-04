@@ -115,7 +115,7 @@ public class FXMLModuloUnidadesController implements Initializable, NotificadoOp
                 Utilidades.mostrarAlertaSimple("Correcto", "Unidad Eliminada correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar la Unidad", Alert.AlertType.ERROR);
             }
             
         }else{
@@ -127,7 +127,6 @@ public class FXMLModuloUnidadesController implements Initializable, NotificadoOp
     private void buscarUnidad(MouseEvent event) {
         if(!tfBuscar.getText().isEmpty()){
             String dato = tfBuscar.getText();
-            System.out.println(dato);
             buscarUnidad(dato);
         }else{
             Utilidades.mostrarAlertaSimple("Error", "Campo de buscar Vacio", Alert.AlertType.ERROR);
