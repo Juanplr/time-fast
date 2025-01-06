@@ -281,7 +281,7 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void guardarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.agregarEnvio(envio);
         if(!msj.isError()){
-            if(enviarHistorial(envio)){
+            if(!enviarHistorial(envio)){
                 Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + envio.getNoGuia()+" Agregado", Alert.AlertType.INFORMATION);
                 observador.notificarOperacion("Guardar",envio.getNoGuia() );
                 cerrarVentana();
@@ -298,7 +298,7 @@ public class FXMLFormularioEnviosController implements Initializable {
     private void editarDatosEnvio(Envio envio) {
         Mensaje msj = EnvioDAO.editarEnvio(envio);
         if(!msj.isError()){
-            if(enviarHistorial(envio)){
+            if(!enviarHistorial(envio)){
                 Utilidades.mostrarAlertaSimple("Edición", "Envio: " +envio.getNoGuia()+ " Editado" , Alert.AlertType.INFORMATION);
                 observador.notificarOperacion("Edición",envio.getNoGuia());
                 cerrarVentana();
