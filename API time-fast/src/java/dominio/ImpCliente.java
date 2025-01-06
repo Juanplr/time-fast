@@ -35,11 +35,6 @@ public class ImpCliente {
                 HashMap<String, String> parametros = new LinkedHashMap<>();
                 parametros.put("nombre", nombre);
                 clientes = conexionBD.selectList("cliente.obtenerClientesPorNombre", parametros);
-                if(clientes != null){
-                   
-                }else{
-                 
-                }
             } catch (Exception e) {
               
             }
@@ -58,11 +53,6 @@ public class ImpCliente {
                 HashMap<String, String> parametros = new LinkedHashMap<>();
                 parametros.put("correo", correo);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorCorreo", parametros);
-                if(cliente != null){
-                   
-                }else{
-                 
-                }
             } catch (Exception e) {
               
             }
@@ -81,11 +71,6 @@ public class ImpCliente {
                 HashMap<String, String> parametros = new LinkedHashMap<>();
                 parametros.put("telefono", telefono);
                 cliente = conexionBD.selectList("cliente.obtenerClientesPorTelefono", parametros);
-                if(cliente != null){
-                   
-                }else{
-                 
-                }
             } catch (Exception e) {
               
             }
@@ -113,7 +98,7 @@ public class ImpCliente {
                 }
             } catch (Exception e) {
                 msj.setError(true);
-                msj.setMensaje(e.getMessage());
+                msj.setMensaje("Hubo un problema al intentar guardar el cliente");
             } finally {
                 conexion.close();
             }
@@ -142,7 +127,7 @@ public class ImpCliente {
                 }
             } catch (Exception e) {
                 msj.setError(true);
-                msj.setMensaje(e.getMessage());
+                msj.setMensaje("Hubo un error al intentar Editar el cliente");
             } finally {
                 conexion.close();
             }
@@ -165,15 +150,15 @@ public class ImpCliente {
                 conexionBD.commit(); // Confirma los cambios en la base de datos
                 if (filasAfectadas > 0) {
                     respuesta.setError(false);
-                    respuesta.setMensaje("Colaborador eliminado exitosamente.");
+                    respuesta.setMensaje("Cliente eliminado exitosamente.");
                 } else {
                     respuesta.setError(true);
-                    respuesta.setMensaje("No se encontró el colaborador para eliminar.");
+                    respuesta.setMensaje("No se encontró el Cliente para eliminar.");
                 }
             } catch (Exception e) {
                 conexionBD.rollback(); // Reversión en caso de error
                 respuesta.setError(true);
-                respuesta.setMensaje("Error al eliminar el colaborador: " + e.getMessage());
+                respuesta.setMensaje("Error al eliminar el Cliente");
             } finally {
                 conexionBD.close(); // Cierra la conexión
             }

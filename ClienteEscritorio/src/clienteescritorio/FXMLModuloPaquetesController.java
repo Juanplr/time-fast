@@ -74,7 +74,6 @@ public class FXMLModuloPaquetesController implements Initializable, NotificadoOp
             escenarioBase.setTitle("Time-Fast Principal");
             escenarioBase.show();
         } catch (IOException ex) {
-            // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }
     }
@@ -95,14 +94,14 @@ public class FXMLModuloPaquetesController implements Initializable, NotificadoOp
         if(paquete!= null){
             Mensaje mensaje = PaqueteDAO.eliminarPaquete(paquete.getIdPaquete());
             if(!mensaje.isError()){
-                Utilidades.mostrarAlertaSimple("Correcto", "Paquete Eliminada correctamente", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Correcto", "Paquete eliminado correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar el paquete", Alert.AlertType.ERROR);
             }
             
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "Selecciona una Unidad", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona un Paquete", Alert.AlertType.ERROR);
         }
     }
 
@@ -136,7 +135,7 @@ public class FXMLModuloPaquetesController implements Initializable, NotificadoOp
                tvTablaPaquetes.setItems(paquetes);
            }else{
                Utilidades.mostrarAlertaSimple("ERROR", "Lo sentimos por el momento no se puede cargar la informacion"
-                       + "de las Unidades, por favor intentélo mas tarde", Alert.AlertType.ERROR);
+                       + "de los Paquetes, por favor intentélo mas tarde", Alert.AlertType.ERROR);
                cerrarVentana();
            }
     }
@@ -177,12 +176,12 @@ public class FXMLModuloPaquetesController implements Initializable, NotificadoOp
         try {
             paquetes.clear();
             tvTablaPaquetes.setItems(paquetes);
-            List<Paquete> lista = PaqueteDAO.obtenerPaquetesPorEnvio(0);
+            List<Paquete> lista = PaqueteDAO.obtenerPaquetesPorNoGuia(noGuia);
             if (!lista.isEmpty()) {
                 paquetes.addAll(lista);
                 tvTablaPaquetes.setItems(paquetes);
             }else{
-                Utilidades.mostrarAlertaSimple("Aviso", "No se encontro la(s) Unidades", Alert.AlertType.WARNING);
+                Utilidades.mostrarAlertaSimple("Aviso", "No se encontro la(s) Paquetes", Alert.AlertType.WARNING);
                 cargarLaInformacion();
             }
         } catch (Exception e) {

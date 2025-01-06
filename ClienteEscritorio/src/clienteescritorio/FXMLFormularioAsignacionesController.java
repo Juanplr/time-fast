@@ -64,6 +64,8 @@ public class FXMLFormularioAsignacionesController implements Initializable {
             modoEdicion = true;
             llenarcampos();
             btnGuardar.setText("Editar");
+        }else{
+            validar();
         }
     }
 
@@ -148,22 +150,31 @@ public class FXMLFormularioAsignacionesController implements Initializable {
     private void guardarDatosAsignacion(ConductoresAsignados conductor) {
         Mensaje msj = ConductoresAsignadosDAO.registrar(conductor);
         if(!msj.isError()){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Envio: " + conductor.getIdColaborador() +" Agregado", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Asignación agregada", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar",""+conductor.getIdColaborador() );
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            conductor = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo agregar la asignación", Alert.AlertType.ERROR);
         }
     }
 
     private void editarDatosAsignacion(ConductoresAsignados conductor) {
         Mensaje msj = ConductoresAsignadosDAO.editar(conductor);
         if(!msj.isError()){
-            Utilidades.mostrarAlertaSimple("Edicion Exitoso", "Envio: " + conductor.getIdColaborador() +" Agregado", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Edicion Exitoso", "Asignación editada", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar",""+conductor.getIdColaborador() );
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            conductor = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo editar la asignación", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void validar() {
+        if(unidades.isEmpty()||tiposDeConductores.isEmpty()){
+            Utilidades.mostrarAlertaSimple("Error", "No hay unidades o conductores disponibles", Alert.AlertType.ERROR);
+            cerrarVentana();
         }
     }
     

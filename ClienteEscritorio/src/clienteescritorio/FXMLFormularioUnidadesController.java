@@ -137,7 +137,8 @@ public class FXMLFormularioUnidadesController implements Initializable {
         tfVin.setText(unidadEditada.getVin());
         tfVin.setEditable(false);
         tfNumeroIdentificacion.setText(unidadEditada.getNii());
-        tfAnio.setText(unidadEditada.getAnio());
+        
+        tfAnio.setText(unidadEditada.getAnio().substring(0, 4));
         int poscicion = buscarIdTipoUnidad(unidadEditada.getIdTipoUnidad());
         cbTipoUnidad.getSelectionModel().select(poscicion);
         int pocicionUnidad = buscarIdEstadoUnidad(unidadEditada.getIdEstadoUnidad());
@@ -219,11 +220,11 @@ public class FXMLFormularioUnidadesController implements Initializable {
             observador.notificarOperacion("Guardar", unidad.getMarca());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            unidad = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se puede Guardar la unidad", Alert.AlertType.ERROR);
         }
     }
      private void editarUnidad(Unidad unidad){
-        System.out.println(""+unidad.getIdEstadoUnidad());
         if(unidad.getIdEstadoUnidad()==2 && historial == null){
             HistorialDeBaja baja = new HistorialDeBaja();
             baja.setIdUnidad(unidad.getIdUnidad());
@@ -243,11 +244,12 @@ public class FXMLFormularioUnidadesController implements Initializable {
         }
         Mensaje msj = UnidadDAO.EditarUnidad(unidad);
         if(!msj.isError()){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Todo good", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Editar", "Unidad editada correctamente", Alert.AlertType.INFORMATION);
             observador.notificarOperacion("Guardar", unidad.getMarca());
             cerrarVentana();
         }else{
-            Utilidades.mostrarAlertaSimple("Error", msj.getMensaje(), Alert.AlertType.ERROR);
+            unidad = null;
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo editar la unidad", Alert.AlertType.ERROR);
         }
     }
 
@@ -278,7 +280,6 @@ public class FXMLFormularioUnidadesController implements Initializable {
     }
     
     private void agregarHistorial(){
-        System.out.println(unidadEditada.getIdUnidad());
         historial = HistorialDeBajaDAO.obtenerHistorialPorIdUnidad(unidadEditada.getIdUnidad());
     }
 

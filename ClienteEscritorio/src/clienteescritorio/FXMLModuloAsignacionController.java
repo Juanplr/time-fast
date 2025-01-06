@@ -71,7 +71,6 @@ public class FXMLModuloAsignacionController implements Initializable, Notificado
             escenarioBase.setTitle("Time-Fast Principal");
             escenarioBase.show();
         } catch (IOException ex) {
-            // Logger.getLogger(FXMLInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
             Utilidades.mostrarAlertaSimple("Error", "No podemos ir a la pantalla principal :(", Alert.AlertType.ERROR);
         }
     }
@@ -102,14 +101,14 @@ public class FXMLModuloAsignacionController implements Initializable, Notificado
         if(conductoresAsignados!= null){
             Mensaje mensaje = ConductoresAsignadosDAO.eliminar(conductoresAsignados.getIdConductoresAsignados());
             if(!mensaje.isError()){
-                Utilidades.mostrarAlertaSimple("Correcto", "Cliente Eliminado correctamente", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Correcto", "Asignación Eliminada correctamente", Alert.AlertType.INFORMATION);
                 cargarLaInformacion();
             }else{
-                Utilidades.mostrarAlertaSimple("Error", mensaje.getMensaje(), Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No s epudo eliminar la Asignación", Alert.AlertType.ERROR);
             }
             
         }else{
-            Utilidades.mostrarAlertaSimple("Error", "Selecciona un cliente", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "Selecciona una Asignación", Alert.AlertType.ERROR);
         }
     }
     
@@ -145,7 +144,7 @@ public class FXMLModuloAsignacionController implements Initializable, Notificado
             Stage ecena = new Stage();
             Scene ecenario = new Scene(root);
             ecena.setScene(ecenario);
-            ecena.setTitle("Formulario Colaboador");
+            ecena.setTitle("Formulario Asignaciones");
             ecena.initModality(Modality.APPLICATION_MODAL);
             ecena.showAndWait();
         } catch (IOException ex) {
