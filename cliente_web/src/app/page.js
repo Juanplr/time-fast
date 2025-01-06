@@ -130,7 +130,7 @@ export default function PaginaEnvio() {
                 <div>
                   <p><strong>Fecha del Cambio:</strong> {historial.tiempoDeCambio}</p>
                   <p><strong>Motivo:</strong> {historial.motivo}</p>
-                  <p><strong>ID Paquete:</strong> {historial.idPaquete}</p>
+                  <p><strong>Conductor:</strong> {historial.colaborador}</p>
                 </div>
               </div>
             ))}
