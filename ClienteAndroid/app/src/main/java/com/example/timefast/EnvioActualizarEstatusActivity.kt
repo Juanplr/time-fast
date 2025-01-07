@@ -1,5 +1,6 @@
 package com.example.timefast
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -58,6 +59,17 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
                         enviarCambios(idEstatus, comentario) { historialGuardado ->
                             if (historialGuardado) {
                                 Toast.makeText(this, "Cambios guardados con éxito", Toast.LENGTH_SHORT).show()
+
+                                // Crear un Intent para navegar a la actividad EnviosAsignadosActivity
+                                val intent = Intent(this, EnviosAsignadosActivity::class.java)
+
+                                // Pasar los datos necesarios (en este caso, el colaborador)
+                                val jsonColaborador = Gson().toJson(colaborador) // Serializar el colaborador a JSON
+                                intent.putExtra("colaborador", jsonColaborador)
+
+                                // Iniciar la actividad
+                                startActivity(intent)
+
                                 finish() // Cierra la actividad actual
                             } else {
                                 Toast.makeText(this, "Error al guardar el historial", Toast.LENGTH_SHORT).show()

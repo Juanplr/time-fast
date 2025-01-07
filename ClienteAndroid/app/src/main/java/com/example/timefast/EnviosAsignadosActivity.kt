@@ -42,6 +42,7 @@ class EnviosAsignadosActivity : AppCompatActivity() {
         binding.irPerfil.setOnClickListener {
             irPantallaActualizarPerfil()
         }
+        obtenerEnvios()
     }
 
 

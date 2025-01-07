@@ -26,7 +26,6 @@ class EnviosDetallesActivity : AppCompatActivity() {
         setContentView(view)
         obtenerEnvio()
         obtenerColaborador()
-        mostrarInformacionEnvio()
     }
 
 
@@ -35,6 +34,9 @@ class EnviosDetallesActivity : AppCompatActivity() {
         binding.btnActualizarEstatus.setOnClickListener {
             irPantallaActualizarEnvio()
         }
+        obtenerEnvio()
+        obtenerColaborador()
+        mostrarInformacionEnvio()
     }
 
     fun obtenerPaquetes(callback: (String) -> Unit) {
@@ -71,7 +73,7 @@ class EnviosDetallesActivity : AppCompatActivity() {
                     stringBuilder.append("Dimensiones: ${paquete.getString("dimensiones")}\n")
                     stringBuilder.append("Peso: ${paquete.getDouble("peso")} kg\n")
                     stringBuilder.append("Alto: ${paquete.getString("alto")} cm\n")
-                    stringBuilder.append("Ancho: ${paquete.getString("ancho")} cm")
+                    stringBuilder.append("Ancho: ${paquete.getString("ancho")} cm\n")
                 }
 
                 runOnUiThread {
