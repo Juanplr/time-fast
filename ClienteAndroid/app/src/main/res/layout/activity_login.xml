@@ -83,16 +83,6 @@
             android:layout_marginBottom="8dp"
             android:textColor="#000000"/>
 
-        <!-- Texto de "¿Olvidaste tu contraseña?" -->
-        <TextView
-            android:id="@+id/olvidaste_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="¿Olvidaste tu contraseña?"
-            android:textColor="@android:color/holo_blue_light"
-            android:textSize="14sp"
-            android:layout_marginBottom="24dp"
-            android:gravity="end" />
 
         <!-- Botón de Entrar -->
         <Button
