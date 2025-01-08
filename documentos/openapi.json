@@ -590,6 +590,50 @@
         }
       }
     },
+    "/iniciar-sesion-app": {
+      "post": {
+        "tags": [
+          "/login"
+        ],
+        "summary": "verificar credenciales de conductores",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "noPersonal": {
+                    "type": "string"
+                  },
+                  "contrasena": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "credenciales del colaborador encontradas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColaboradorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
     "/obtener-colaboradores": {
       "get": {
         "tags": [
@@ -618,7 +662,35 @@
         }
       }
     },
-    "/obtener-colaboradores-sin-asignar": {
+    "/obtener-conductores": {
+      "get": {
+        "tags": [
+          "/colaborador"
+        ],
+        "responses": {
+          "200": {
+            "description": "lista de todos los colaboradores que son conductores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ColaboradorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/obtener-conductores-sin-asignar": {
       "get": {
         "tags": [
           "/colaborador"
@@ -902,6 +974,123 @@
           },
           "404": {
             "description": "Colaborador no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mensaje"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mensaje"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obtener-foto/{idColaborador}": {
+      "get": {
+        "tags": [
+          "/colaborador"
+        ],
+        "parameters": [
+          {
+            "name": "idColaborador",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "id del colaborador"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lista de colaboradores en el sistema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "foto": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Colaborador no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/subir-foto/{idColaborador}": {
+      "put": {
+        "tags": [
+          "/colaborador"
+        ],
+        "summary": "edita la foto de un colaborador",
+        "parameters": [
+          {
+            "name": "idColaborador",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "id del colaborador"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ColaboradorResponse"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "type": "string",
+                        "description": "La contraseña del colaborador"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "colaborador editado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mensaje"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "badRequest",
             "content": {
               "application/json": {
                 "schema": {
@@ -1641,7 +1830,7 @@
         }
       }
     },
-    "/obtener-asignaciones": {
+    "/obtener-todos": {
       "get": {
         "tags": [
           "/conductores-asignados"
@@ -1669,7 +1858,7 @@
         }
       }
     },
-    "/agregar-asignacion": {
+    "/agregar": {
       "post": {
         "tags": [
           "/conductores-asignados"
@@ -1719,7 +1908,7 @@
         }
       }
     },
-    "/editar-asignacion": {
+    "/editar": {
       "put": {
         "tags": [
           "/conductores-asignados"
@@ -1769,14 +1958,14 @@
         }
       }
     },
-    "/eliminar- asignacion/{idConductoresAsignados}": {
+    "/eliminar/{id}": {
       "delete": {
         "tags": [
           "/conductores-asignados"
         ],
         "parameters": [
           {
-            "name": "idConductoresAsignados",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1827,6 +2016,84 @@
         "responses": {
           "200": {
             "description": "lista de los envios que tienen una unidad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnvioResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "envios no encontrados"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/obtener-envios-por-noguia/{noGuia}": {
+      "get": {
+        "tags": [
+          "/envio"
+        ],
+        "parameters": [
+          {
+            "name": "noGuia",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "numero guia del paquete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lista de los envios por el noguia",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnvioResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "envios no encontrados"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/obtener-envios-conductor/{idColaborador}": {
+      "get": {
+        "tags": [
+          "/envio"
+        ],
+        "parameters": [
+          {
+            "name": "idColaborador",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "id del conductor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "lista de los envios que tiene asignado un conductor",
             "content": {
               "application/json": {
                 "schema": {
@@ -2025,7 +2292,7 @@
         }
       }
     },
-    "/obtener-paquete-numero-envio/{idEnvio}": {
+    "/obtener-paquetes-envio/{idEnvio}": {
       "get": {
         "tags": [
           "/paquete"
@@ -2040,6 +2307,67 @@
             },
             "description": "id del envio del paquete"
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "paquete con el mismo id de envio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaqueteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "paquete no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/obtener-paquetes-noGuia/{noGuia}": {
+      "get": {
+        "tags": [
+          "/paquete"
+        ],
+        "parameters": [
+          {
+            "name": "noGuia",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "numero guia del paquete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "paquete con el mismo id de envio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaqueteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "paquete no encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/obtener-paquetes": {
+      "get": {
+        "tags": [
+          "/paquete"
         ],
         "responses": {
           "200": {

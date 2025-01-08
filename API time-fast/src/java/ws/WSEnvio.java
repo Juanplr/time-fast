@@ -86,11 +86,11 @@ public class WSEnvio {
        return ImpEnvio.obtenerEstadosDeEnvios();
     }
     
-    @Path("obtener-envios-conductor")
+    @Path("obtener-envios-conductor/{idColaborador}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public static List<Envio> obtenerEnvioConductor(){
-        return ImpEnvio.obtenerEnviosConductor();
+    public static List<Envio> obtenerEnvioConductor(@PathParam("idColaborador") int idColaborador){
+        return ImpEnvio.obtenerEnviosConductor(idColaborador);
     }
     
 }

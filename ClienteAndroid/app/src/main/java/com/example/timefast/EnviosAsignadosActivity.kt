@@ -59,11 +59,14 @@ class EnviosAsignadosActivity : AppCompatActivity() {
 
     private fun obtenerEnvios() {
         Ion.with(this@EnviosAsignadosActivity)
-            .load("GET", "${Constantes().url_ws}/envio/obtener-envios-conductor")
+            .load("GET", "${Constantes().url_ws}/envio/obtener-envios-conductor/${colaborador.idColaborador}")
+            .setHeader("Accept", "application/json")
             .asString()
             .setCallback { e, result ->
                 if (e == null) {
                     try {
+                        val decodedResult = result?.toByteArray(Charsets.ISO_8859_1)?.toString(Charsets.UTF_8) ?: ""
+                        Log.e("EnviosError", decodedResult)
                         val gson = Gson()
                         val envios = gson.fromJson(result, Array<Envio>::class.java).toList()
                         actualizarRecyclerView(envios)
@@ -81,10 +84,14 @@ class EnviosAsignadosActivity : AppCompatActivity() {
 
 
     private fun actualizarRecyclerView(envios: List<Envio>) {
-        enviosAdapter = EnviosAdapter(envios) { envioSeleccionado ->
-            irADetalleEnvio(envioSeleccionado)
+        if (envios.isEmpty()){
+            Toast.makeText(this, "No tienes Envios", Toast.LENGTH_LONG).show()
+        }else{
+            enviosAdapter = EnviosAdapter(envios) { envioSeleccionado ->
+                irADetalleEnvio(envioSeleccionado)
+            }
+            binding.recyclerViewEnvios.adapter = enviosAdapter
         }
-        binding.recyclerViewEnvios.adapter = enviosAdapter
 
     }
 

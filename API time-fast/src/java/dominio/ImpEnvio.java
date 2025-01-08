@@ -166,13 +166,13 @@ public class ImpEnvio {
         return listaEstados;
     }
 
-    public static List<Envio> obtenerEnviosConductor() {
+    public static List<Envio> obtenerEnviosConductor(int idColaborador) {
         List<Envio> listaEnvios = new ArrayList<>();
         SqlSession conexionDB = mybatis.MyBatisUtil.obtenerConexion();
 
         if (conexionDB != null) {
             try {
-                listaEnvios = conexionDB.selectList("envio.getObtenerEnviosConductor");
+                listaEnvios = conexionDB.selectList("envio.getObtenerEnviosConductor", idColaborador);
             } catch (Exception e) {
                 System.err.println("Error al recuperar los envíos: " + e.getMessage());
 
