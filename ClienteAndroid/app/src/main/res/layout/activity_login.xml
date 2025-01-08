@@ -1,89 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center"
-    android:background="@android:color/white">
+    android:background="@drawable/curve_lines">
 
-    <!-- Título -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <!-- Contenedor Principal -->
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Time-Fast"
-        android:textSize="44sp"
-        android:textStyle="bold"
+        android:orientation="vertical"
+        android:padding="24dp"
         android:gravity="center"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintHeight_max="600dp">
 
-    <!-- Ícono -->
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="84dp"
-        android:layout_height="84dp"
-        android:src="@drawable/ic_logo"
-    android:layout_marginBottom="32dp" />
+        <!-- Título -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time-Fast"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"
+            android:letterSpacing="0.1"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- Ícono -->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:src="@drawable/ic_logo"
+            android:layout_marginBottom="32dp"
+            android:textColor="#000000" />
+        
+
+        <!-- Campo de Número Personal -->
+        <TextView
+            android:id="@+id/Tv_personal_numero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Número Personal:"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/personal_numero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="EMP123"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"/>
+
+        <!-- Campo de Contraseña -->
+        <TextView
+            android:id="@+id/Tv_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contraseña:"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+        <EditText
+            android:id="@+id/contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="****************"
+            android:inputType="textPassword"
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
 
-    <!-- Campo de Número Personal -->
+        <!-- Botón de Entrar -->
+        <Button
+            android:id="@+id/btn_entrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ENTRAR"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white" />
 
-    <TextView
-        android:id="@+id/Tv_personal_numero"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Número Personal:"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/personal_numero"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="EMP123"
-        android:inputType="text"
-        android:layout_marginBottom="16dp"/>
-
-
-    <!-- Campo de Contraseña -->
-    <TextView
-        android:id="@+id/Tv_contrasena"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contraseña:"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
-
-    <EditText
-        android:id="@+id/contrasena"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="****************"
-        android:inputType="textPassword"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Texto de "¿Olvidaste tu contraseña?" -->
-    <TextView
-        android:id="@+id/olvidaste_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¿Olvidaste tu contraseña?"
-        android:textColor="@android:color/holo_blue_light"
-        android:textSize="14sp"
-        android:layout_marginBottom="24dp"
-        android:gravity="end" />
-
-    <!-- Botón de Entrar -->
-    <Button
-        android:id="@+id/btn_entrar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ENTRAR"
-        android:backgroundTint="@android:color/darker_gray"
-        android:textColor="@android:color/white" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

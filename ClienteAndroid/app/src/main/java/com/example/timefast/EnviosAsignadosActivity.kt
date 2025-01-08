@@ -28,7 +28,6 @@ class EnviosAsignadosActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_envios_asignados)
         binding = ActivityEnviosAsignadosBinding.inflate(layoutInflater)
         val view = binding.root
@@ -43,6 +42,7 @@ class EnviosAsignadosActivity : AppCompatActivity() {
         binding.irPerfil.setOnClickListener {
             irPantallaActualizarPerfil()
         }
+        obtenerEnvios()
     }
 
 
@@ -92,7 +92,9 @@ class EnviosAsignadosActivity : AppCompatActivity() {
     private fun irADetalleEnvio(envio: Envio) {
         val intent = Intent(this, EnviosDetallesActivity::class.java)
         val json = Gson().toJson(envio) // Serializar el objeto Envio a JSON
+        val jsonColaborador = serializarInformacion(colaborador)
         intent.putExtra("envio", json)
+        intent.putExtra("colaborador", jsonColaborador)
         startActivity(intent)
     }
 

@@ -34,7 +34,6 @@ class ActualizarPerfilActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_actualizar_perfil)
         binding = ActivityActualizarPerfilBinding.inflate(layoutInflater)
         val view = binding.root

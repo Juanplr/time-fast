@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:text="Actualizar Estatus Envio"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#000000"/>
         </LinearLayout>
 
         <!-- Nuevo Estatus -->
@@ -42,13 +43,14 @@
             android:layout_height="wrap_content"
             android:text="Nuevo Estatus"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <Spinner
             android:id="@+id/spinner_estatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/darker_gray"
+            android:textColor="#000000"
             android:layout_marginBottom="16dp" />
 
         <!-- Comentario -->
@@ -58,7 +60,8 @@
             android:layout_height="wrap_content"
             android:text="Comentario:"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/edittext_comentario"
@@ -68,15 +71,17 @@
             android:backgroundTint="@android:color/darker_gray"
             android:gravity="top"
             android:padding="8dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"/>
 
         <!-- Botón Guardar Cambios -->
         <Button
             android:id="@+id/btn_guardar_cambios"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Guardar Cambios"
-            android:backgroundTint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

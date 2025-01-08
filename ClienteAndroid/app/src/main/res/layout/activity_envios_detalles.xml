@@ -31,8 +31,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Detalle del envío"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#000000"/>
+
         </LinearLayout>
 
         <!-- Información del envío -->
@@ -41,59 +43,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Guía:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/guia_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/origen_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Origen:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/origen_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/destino_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Destino:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/destino_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/paquetes_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Paquetes:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/paquetes_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/estatus_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Estatus:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/estatus_valor"
@@ -107,21 +118,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cliente:"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/cliente_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000"
+            />
 
         <!-- Botón para actualizar estatus -->
         <Button
             android:id="@+id/btn_actualizar_estatus"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Actualizar Estatus"
-            android:backgroundTint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

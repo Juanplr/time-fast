@@ -1,5 +1,6 @@
 package com.example.timefast
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.timefast.adapter.EstadoAdapter
 import com.example.timefast.databinding.ActivityEnvioActualizarEstatusBinding
+import com.example.timefast.poko.Colaborador
 import com.example.timefast.poko.Envio
 import com.example.timefast.poko.EstadoEnvio
 import com.example.timefast.poko.HistorialDeEnvio
@@ -24,17 +26,19 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEnvioActualizarEstatusBinding
     private lateinit var listaEstados: List<EstadoEnvio>
-
+    private lateinit var colaborador: Colaborador
+    private lateinit var envio: Envio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_envio_actualizar_estatus)
         binding = ActivityEnvioActualizarEstatusBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        obtenerColaborador()
+        obtenerEnvio()
         cargarEstatusDesdeWeb()
+
     }
 
 
@@ -46,9 +50,34 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
             val idEstatus = estadoSeleccionado.idEstadoDeEnvio
             val comentario = binding.edittextComentario.text.toString()
 
+
             if (validarComentario(nombreEstatus, comentario)) {
-                if(editarEnvio(null)){
-                    enviarCambios(idEstatus, comentario)
+                // Actualizar el estado del envío primero
+                actualizarEnvio(idEstatus) { envioActualizado ->
+                    if (envioActualizado) {
+                        // Si el envío se actualizó, guardar el historial
+                        enviarCambios(idEstatus, comentario) { historialGuardado ->
+                            if (historialGuardado) {
+                                Toast.makeText(this, "Cambios guardados con éxito", Toast.LENGTH_SHORT).show()
+
+                                // Crear un Intent para navegar a la actividad EnviosAsignadosActivity
+                                val intent = Intent(this, EnviosAsignadosActivity::class.java)
+
+                                // Pasar los datos necesarios (en este caso, el colaborador)
+                                val jsonColaborador = Gson().toJson(colaborador) // Serializar el colaborador a JSON
+                                intent.putExtra("colaborador", jsonColaborador)
+
+                                // Iniciar la actividad
+                                startActivity(intent)
+
+                                finish() // Cierra la actividad actual
+                            } else {
+                                Toast.makeText(this, "Error al guardar el historial", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error al actualizar el estado del envío", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -76,7 +105,7 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
 
 
 
-     fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
+    fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
         val adapter = EstadoAdapter(this, estados)
         binding.spinnerEstatus.adapter = adapter
     }
@@ -98,11 +127,11 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
     private fun enviarCambios(idEstatus: Int, comentario: String) {
         val fechaActual = SimpleDateFormat("yyyy-MM-dd").format(Date())
         val historial = HistorialDeEnvio(
-            idHistorialDeEnvio = null,
+            idHistorialDeEnvio = 1,
             idEstadoDeEnvio = idEstatus,
-            idColaborador = -1, //EL ID del conductor que esta cambiando los datos del envio
-            colaborador = null,
-            noGuia = "AQUI Va los datos del no guia",
+            idColaborador = colaborador.idColaborador, //EL ID del conductor que esta cambiando los datos del envio
+            colaborador = colaborador.nombre,
+            noGuia = envio.noGuia,
             motivo = if (comentario.isEmpty()) "S/M" else comentario,
             tiempoDeCambio = fechaActual
         )
@@ -124,7 +153,9 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
                 }
             }
     }
-    private fun editarEnvio(envio: Envio?):Boolean{
+
+    /*
+    private fun editarEnvio(envio: Envio):Boolean{
         var validacion = false
         val gson = Gson()
         val parametros = gson.toJson(envio)
@@ -142,10 +173,83 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
                 }
             }
         return validacion
+    } */
+
+
+    private fun actualizarEnvio(idEstatus: Int, callback: (Boolean) -> Unit) {
+        envio.idEstadoDeEnvio = idEstatus // Actualizar el estado del envío en el objeto local
+
+        val gson = Gson()
+        val parametros = gson.toJson(envio)
+
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("PUT", "${Constantes().url_ws}/envio/editar-envio")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, _ ->
+                if (e == null) {
+                    callback(true) // Actualización exitosa
+                } else {
+                    Log.e("ActualizarEnvio", "Error al actualizar el envío", e)
+                    callback(false) // Fallo en la actualización
+                }
+            }
     }
 
 
+    private fun enviarCambios(idEstatus: Int, comentario: String, callback: (Boolean) -> Unit) {
+        val fechaActual = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val historial = HistorialDeEnvio(
+            idHistorialDeEnvio = 1,
+            idEstadoDeEnvio = idEstatus,
+            idColaborador = colaborador.idColaborador,
+            colaborador = colaborador.nombre,
+            noGuia = envio.noGuia,
+            motivo = if (comentario.isEmpty()) "S/M" else comentario,
+            tiempoDeCambio = fechaActual
+        )
 
+        val gson = Gson()
+        val parametros = gson.toJson(historial)
+
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("POST", "${Constantes().url_ws}/historial-envio/agregar")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, _ ->
+                if (e == null) {
+                    callback(true) // Historial guardado exitosamente
+                } else {
+                    Log.e("EnviarCambios", "Error al guardar el historial", e)
+                    callback(false) // Fallo al guardar el historial
+                }
+            }
+    }
+
+
+    fun obtenerColaborador(){
+        val colaboradorJson = intent.getStringExtra("colaborador")
+        if (colaboradorJson != null) {
+            val gson = Gson()
+            colaborador = gson.fromJson(colaboradorJson, Colaborador::class.java)
+        } else {
+            // Manejar el caso donde colaborador no se pasó en el Intent
+            throw IllegalStateException("Colaborador no inicializado. Asegúrate de pasar el colaborador desde la actividad anterior.")
+        }
+    }
+
+    fun obtenerEnvio(){
+        val envioJson = intent.getStringExtra("envio")
+        if (envioJson != null) {
+            val gson = Gson()
+            envio = gson.fromJson(envioJson, Envio::class.java)
+        } else {
+            // Manejar el caso donde colaborador no se pasó en el Intent
+            throw IllegalStateException("Envio no inicializado. Asegúrate de pasar el colaborador desde la actividad anterior.")
+        }
+    }
 
 
 }
