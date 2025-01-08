@@ -31,6 +31,9 @@ class EstadoAdapter (
 
         val textView = view.findViewById<TextView>(android.R.id.text1)
         textView.text = estados[position].nombre
+        textView.setTextColor(context.resources.getColor(android.R.color.black))
+        view.setBackgroundColor(context.resources.getColor(android.R.color.white)) // Fondo blanco
+        textView.textSize = 16f
 
         return view
     }

@@ -1,5 +1,6 @@
 package com.example.timefast
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.timefast.adapter.EstadoAdapter
 import com.example.timefast.databinding.ActivityEnvioActualizarEstatusBinding
+import com.example.timefast.poko.Colaborador
 import com.example.timefast.poko.Envio
 import com.example.timefast.poko.EstadoEnvio
 import com.example.timefast.poko.HistorialDeEnvio
@@ -24,8 +26,8 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEnvioActualizarEstatusBinding
     private lateinit var listaEstados: List<EstadoEnvio>
+    private lateinit var colaborador: Colaborador
     private lateinit var envio: Envio
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +35,56 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
         binding = ActivityEnvioActualizarEstatusBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        obtenerColaborador()
         obtenerEnvio()
         cargarEstatusDesdeWeb()
-        configurarBotonGuardar()
+
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        binding.btnGuardarCambios.setOnClickListener{
+            val estadoSeleccionado = binding.spinnerEstatus.selectedItem as EstadoEnvio
+            val nombreEstatus = estadoSeleccionado.nombre
+            val idEstatus = estadoSeleccionado.idEstadoDeEnvio
+            val comentario = binding.edittextComentario.text.toString()
+
+
+            if (validarComentario(nombreEstatus, comentario)) {
+                // Actualizar el estado del envío primero
+                actualizarEnvio(idEstatus) { envioActualizado ->
+                    if (envioActualizado) {
+                        // Si el envío se actualizó, guardar el historial
+                        enviarCambios(idEstatus, comentario) { historialGuardado ->
+                            if (historialGuardado) {
+                                Toast.makeText(this, "Cambios guardados con éxito", Toast.LENGTH_SHORT).show()
+
+                                // Crear un Intent para navegar a la actividad EnviosAsignadosActivity
+                                val intent = Intent(this, EnviosAsignadosActivity::class.java)
+
+                                // Pasar los datos necesarios (en este caso, el colaborador)
+                                val jsonColaborador = Gson().toJson(colaborador) // Serializar el colaborador a JSON
+                                intent.putExtra("colaborador", jsonColaborador)
+
+                                // Iniciar la actividad
+                                startActivity(intent)
+
+                                finish() // Cierra la actividad actual
+                            } else {
+                                Toast.makeText(this, "Error al guardar el historial", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error al actualizar el estado del envío", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun cargarEstatusDesdeWeb() {
         Ion.with(this)
             .load("GET", "${Constantes().url_ws}/envio/obtener-estados-envios")
             .asString()
@@ -57,61 +103,21 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
             }
     }
 
-    private fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, estados.map { it.nombre })
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+
+    fun llenarSpinnerEstatus(estados: List<EstadoEnvio>) {
+        val adapter = EstadoAdapter(this, estados)
         binding.spinnerEstatus.adapter = adapter
-
-        // Almacenar los estados completos (opcional si los necesitas luego)
-        listaEstados = estados
-    }
-
-    private fun enviarActualizacionEstatus(idEstatus: Int, comentario: String) {
-        val json = JSONObject()
-        json.put("idEnvio", envio.idEnvio) // Desde el objeto envio
-        json.put("idEstadoDeEnvio", idEstatus) // Desde el Spinner
-        json.put("idColaborador", envio.idColaborador) // Desde el objeto envio
-        json.put("noGuia", envio.noGuia) // Desde el objeto envio
-        json.put("motivo", comentario) // Comentario ingresado
-        json.put("tiempoDeCambio", obtenerFechaActual()) // Fecha actual
-
-        Log.e("EnvioActualizarEstatusActivity", "JSON enviado: $json")
-
-        Ion.with(this)
-            .load("PUT", "${Constantes().url_ws}/historial-envio/editar")
-            .setHeader("Content-Type", "application/json")
-            .setStringBody(json.toString())
-            .asString()
-            .setCallback { e, result ->
-                if (e == null) {
-                    Toast.makeText(this, "Estatus actualizado correctamente", Toast.LENGTH_SHORT).show()
-                    finish()
-                } else {
-                    Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
 
-    private fun configurarBotonGuardar() {
-        binding.btnGuardarCambios.setOnClickListener {
-            val posicionSeleccionada = binding.spinnerEstatus.selectedItemPosition
-            val estadoSeleccionado = listaEstados[posicionSeleccionada] // Estado completo
-            val idEstatus = estadoSeleccionado.idEstadoDeEnvio
-            val nombreEstatus = estadoSeleccionado.nombre
-            val comentario = binding.edittextComentario.text.toString()
-
-            if (validarComentario(nombreEstatus, comentario)) {
-                enviarActualizacionEstatus(idEstatus, comentario)
-            }
-        }
-    }
-
-
-
-    private fun validarComentario(nombreEstatus: String, comentario: String): Boolean {
-        return if ((nombreEstatus == "Detenido" || nombreEstatus == "Cancelado") && comentario.isBlank()) {
-            Toast.makeText(this, "El comentario es obligatorio para el estatus '$nombreEstatus'", Toast.LENGTH_SHORT).show()
+    private fun validarComentario(estatus: String, comentario: String): Boolean {
+        return if ((estatus == "Detenido" || estatus == "Cancelado") && comentario.isBlank()) {
+            Toast.makeText(
+                this,
+                "El comentario es obligatorio para el estatus '$estatus'",
+                Toast.LENGTH_SHORT
+            ).show()
             false
         } else {
             true
@@ -121,11 +127,11 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
     private fun enviarCambios(idEstatus: Int, comentario: String) {
         val fechaActual = SimpleDateFormat("yyyy-MM-dd").format(Date())
         val historial = HistorialDeEnvio(
-            idHistorialDeEnvio = null,
+            idHistorialDeEnvio = 1,
             idEstadoDeEnvio = idEstatus,
-            idColaborador = -1, //EL ID del conductor que esta cambiando los datos del envio
-            colaborador = null,
-            noGuia = "AQUI Va los datos del no guia",
+            idColaborador = colaborador.idColaborador, //EL ID del conductor que esta cambiando los datos del envio
+            colaborador = colaborador.nombre,
+            noGuia = envio.noGuia,
             motivo = if (comentario.isEmpty()) "S/M" else comentario,
             tiempoDeCambio = fechaActual
         )
@@ -147,7 +153,9 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
                 }
             }
     }
-    private fun editarEnvio(envio: Envio?):Boolean{
+
+    /*
+    private fun editarEnvio(envio: Envio):Boolean{
         var validacion = false
         val gson = Gson()
         val parametros = gson.toJson(envio)
@@ -165,13 +173,71 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
                 }
             }
         return validacion
+    } */
+
+
+    private fun actualizarEnvio(idEstatus: Int, callback: (Boolean) -> Unit) {
+        envio.idEstadoDeEnvio = idEstatus // Actualizar el estado del envío en el objeto local
+
+        val gson = Gson()
+        val parametros = gson.toJson(envio)
+
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("PUT", "${Constantes().url_ws}/envio/editar-envio")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, _ ->
+                if (e == null) {
+                    callback(true) // Actualización exitosa
+                } else {
+                    Log.e("ActualizarEnvio", "Error al actualizar el envío", e)
+                    callback(false) // Fallo en la actualización
+                }
+            }
     }
 
 
+    private fun enviarCambios(idEstatus: Int, comentario: String, callback: (Boolean) -> Unit) {
+        val fechaActual = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val historial = HistorialDeEnvio(
+            idHistorialDeEnvio = 1,
+            idEstadoDeEnvio = idEstatus,
+            idColaborador = colaborador.idColaborador,
+            colaborador = colaborador.nombre,
+            noGuia = envio.noGuia,
+            motivo = if (comentario.isEmpty()) "S/M" else comentario,
+            tiempoDeCambio = fechaActual
+        )
 
-    private fun obtenerFechaActual(): String {
-        val formatoFecha = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        return formatoFecha.format(Date())
+        val gson = Gson()
+        val parametros = gson.toJson(historial)
+
+        Ion.with(this@EnvioActualizarEstatusActivity)
+            .load("POST", "${Constantes().url_ws}/historial-envio/agregar")
+            .setHeader("Content-Type", "application/json")
+            .setStringBody(parametros)
+            .asString()
+            .setCallback { e, _ ->
+                if (e == null) {
+                    callback(true) // Historial guardado exitosamente
+                } else {
+                    Log.e("EnviarCambios", "Error al guardar el historial", e)
+                    callback(false) // Fallo al guardar el historial
+                }
+            }
+    }
+
+
+    fun obtenerColaborador(){
+        val colaboradorJson = intent.getStringExtra("colaborador")
+        if (colaboradorJson != null) {
+            val gson = Gson()
+            colaborador = gson.fromJson(colaboradorJson, Colaborador::class.java)
+        } else {
+            // Manejar el caso donde colaborador no se pasó en el Intent
+            throw IllegalStateException("Colaborador no inicializado. Asegúrate de pasar el colaborador desde la actividad anterior.")
+        }
     }
 
     fun obtenerEnvio(){
@@ -185,5 +251,5 @@ class EnvioActualizarEstatusActivity : AppCompatActivity() {
         }
     }
 
-}
 
+}

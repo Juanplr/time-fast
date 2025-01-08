@@ -37,6 +37,7 @@ class EnviosAdapter(private var envios: List<Envio>, private val onItemClick: (E
             "En transito" -> holder.ivEstatus.setImageResource(R.drawable.ic_camino)
             "Pendiente" -> holder.ivEstatus.setImageResource(R.drawable.ic_pendiente)
             "Cancelado" -> holder.ivEstatus.setImageResource(R.drawable.ic_cancelado)
+            "Detenido" -> holder.ivEstatus.setImageResource(R.drawable.ic_detenido)
         }
 
         // Manejar el clic en el elemento
