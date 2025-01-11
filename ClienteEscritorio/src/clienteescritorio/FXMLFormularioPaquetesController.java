@@ -63,6 +63,7 @@ public class FXMLFormularioPaquetesController implements Initializable {
         this.observador = observador;
         if(paqueteEditado!= null){
             modoEdicion = true;
+            cbEnvios.setDisable(true);
             llenarcampos();
             btnGuardar.setText("Editar");
         }

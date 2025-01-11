@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Package, Truck, Home, CheckCircle, Search } from 'lucide-react'
+import { Package, Truck, Home, CheckCircle, Search, XCircle } from 'lucide-react'
 
 export default function PaginaEnvio() {
   const [numeroGuia, setNumeroGuia] = useState('')
@@ -61,6 +61,8 @@ export default function PaginaEnvio() {
       case 'En tránsito': return <Truck className="w-6 h-6" />
       case 'Centro de distribución': return <Home className="w-6 h-6" />
       case 'Entregado': return <CheckCircle className="w-6 h-6" />
+      case 'Detenido': return <XCircle className="bg-red-500 rounded-full" />;
+      case 'Cancelado': return <div className="w-6 h-6 bg-red-500 rounded-full" />;
       default: return null
     }
   }

@@ -34,7 +34,7 @@
             <TextField fx:id="tfNumeroPersonal" layoutX="108.0" layoutY="154.0" prefHeight="25.0" prefWidth="322.0" promptText="EMP***" />
             <PasswordField fx:id="pfContrasenia" layoutX="108.0" layoutY="215.0" prefHeight="25.0" prefWidth="322.0" promptText="**********" />
             <Button fx:id="btnEntrar" layoutX="247.0" layoutY="270.0" mnemonicParsing="false" onAction="#iniciarSesion" text="ENTRAR" />
-            <Label fx:id="lbOlvidasteContraseña" layoutX="317.0" layoutY="246.0" text="¿Olvidaste tu contraseña?">
+            <Label fx:id="lbOlvidasteContraseña" layoutX="317.0" layoutY="246.0">
                <font>
                   <Font size="10.0" />
                </font>
